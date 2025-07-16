@@ -18,3 +18,8 @@
 <link rel="stylesheet" href="{{asset('css/flaticon.css')}}">
 <link rel="stylesheet" href="{{asset('css/icomoon.css')}}">
 <link rel="stylesheet" href="{{asset('css/style.css')}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css">
+<style>.awesomplete {
+        width: 100%;
+    }
+</style>

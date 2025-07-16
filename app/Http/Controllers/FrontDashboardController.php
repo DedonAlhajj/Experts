@@ -36,6 +36,7 @@ class FrontDashboardController extends Controller
         try {
             $data = $this->profileService->getActiveUsersWithStats();
 
+            //dd($data);
             return view('home', $data);
 
         } catch (Exception $ex) {

@@ -41,7 +41,8 @@
                                             <span class="flaticon-resume"></span>
                                         </div>
                                         <div class="desc text-left">
-                                            <strong class="number" data-number="{{$stats->total_job_seekers}}">0</strong>
+                                            <strong class="number"
+                                                    data-number="{{$stats->total_job_seekers}}">0</strong>
                                             <span>Job Seekers</span>
                                         </div>
                                     </div>
@@ -52,10 +53,14 @@
                     <div class="ftco-search my-md-5">
                         <div class="row">
                             <div class="col-md-12 nav-link-wrap">
-                                <div class="nav nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link active mr-md-1" id="v-pills-1-tab" data-toggle="pill" href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">Find a Job</a>
+                                <div class="nav nav-pills text-center" id="v-pills-tab" role="tablist"
+                                     aria-orientation="vertical">
+                                    <a class="nav-link active mr-md-1" id="v-pills-1-tab" data-toggle="pill"
+                                       href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">Find
+                                        a Job</a>
 
-                                    <a class="nav-link" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">Find a Candidate</a>
+                                    <a class="nav-link" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2"
+                                       role="tab" aria-controls="v-pills-2" aria-selected="false">Find a Candidate</a>
 
                                 </div>
                             </div>
@@ -63,14 +68,16 @@
 
                                 <div class="tab-content p-4" id="v-pills-tabContent">
 
-                                    <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-nextgen-tab">
+                                    <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel"
+                                         aria-labelledby="v-pills-nextgen-tab">
                                         <form action="#" class="search-job">
                                             <div class="row no-gutters">
                                                 <div class="col-md mr-md-2">
                                                     <div class="form-group">
                                                         <div class="form-field">
                                                             <div class="icon"><span class="icon-briefcase"></span></div>
-                                                            <input type="text" class="form-control" placeholder="eg. Garphic. Web Developer">
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="eg. Garphic. Web Developer">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -78,7 +85,8 @@
                                                     <div class="form-group">
                                                         <div class="form-field">
                                                             <div class="select-wrap">
-                                                                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                                                <div class="icon"><span
+                                                                        class="ion-ios-arrow-down"></span></div>
                                                                 <select name="" id="" class="form-control">
                                                                     <option value="">Category</option>
                                                                     <option value="">Full Time</option>
@@ -94,15 +102,19 @@
                                                 <div class="col-md mr-md-2">
                                                     <div class="form-group">
                                                         <div class="form-field">
-                                                            <div class="icon"><span class="icon-map-marker"></span></div>
-                                                            <input type="text" class="form-control" placeholder="Location">
+                                                            <div class="icon"><span class="icon-map-marker"></span>
+                                                            </div>
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="Location">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md">
                                                     <div class="form-group">
                                                         <div class="form-field">
-                                                            <button type="submit" class="form-control btn btn-primary">Search</button>
+                                                            <button type="submit" class="form-control btn btn-primary">
+                                                                Search
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -110,14 +122,16 @@
                                         </form>
                                     </div>
 
-                                    <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-performance-tab">
+                                    <div class="tab-pane fade" id="v-pills-2" role="tabpanel"
+                                         aria-labelledby="v-pills-performance-tab">
                                         <form action="#" class="search-job">
                                             <div class="row">
                                                 <div class="col-md">
                                                     <div class="form-group">
                                                         <div class="form-field">
                                                             <div class="icon"><span class="icon-user"></span></div>
-                                                            <input type="text" class="form-control" placeholder="eg. Adam Scott">
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="eg. Adam Scott">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -125,7 +139,8 @@
                                                     <div class="form-group">
                                                         <div class="form-field">
                                                             <div class="select-wrap">
-                                                                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                                                <div class="icon"><span
+                                                                        class="ion-ios-arrow-down"></span></div>
                                                                 <select name="" id="" class="form-control">
                                                                     <option value="">Category</option>
                                                                     <option value="">Full Time</option>
@@ -141,15 +156,19 @@
                                                 <div class="col-md">
                                                     <div class="form-group">
                                                         <div class="form-field">
-                                                            <div class="icon"><span class="icon-map-marker"></span></div>
-                                                            <input type="text" class="form-control" placeholder="Location">
+                                                            <div class="icon"><span class="icon-map-marker"></span>
+                                                            </div>
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="Location">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md">
                                                     <div class="form-group">
                                                         <div class="form-field">
-                                                            <button type="submit" class="form-control btn btn-primary">Search</button>
+                                                            <button type="submit" class="form-control btn btn-primary">
+                                                                Search
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -171,50 +190,44 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="category-wrap">
+
                     <div class="row no-gutters">
-                        <div class="col-md-2">
-                            <div class="top-category text-center no-border-left">
-                                <h3><a href="#">Website &amp; Software</a></h3>
-                                <span class="icon flaticon-contact"></span>
-                                <p><span class="number">143</span> <span>Open position</span></p>
+                        @php
+                            $icons = [
+                                'flaticon-contact',        // Website & Software
+                                'flaticon-mortarboard',    // Education & Training
+                                'flaticon-idea',           // Graphic & UI/UX Design
+                                'flaticon-accounting',     // Accounting & Finance
+                                'flaticon-dish',           // Restaurant & Food
+                                'flaticon-stethoscope',    // Health & Hospital
+                            ];
+                        @endphp
+
+                        @foreach($top6Specializations as $index => $item)
+                            @php
+                                $icon = $icons[$index] ?? 'flaticon-layers';
+                                $isActive = $index === 1 ? 'active' : ''; // رقم 2 لأن الفهرسة تبدأ من الصفر
+                            @endphp
+
+                            <div class="col-md-2">
+                                <div class="top-category text-center no-border-left {{ $isActive }}"
+                                     style="min-height: 254px">
+                                    <h3><a href="{{ route('experts.bySpecialization', ['title' => $item->title]) }}">
+                                            {{ Str::title($item->title) }}
+                                        </a></h3>
+                                    <span class="icon {{ $icon }}"></span>
+                                    <p>
+                                        <span class="number">{{ $item->total }}</span>
+                                        <span>Open position</span>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="top-category text-center active">
-                                <h3><a href="#">Education &amp; Training</a></h3>
-                                <span class="icon flaticon-mortarboard"></span>
-                                <p><span class="number">143</span> <span>Open position</span></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="top-category text-center">
-                                <h3><a href="#">Graphic &amp; UI/UX Design</a></h3>
-                                <span class="icon flaticon-idea"></span>
-                                <p><span class="number">143</span> <span>Open position</span></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="top-category text-center">
-                                <h3><a href="#">Accounting &amp; Finance</a></h3>
-                                <span class="icon flaticon-accounting"></span>
-                                <p><span class="number">143</span> <span>Open position</span></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="top-category text-center">
-                                <h3><a href="#">Restaurant &amp; Food</a></h3>
-                                <span class="icon flaticon-dish"></span>
-                                <p><span class="number">143</span> <span>Open position</span></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="top-category text-center">
-                                <h3><a href="#">Health &amp; Hospital</a></h3>
-                                <span class="icon flaticon-stethoscope"></span>
-                                <p><span class="number">143</span> <span>Open position</span></p>
-                            </div>
-                        </div>
+                        @endforeach
+
+
                     </div>
+
+
                 </div>
             </div>
         </div>

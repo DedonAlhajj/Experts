@@ -47,25 +47,57 @@
     </section>
 
 @endsection
-
 <script>
     function addField(wrapperId, category, iconClass, placeholder) {
         const wrapper = document.getElementById(wrapperId);
         const html = `
-      <div class="form-field d-flex gap-3 mb-2">
-        <div class="icon"><span class="${iconClass}"></span></div>
-        <input type="hidden" name="experiences[${experienceIndex}][category]" value="${category}">
-        <input type="text" name="experiences[${experienceIndex}][title]" class="form-control" placeholder="${placeholder}">
-        <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
-      </div>
+        <div class="form-field d-flex gap-3 mb-2">
+            <div class="icon"><span class="${iconClass}"></span></div>
+            <input type="hidden" name="experiences[${experienceIndex}][category]" value="${category}">
+            <input type="text" required
+                   name="experiences[${experienceIndex}][title]"
+                   class="form-control awesomplete"
+                   data-category="${category}"
+                   placeholder="${placeholder}">
+            <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
+        </div>
     `;
         wrapper.insertAdjacentHTML('beforeend', html);
+
+        const input = wrapper.querySelectorAll('.awesomplete[data-category="' + category + '"]');
+        const lastInput = input[input.length - 1];
+
+        const awesomplete = new Awesomplete(lastInput, {
+            list: [],
+            minChars: 1,
+            maxItems: 10,
+            autoFirst: true,
+            filter: () => true,
+            sort: false
+        });
+
+        lastInput.awesomplete = awesomplete;
+
+        lastInput.addEventListener("input", function () {
+            const search = lastInput.value;
+
+            if (search.length < 1) return;
+
+            fetch(`/api/autocomplete-titles?category=${category}&q=${encodeURIComponent(search)}`)
+                .then(response => response.json())
+                .then(data => {
+                    lastInput.awesomplete.list = data;
+                    lastInput.awesomplete.evaluate();
+                })
+                .catch(error => console.error("Autocomplete fetch error:", error));
+        });
+
         experienceIndex++;
     }
+
 
     function removeField(button) {
         button.parentElement.remove();
     }
+
 </script>
-
-

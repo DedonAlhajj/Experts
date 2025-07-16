@@ -5,6 +5,8 @@ namespace App\Services\Profile;
 use App\Models\ExpertInfo;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use JetBrains\PhpStorm\ArrayShape;
@@ -46,6 +48,7 @@ class ExpertInfoService
                 ->get()
                 ->groupBy('category');
 
+
             $user->load('media');
             return [
                 'user' => $user,
@@ -58,8 +61,19 @@ class ExpertInfoService
     }
 
 
+    public function autocompleteTitles(string $category, ?string $query): Collection
+    {
+        $cacheKey = "autocomplete_titles:{$category}:" . md5($query ?? '');
 
-
+        return Cache::remember($cacheKey, now()->addHours(6), function () use ($category, $query) {
+            return ExpertInfo::select('title')
+                ->where('category', $category)
+                ->whereNotNull('title')
+                ->when($query, fn($q) => $q->where('title', 'like', '%' . $query . '%'))
+                ->distinct()
+                ->pluck('title');
+        });
+    }
 
     /**
      * Persist the expert information for the specified user.

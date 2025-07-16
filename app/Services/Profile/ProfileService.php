@@ -143,13 +143,13 @@ class ProfileService
      * Applies optional filters for location, name, and title.
      * Only users marked as active are included in the result.
      *
-     * @param string|null $location  Optional location keywords (country or city).
-     * @param string|null $title     Optional title to filter expertise.
-     * @param string|null $name      Optional name to filter users.
-     *
-     * @throws \RuntimeException If the query fails.
+     * @param string|null $location Optional location keywords (country or city).
+     * @param string|null $title Optional title to filter expertise.
+     * @param string|null $name Optional name to filter users.
      *
      * @return LengthAwarePaginator Paginated list of filtered users.
+     * @throws \RuntimeException If the query fails.
+     *
      */
     public function filterUserBySpecialization(?string $location = null, ?string $title = null, ?string $name = null): LengthAwarePaginator
     {
@@ -178,13 +178,13 @@ class ProfileService
      * Applies optional filters for location, name, and title.
      * Only users marked as inactive are included in the result.
      *
-     * @param string|null $location  Optional location keywords (country or city).
-     * @param string|null $title     Optional title to filter expertise.
-     * @param string|null $name      Optional name to filter users.
-     *
-     * @throws \RuntimeException If the query fails.
+     * @param string|null $location Optional location keywords (country or city).
+     * @param string|null $title Optional title to filter expertise.
+     * @param string|null $name Optional name to filter users.
      *
      * @return LengthAwarePaginator Paginated list of inactive users.
+     * @throws \RuntimeException If the query fails.
+     *
      */
     public function inactiveUsers(?string $location = null, ?string $title = null, ?string $name = null): LengthAwarePaginator
     {
@@ -215,11 +215,11 @@ class ProfileService
      * If the user is currently active, they will be deactivated, and vice versa.
      * Logs any errors and throws a runtime exception on failure.
      *
-     * @param \App\Models\User $user  The user whose activation status will be toggled.
-     *
-     * @throws \RuntimeException If the update process fails.
+     * @param \App\Models\User $user The user whose activation status will be toggled.
      *
      * @return string A message indicating whether the user was activated or deactivated.
+     * @throws \RuntimeException If the update process fails.
+     *
      */
     public function toggleActivation(User $user): string
     {
@@ -252,25 +252,29 @@ class ProfileService
      * - Caches grouped specializations for 15 minutes.
      * - Logs errors and returns fallback data on failure.
      *
+     * @return array Contains 'users', 'stats', and 'specializations'.
      * @throws \Throwable If any part of the process fails.
      *
-     * @return array Contains 'users', 'stats', and 'specializations'.
      */
     public function getActiveUsersWithStats(): array
     {
         try {
-            $users = User::active()->latest()->take(6)->get();
+            $stats = $this->getHomepageStats();
+            $specializations = $this->getHomepageSpecializations();
+            $top6Specializations = $specializations->take(6);
+            $users = User::active()->latest()->take(5)->get();
+            $experts = $this->getRandomExperts();
+            $jobSeekers = $this->getRandomJobSeekers();
 
-            $stats = Cache::remember('homepage_user_stats', now()->addMinutes(10), fn() => $this->getActiveStats());
 
-            $specializations = Cache::remember('homepage_grouped_specializations',
-                now()->addMinutes(15), fn() => $this->getSpecializationsAndTheirNumber(16));
+            return compact('stats', 'specializations','top6Specializations', 'users', 'experts', 'jobSeekers');
 
-            return compact('users', 'stats', 'specializations');
         } catch (\Throwable $e) {
             Log::error('Error loading homepage user stats: ' . $e->getMessage());
 
             return [
+                'experts' => collect(),
+                'job_seekers' => collect(),
                 'users' => collect(),
                 'stats' => (object)[
                     'total_active' => 0,
@@ -284,14 +288,30 @@ class ProfileService
         }
     }
 
+    protected function getRandomExperts(): Collection
+    {
+        return User::active()->where('is_expert', true)->inRandomOrder()->limit(5)->get();
+    }
 
-    /**
-     * Retrieves statistical counts of active users.
-     *
-     * Returns total active users, number of experts, job seekers, and gender breakdown.
-     *
-     * @return object An object containing statistical fields.
-     */
+    protected function getRandomJobSeekers(): Collection
+    {
+        return User::active()->where('is_job_seeker', true)->inRandomOrder()->limit(4)->get();
+    }
+
+    protected function getHomepageStats(): object
+    {
+        return Cache::remember('homepage_user_stats', now()->addMinutes(10), fn() => $this->getActiveStats());
+    }
+
+    protected function getHomepageSpecializations(): Collection
+    {
+        return Cache::remember(
+            'homepage_grouped_specializations',
+            now()->addMinutes(15),
+            fn() => $this->getSpecializationsAndTheirNumber(16)
+        );
+    }
+
     protected function getActiveStats(): object
     {
         return User::selectRaw("
@@ -305,35 +325,17 @@ class ProfileService
             ->first();
     }
 
-
-    /**
-     * Retrieves a list of specializations with their occurrence count.
-     *
-     * Filters by title if provided, limits results if specified.
-     *
-     * @param int|null $limit  Optional limit on number of results.
-     * @param string|null $title  Optional title filter (partial match).
-     *
-     * @return Collection A collection of specialization titles and their counts.
-     */
     public function getSpecializationsAndTheirNumber(?int $limit = null, ?string $title = null): Collection
     {
-        $query = DB::table('expert_infos')
+        return DB::table('expert_infos')
             ->select('title_normalized as title', DB::raw('COUNT(*) as total'))
-            ->where('category', 'experience');
-
-        if ($title) {
-            $query->where('title_normalized', 'LIKE', '%' . strtolower($title) . '%');
-        }
-
-        $query->groupBy('title_normalized')
-            ->orderByDesc('total');
-
-        if ($limit) {
-            $query->limit($limit);
-        }
-
-        return $query->get();
+            ->where('category', 'experience')
+            ->when($title, fn($query) => $query->where('title_normalized', 'LIKE', '%' . strtolower($title) . '%')
+            )
+            ->groupBy('title_normalized')
+            ->orderByDesc('total')
+            ->when($limit, fn($query) => $query->limit($limit))
+            ->get();
     }
 
 

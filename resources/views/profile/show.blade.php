@@ -75,7 +75,7 @@
                         <span class="info-user">{{ $user->is_expert_label  ?? 'User' }}</span>
                         <span class="info-user">{{ $user->is_job_seeker_label  ?? 'User' }}</span>
                         <span class="info-user">{{ $user->is_available_for_remote  ?? 'User' }}</span>
-                        @if(Auth::user()->is_admin)
+                        @if(Auth::check() && Auth::user()->is_admin)
                             <span class="info-user">{{ $user->is_admin_text  ?? 'User' }}</span>
                             <span class="info-user">{{ $user->is_active_text  ?? 'User' }}</span>
                         @endif

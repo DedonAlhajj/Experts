@@ -194,8 +194,8 @@
                     <div class="icon"><span class="icon-map-marker"></span></div>
                     <input type="text" id="country" name="country"
                            value="{{ old('country', $user->country) }}"
-                           class="form-control"
-                           placeholder="Country">
+                           class="form-control awesomplete"
+                           placeholder="Country" autocomplete="off" />
                     @error('country')
                     <span class="text-danger small">{{ $message }}</span>
                     @enderror
@@ -210,8 +210,9 @@
                     <div class="icon"><span class="icon-location_city"></span></div>
                     <input type="text" id="city" name="city"
                            value="{{ old('city', $user->city) }}"
-                           class="form-control"
-                           placeholder="City">
+                           class="form-control awesomplete"
+                           placeholder="City" autocomplete="off" />
+
                     @error('city')
                     <span class="text-danger small">{{ $message }}</span>
                     @enderror
@@ -227,8 +228,8 @@
                     <div class="icon"><span class="icon-flag"></span></div>
                     <input type="text" id="nationality" name="nationality"
                            value="{{ old('nationality', $user->nationality) }}"
-                           class="form-control"
-                           placeholder="Nationality">
+                           class="form-control awesomplete"
+                           placeholder="Nationality" autocomplete="off" />
                     @error('nationality')
                     <span class="text-danger small">{{ $message }}</span>
                     @enderror
@@ -346,7 +347,12 @@
                 <div class="form-field d-flex gap-3 mb-2">
                     <div class="icon"><span class="icon-bulb"></span></div>
                     <input type="hidden" name="experiences[{{ $i }}][category]" value="skill">
-                    <input type="text" name="experiences[{{ $i }}][title]" class="form-control" value="{{ $item->title }}" placeholder="Enter skill">
+                    <input type="text" required
+                           name="experiences[{{ $i }}][title]"
+                           class="form-control awesomplete"
+                           data-category="skill"
+                           value="{{ $item->title }}"
+                           placeholder="Enter skill">
                     <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
                 </div>
             @endforeach
@@ -362,7 +368,13 @@
                 <div class="form-field d-flex gap-3 mb-2">
                     <div class="icon"><span class="icon-award"></span></div>
                     <input type="hidden" name="experiences[{{ $index }}][category]" value="certificate">
-                    <input type="text" name="experiences[{{ $index }}][title]" class="form-control" value="{{ $item->title }}" placeholder="Enter certificate">
+                    <input type="text" required
+                           name="experiences[{{ $index }}][title]"
+                           class="form-control awesomplete"
+                           data-category="certificate"
+                           value="{{ $item->title }}"
+                           placeholder="Enter certificate">
+
                     <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
                 </div>
             @endforeach
@@ -378,7 +390,12 @@
                 <div class="form-field d-flex gap-3 mb-2">
                     <div class="icon"><span class="icon-briefcase"></span></div>
                     <input type="hidden" name="experiences[{{ $index }}][category]" value="portfolio">
-                    <input type="text" name="experiences[{{ $index }}][title]" class="form-control" value="{{ $item->title }}" placeholder="Enter portfolio">
+                    <input type="text" required
+                           name="experiences[{{ $index }}][title]"
+                           class="form-control awesomplete"
+                           data-category="portfolio"
+                           value="{{ $item->title }}"
+                           placeholder="Enter portfolio">
                     <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
                 </div>
             @endforeach
@@ -394,13 +411,19 @@
                 <div class="form-field d-flex gap-3 mb-2">
                     <div class="icon"><span class="icon-rocket"></span></div>
                     <input type="hidden" name="experiences[{{ $index }}][category]" value="experience">
-                    <input type="text" name="experiences[{{ $index }}][title]" class="form-control" value="{{ $item->title }}" placeholder="Enter experience">
+                    <input type="text" required
+                           name="experiences[{{ $index }}][title]"
+                           class="form-control awesomplete"
+                           data-category="experience"
+                           value="{{ $item->title }}"
+                           placeholder="Enter experience">
                     <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
                 </div>
             @endforeach
         </div>
         <button type="button" onclick="addField('experiences-wrapper', 'experience', 'icon-rocket', 'Enter experience')" class="btn btn-sm btn-outline-success">+ Add Experience</button>
     </div>
+
 
 
 
@@ -413,6 +436,96 @@
 
 
 </form>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // انتظر قليلًا لتكون كل العناصر موجودة
+        setTimeout(() => {
+            document.querySelectorAll("input.awesomplete").forEach(function (input) {
+                const category = input.dataset.category;
+
+                // 🔥 التهيئة اليدوية وضمان الربط
+                const awesomplete = new Awesomplete(input, {
+                    list: [],
+                    minChars: 1,
+                    maxItems: 10,
+                    autoFirst: true,
+                    filter: () => true,
+                    sort: false
+                });
+
+                input.awesomplete = awesomplete; // ⛑️ الربط اليدوي
+
+                input.addEventListener("input", function () {
+                    const search = input.value;
+
+                    if (search.length < 1) return;
+
+                    fetch(`/api/autocomplete-titles?category=${category}&q=${encodeURIComponent(search)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            input.awesomplete.list = data;
+                            input.awesomplete.evaluate(); // ⛑️ ضروري لعرض النتائج
+                        })
+                        .catch(error => console.error("Autocomplete fetch error:", error));
+                });
+            });
+        }, 100); // ⏳ تأخير بسيط للتأكد أن العناصر موجودة
+    });
+</script>
 
 
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const countryInput = document.getElementById("country");
+        const cityInput = document.getElementById("city");
+        const nationalityInput = document.getElementById("nationality");
+
+        let countriesList = [];
+
+        // 1. جلب أسماء الدول
+        fetch("https://countriesnow.space/api/v0.1/countries/positions")
+            .then(res => res.json())
+            .then(data => {
+                countriesList = data.data.map(c => c.name);
+                countryInput.awesomplete = new Awesomplete(countryInput, {
+                    list: countriesList,
+                    minChars: 1,
+                    maxItems: 10,
+                    autoFirst: true
+                });
+
+                nationalityInput.awesomplete = new Awesomplete(nationalityInput, {
+                    list: countriesList.map(name => name + 'ian'), // مثال بسيط للجنسية
+                    minChars: 1,
+                    maxItems: 10,
+                    autoFirst: true
+                });
+            });
+
+        // 2. عند اختيار دولة، جلب المدن الخاصة بها
+        countryInput.addEventListener("blur", function () {
+            const selectedCountry = countryInput.value;
+            fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ country: selectedCountry })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) return;
+
+                    new Awesomplete(cityInput, {
+                        list: data.data,
+                        minChars: 1,
+                        maxItems: 10,
+                        autoFirst: true
+                    });
+                })
+                .catch(err => console.error("City fetch failed", err));
+        });
+    });
+</script>

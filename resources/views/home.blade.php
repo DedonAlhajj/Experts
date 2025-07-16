@@ -91,7 +91,7 @@
                     <div class="row justify-content-center pb-3">
                         <div class="col-md-12 heading-section ftco-animate">
                             <span class="subheading">Recently Added Experts</span>
-                            <h2 class="mb-4">Featured Expert Profiles of the Week</h2>
+                            <h2 class="mb-4">Newest Members to Join the Platform</h2>
                         </div>
                     </div>
                     <div class="row">
@@ -179,87 +179,42 @@
             <div class="row justify-content-center mb-4">
                 <div class="col-md-7 text-center heading-section ftco-animate">
                     <span class="subheading">Testimonial</span>
-                    <h2 class="mb-4">Happy Clients</h2>
+                    <h2 class="mb-4">Featured Experts You May Want to Connect With</h2>
                 </div>
             </div>
             <div class="row ftco-animate">
                 <div class="col-md-12">
                     <div class="carousel-testimony owl-carousel ftco-owl">
-                        <div class="item">
-                            <div class="testimony-wrap py-4">
-                                <div class="text">
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts.</p>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
-                                        <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
+
+                        @foreach ($experts as $expert)
+                            @php
+                                $bgUrlExpert = $expert->hasMedia('profile_image')
+                                    ? str_replace(config('app.url'), request()->getSchemeAndHttpHost(), $expert->getFirstMediaUrl('profile_image'))
+                                    : asset('images/default.jpg');
+                            @endphp
+                            <div class="item">
+                                <div class="testimony-wrap py-4">
+                                    <div class="text">
+                                        <p class="mb-4" style="min-height: 86px;
+    max-height: 86px;
+    overflow: hidden;">{{ \Illuminate\Support\Str::limit($expert->bio, 100, '...') }}</p>
+                                        <div class="d-flex align-items-center">
+                                            <div class="user-img" style="background-image: url('{{$bgUrlExpert}}')"></div>
+                                            <div class="pl-3">
+                                                <p class="name">{{$expert->name}}</p>
+                                                <span class="position">
+                                                <a href="{{ route('profile.show', $expert) }}"
+                                                   class="">
+                                                    <i class="fa fa-user"></i>
+                                                    Show Profile</a>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimony-wrap py-4">
-                                <div class="text">
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts.</p>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_2.jpg)"></div>
-                                        <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimony-wrap py-4">
-                                <div class="text">
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts.</p>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_3.jpg)"></div>
-                                        <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimony-wrap py-4">
-                                <div class="text">
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts.</p>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
-                                        <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimony-wrap py-4">
-                                <div class="text">
-                                    <p class="mb-4">Far far away, behind the word mountains, far from the countries
-                                        Vokalia and Consonantia, there live the blind texts.</p>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-img" style="background-image: url(images/person_2.jpg)"></div>
-                                        <div class="pl-3">
-                                            <p class="name">Roger Scott</p>
-                                            <span class="position">Marketing Manager</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
+
                     </div>
                 </div>
             </div>
@@ -271,7 +226,7 @@
             <div class="row justify-content-center pb-3">
                 <div class="col-md-10 heading-section heading-section-white text-center ftco-animate">
                     <span class="subheading">Experts</span>
-                    <h2 class="mb-4">Latest Experts</h2>
+                    <h2 class="mb-4">Recently Registered Experts with Valuable Experience</h2>
                 </div>
             </div>
         </div>
@@ -307,75 +262,43 @@
         <div class="container">
             <div class="row justify-content-center mb-5 pb-3">
                 <div class="col-md-7 heading-section text-center ftco-animate">
-                    <span class="subheading">Our Blog</span>
-                    <h2><span>Recent</span> Blog</h2>
+                    <span class="subheading">Our Job Seekers</span>
+                    <h2><span>Talented Job Seekers</span> Ready for New Opportunities</h2>
                 </div>
             </div>
             <div class="row d-flex">
-                <div class="col-md-3 d-flex ftco-animate">
-                    <div class="blog-entry align-self-stretch">
-                        <a href="blog-single.html" class="block-20"
-                           style="background-image: url('images/image_1.jpg');">
-                        </a>
-                        <div class="text mt-3">
-                            <div class="meta mb-2">
-                                <div><a href="#">August 28, 2019</a></div>
-                                <div><a href="#">Admin</a></div>
-                                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                @foreach ($jobSeekers as $jobSeeker)
+                    @php
+                        $bgUrlJobSeeker = $jobSeeker->hasMedia('profile_image')
+                            ? str_replace(config('app.url'), request()->getSchemeAndHttpHost(), $jobSeeker->getFirstMediaUrl('profile_image'))
+                            : asset('images/default.jpg');
+                    @endphp
+                    <div class="col-md-3 d-flex ftco-animate">
+                        <div class="blog-entry align-self-stretch w-100">
+                            <a href="" class="block-20"
+                               style="background-image: url('{{$bgUrlJobSeeker}}');">
+                            </a>
+                            <div class="text mt-3">
+                                <div class="meta d-flex justify-content-between align-items-center mb-2">
+                                    <div class="location-text text-truncate flex-grow-1">
+                                        <a href="{{ route('profile.show', $jobSeeker) }}" style="color: #fcbe73;">
+                                           {{$jobSeeker->name}} </a>
+                                    </div>
+                                    <div class="location-icon ms-2 flex-shrink-0">
+                                        <a href="{{ route('profile.show', $jobSeeker) }}" class="meta-chat" style="color: #fdab44;">
+                                            <span class="icon-user"></span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <span class="position">{{ \Illuminate\Support\Str::limit($jobSeeker->country .', '. $jobSeeker->city, 60, '...') }}</span>
+
+
+                                <h3 class="heading"><a href="{{ route('profile.show', $jobSeeker) }}">{{ \Illuminate\Support\Str::limit($jobSeeker->bio, 70, '...') }}</a></h3>
                             </div>
-                            <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the
-                                    blind texts</a></h3>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3 d-flex ftco-animate">
-                    <div class="blog-entry align-self-stretch">
-                        <a href="blog-single.html" class="block-20"
-                           style="background-image: url('images/image_2.jpg');">
-                        </a>
-                        <div class="text mt-3">
-                            <div class="meta mb-2">
-                                <div><a href="#">August 28, 2019</a></div>
-                                <div><a href="#">Admin</a></div>
-                                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                            </div>
-                            <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the
-                                    blind texts</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 d-flex ftco-animate">
-                    <div class="blog-entry align-self-stretch">
-                        <a href="blog-single.html" class="block-20"
-                           style="background-image: url('images/image_3.jpg');">
-                        </a>
-                        <div class="text mt-3">
-                            <div class="meta mb-2">
-                                <div><a href="#">August 28, 2019</a></div>
-                                <div><a href="#">Admin</a></div>
-                                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                            </div>
-                            <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the
-                                    blind texts</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 d-flex ftco-animate">
-                    <div class="blog-entry align-self-stretch">
-                        <a href="blog-single.html" class="block-20"
-                           style="background-image: url('images/image_4.jpg');">
-                        </a>
-                        <div class="text mt-3">
-                            <div class="meta mb-2">
-                                <div><a href="#">August 28, 2019</a></div>
-                                <div><a href="#">Admin</a></div>
-                                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                            </div>
-                            <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the
-                                    blind texts</a></h3>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

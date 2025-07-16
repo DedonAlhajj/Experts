@@ -9,7 +9,9 @@ use App\Services\Profile\ExpertInfoService;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class ExpertController extends Controller
@@ -83,6 +85,16 @@ class ExpertController extends Controller
         }
     }
 
+
+    public function autocompleteTitles(Request $request): JsonResponse
+    {
+        $titles = $this->expertInfoService->autocompleteTitles(
+            $request->input('category'),
+            $request->input('q')
+        );
+
+        return response()->json($titles);
+    }
 
 
 }
