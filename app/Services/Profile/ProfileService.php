@@ -36,6 +36,7 @@ class ProfileService
      */
     public function update(User $user, array $data): void
     {
+        DB::beginTransaction();
         try {
             // فصل الملفات
             $profileImage = $data['profile_image'] ?? null;
@@ -50,11 +51,13 @@ class ProfileService
                 (new SyncExpertInfosAction())->execute($user, $data['experiences']);
             }
 
+            DB::commit();
             // رفع الملفات
             (new UploadProfileImageAction())->execute($user, $profileImage);
             (new UploadCvFileAction())->execute($user, $cvFile); // نفس منطق الصورة
 
         } catch (\Throwable $e) {
+            DB::rollBack();
             Log::error("Profile update failed for user {$user->id}", [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -267,7 +270,7 @@ class ProfileService
             $jobSeekers = $this->getRandomJobSeekers();
 
 
-            return compact('stats', 'specializations','top6Specializations', 'users', 'experts', 'jobSeekers');
+            return compact('stats', 'specializations', 'top6Specializations', 'users', 'experts', 'jobSeekers');
 
         } catch (\Throwable $e) {
             Log::error('Error loading homepage user stats: ' . $e->getMessage());
@@ -290,13 +293,25 @@ class ProfileService
 
     protected function getRandomExperts(): Collection
     {
-        return User::active()->where('is_expert', true)->inRandomOrder()->limit(5)->get();
+        return User::active()
+            ->where('is_expert', true)
+            ->select(['id', 'name', 'bio', 'slug']) // ← اختيار الأعمدة المطلوبة فقط
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
     }
+
 
     protected function getRandomJobSeekers(): Collection
     {
-        return User::active()->where('is_job_seeker', true)->inRandomOrder()->limit(4)->get();
+        return User::active()
+            ->where('is_job_seeker', true)
+            ->select(['id', 'name', 'bio', 'country', 'city', 'slug'])
+            ->inRandomOrder()
+            ->limit(4)
+            ->get();
     }
+
 
     protected function getHomepageStats(): object
     {

@@ -31,7 +31,8 @@
                     <div class="col-12 col-sm-6 col-md-3 mb-3">
                         <ul class="category text-center">
                             <li>
-                                <a href="{{ route('experts.bySpecialization', ['title' => $item->title]) }}">
+                                <a href="{{ url('/specialization') . '?title=' . urlencode($item->title) }}">
+
                                 {{ Str::title($item->title) }} <br>
                                     <span class="number">{{ $item->total }}</span>
                                     <span>Open position</span>
@@ -74,7 +75,7 @@
                                                 <div class="form-group">
                                                     <div class="form-field">
                                                         <div class="icon"><span class="icon-user"></span></div>
-                                                        <input type="text" name="title" class="form-control" placeholder="eg. Garphic. Web Developer">
+                                                        <input type="text" name="title" value="{{$title}}" class="form-control" placeholder="eg. Garphic. Web Developer">
                                                     </div>
                                                 </div>
                                             </div>

@@ -44,7 +44,6 @@
                                         <p class="mb-2">{{ $user->bio ?? 'No description available.' }}</p>
                                         <span class="seen">Last Activity 4 months ago</span>
                                         <p><a href="{{ route('profile.show', $user) }}" class="btn btn-outline-primary btn-sm"><i class="fa fa-user"></i>Profile</a></p>
-
                                     </div>
                                 </div>
                             </div>
@@ -54,20 +53,39 @@
                     <div class="row mt-5">
                         <div class="col text-center">
                             <div class="block-27">
-                                @include('layout.pagination', ['paginator' => $experts])
+                                @if ($experts->hasPages())
+                                    <div class="pagination-custom">
+                                        {{-- ← السابق --}}
+                                        @if ($experts->onFirstPage())
+                                            <span class="disabled">&larr;</span>
+                                        @else
+                                            <a href="{{ $experts->previousPageUrl() . '&' . http_build_query(request()->except('page')) }}">&larr;</a>
+                                        @endif
+
+                                        {{-- التالي → --}}
+                                        @if ($experts->hasMorePages())
+                                            <a href="{{ $experts->nextPageUrl() . '&' . http_build_query(request()->except('page')) }}">&rarr;</a>
+                                        @else
+                                            <span class="disabled">&rarr;</span>
+                                        @endif
+                                    </div>
+                                @endif
+
+
+
                             </div>
                         </div>
                     </div>
 
                 </div>
                 <div class="col-lg-4 sidebar">
-                    <form method="GET" action="{{route('experts.bySpecialization', ['title' => $title]) }}" class="search-form mb-3">
+                    <form method="GET" action="{{url('/specialization') . '?title=' . urlencode($title) }}" class="search-form mb-3">
                         <div class="sidebar-box bg-white p-4 ftco-animate">
                             <h3 class="heading-sidebar">Select Name</h3>
-
+                            <input type="hidden" name="title" value="{{ $title }}">
                             <div class="form-group">
                                 <span class="icon icon-search"></span>
-                                <input type="text" name="name" class="form-control" placeholder="Search...">
+                                <input type="text" name="name" value="{{$name}}" class="form-control" placeholder="Search...">
                             </div>
 
 
@@ -77,7 +95,7 @@
                             <h3 class="heading-sidebar">Select Location</h3>
                             <div class="form-group">
                                 <span class="icon icon-search"></span>
-                                <input type="text"  name="location" class="form-control" placeholder="Search...">
+                                <input type="text"  name="location" value="{{$location}}" class="form-control" placeholder="Search...">
                             </div>
 
                         </div>

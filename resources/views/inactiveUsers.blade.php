@@ -65,7 +65,7 @@
 
                             <div class="form-group">
                                 <span class="icon icon-search"></span>
-                                <input type="text" name="title" class="form-control" placeholder="Search...">
+                                <input type="text" name="title" value="{{$title}}" class="form-control" placeholder="Search...">
                             </div>
 
 
@@ -75,7 +75,7 @@
                             <h3 class="heading-sidebar">Select Location</h3>
                             <div class="form-group">
                                 <span class="icon icon-search"></span>
-                                <input type="text"  name="location" class="form-control" placeholder="Search...">
+                                <input type="text"  name="location" value="{{$location}}" class="form-control" placeholder="Search...">
                             </div>
 
                         </div>

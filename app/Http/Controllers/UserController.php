@@ -31,8 +31,10 @@ class UserController extends Controller
      *
      * @return View|RedirectResponse
      */
-    public function filterBySpecialization(Request $request, string $title): View|RedirectResponse
+    public function filterBySpecialization(Request $request): View|RedirectResponse
     {
+        $title = strtolower($request->query('title'));
+
         try {
             $location = $request->input('location');
             $name = $request->input('name');
@@ -50,6 +52,8 @@ class UserController extends Controller
             return Redirect::back()->with('error', $e->getMessage());
         }
     }
+
+
 
 
     /**
@@ -70,7 +74,7 @@ class UserController extends Controller
             $name = $request->input('name');
             $experts = $this->profileService->getExperts($location, $title,$name);
 
-            return view('expert', compact('experts'));
+            return view('expert', compact('experts','title','location','name'));
 
         } catch (\Throwable $e) {
 
@@ -96,7 +100,7 @@ class UserController extends Controller
             $location = $request->input('location');
             $name = $request->input('name');
             $getJobSeeker = $this->profileService->getJobSeeker($location, $title,$name);
-            return view('job_seeker', compact('getJobSeeker'));
+            return view('job_seeker', compact('getJobSeeker','title','location','name'));
 
         } catch (\Throwable $e) {
 
@@ -122,7 +126,7 @@ class UserController extends Controller
             $location = $request->input('location');
             $name = $request->input('name');
             $inactiveUsers = $this->profileService->inactiveUsers($location, $title,$name);
-            return view('inactiveUsers', compact('inactiveUsers'));
+            return view('inactiveUsers', compact('inactiveUsers','title','location','name'));
 
         } catch (\Throwable $e) {
 

@@ -237,7 +237,7 @@
 
                         @foreach ($users as $user)
                             <div class="item">
-                                <a href="#" class="team text-center">
+                                <a href="{{ route('profile.show', $user) }}" class="team text-center">
                                     @php
                                         $bgUrl = $user->hasMedia('profile_image')
                                             ? str_replace(config('app.url'), request()->getSchemeAndHttpHost(), $user->getFirstMediaUrl('profile_image'))

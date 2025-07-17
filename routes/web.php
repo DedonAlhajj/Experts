@@ -27,7 +27,7 @@ Route::get('/experts', [\App\Http\Controllers\UserController::class, 'getExperts
 
 Route::get('/job-seeker', [UserController::class, 'getJobSeeker'])->name('getJobSeeker.index'); // لعرض قائمة الخبراء
 
-Route::get('/specialization/{title}', [UserController::class, 'filterBySpecialization'])->name('experts.bySpecialization');
+Route::get('/specialization', [UserController::class, 'filterBySpecialization'])->name('experts.bySpecialization');
 
 Route::get('/profile/{user:slug}', [ExpertController::class, 'show'])->name('profile.show');
 
