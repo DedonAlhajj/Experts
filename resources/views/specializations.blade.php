@@ -18,34 +18,6 @@
 
     {{----------------------------------------------------------------------------------}}
 
-    <section class="ftco-section">
-        <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-md-7 heading-section text-center ftco-animate">
-                    <span class="subheading">Expert's Specializations</span>
-                    <h2 class="mb-0">Top Specializations</h2>
-                </div>
-            </div>
-            <div class="d-flex flex-wrap">
-                @foreach($specializations as $item)
-                    <div class="col-12 col-sm-6 col-md-3 mb-3">
-                        <ul class="category text-center">
-                            <li>
-                                <a href="{{ url('/specialization') . '?title=' . urlencode($item->title) }}">
-
-                                {{ Str::title($item->title) }} <br>
-                                    <span class="number">{{ $item->total }}</span>
-                                    <span>Open position</span>
-                                    <i class="ion-ios-arrow-forward"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
     <section style="padding-bottom: 65px !important;" class="ftco-section ftco-no-pb bg-light">
         <div class="container">
             <div class="row justify-content-center mb-4">
@@ -96,6 +68,35 @@
             </div>
         </div>
     </section>
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-7 heading-section text-center ftco-animate">
+                    <span class="subheading">Expert's Specializations</span>
+                    <h2 class="mb-0">Top Specializations</h2>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap">
+                @foreach($specializations as $item)
+                    <div class="col-12 col-sm-6 col-md-3 mb-3">
+                        <ul class="category text-center">
+                            <li>
+                                <a href="{{ url('/specialization') . '?title=' . urlencode($item->title) }}">
+
+                                {{ Str::title($item->title) }} <br>
+                                    <span class="number">{{ $item->total }}</span>
+                                    <span>Open position</span>
+                                    <i class="ion-ios-arrow-forward"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
 
 
     <section class="ftco-section-parallax">

@@ -289,6 +289,7 @@
             @error('profile_image')
             <span class="text-danger small">{{ $message }}</span>
             @enderror
+            <div id="profile-size-warning" class="alert d-none mt-2 p-2" role="alert"></div>
         </div>
         <div class="col-md-8">
             @php
@@ -314,6 +315,7 @@
             @error('cv_file')
             <span class="text-danger small">{{ $message }}</span>
             @enderror
+            <div id="cv-size-warning" class="alert d-none mt-2 p-2" role="alert"></div>
         </div>
     </div>
 

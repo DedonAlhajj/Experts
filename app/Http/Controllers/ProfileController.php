@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\MediaUploadException;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 use App\Services\Profile\ExpertInfoService;
@@ -65,10 +66,11 @@ class ProfileController extends Controller
             $this->profileService->update($request->user(), $request->validated());
 
             return Redirect::route('profile.edit')->with('success', 'profile updated.');
+        } catch (MediaUploadException $e) {
+            // 🔴 خطأ في رفع الصورة أو الملف
+            return back()->with('error' , $e->getMessage());
         } catch (\Throwable $e) {
-            report($e);
-
-            return Redirect::back()->withErrors(['error' => $e->getMessage()]);
+            return back()->with('error' , $e->getMessage());
         }
     }
 

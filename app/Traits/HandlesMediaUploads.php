@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Exceptions\MediaUploadException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\HasMedia;
@@ -16,6 +17,7 @@ trait HandlesMediaUploads
      * @param bool $singleFile هل يتم استبدال الملف السابق تلقائيًا؟
      * @return void
      */
+
     public function uploadMediaFile(?UploadedFile $file, string $collection, bool $singleFile = true): void
     {
         if (!$file) {
@@ -26,8 +28,20 @@ trait HandlesMediaUploads
             throw new \Exception("This model must implement HasMedia interface.");
         }
 
+        // 🌐 تحقق من الحجم حسب نوع الملف
+        $sizeKB = $file->getSize() / 1024; // الحجم بالكيلوبايت
+
+        $maxSizeKB = match ($collection) {
+            'profile_image' => 1000,        // ⛔ الصور > 300KB مرفوضة
+            'cv_file'       => 1024,       // ⛔ ملفات CV > 1MB مرفوضة
+            default         => 512,        // حد افتراضي 512KB
+        };
+
+        if ($sizeKB > $maxSizeKB) {
+            throw new MediaUploadException($collection, $sizeKB, $maxSizeKB);
+        }
+
         try {
-            // استبدال الملف القديم إن كان single
             if ($singleFile) {
                 $this->clearMediaCollection($collection);
             }
@@ -45,6 +59,7 @@ trait HandlesMediaUploads
             throw new \RuntimeException('فشل رفع الملف، يرجى المحاولة لاحقًا.');
         }
     }
+
 
     /**
      * رفع عدة ملفات إلى مجموعة ميديا واحدة

@@ -3,7 +3,8 @@
 @section('title', 'Experts')
 
 @section('content')
-    <div class="hero-wrap hero-wrap-2" style="background-image: url('{{asset('images/bg_1.jpg')}}');" data-stellar-background-ratio="0.5">
+    <div class="hero-wrap hero-wrap-2" style="background-image: url('{{asset('images/bg_1.jpg')}}');"
+         data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
             <div class="row no-gutters slider-text align-items-end justify-content-start">
@@ -37,13 +38,29 @@
                                     <div class="img" style="background-image: url('{{ $bgUrl }}');"></div>
 
                                     <div class="text text1 pl-md-4">
-                                        <span class="location mb-0">{{ $user->country ? $user->country .','. $user->city : 'undefined' }}</span>
+                                        <span
+                                            class="location mb-0">{{ $user->country ? $user->country .','. $user->city : 'undefined' }}</span>
                                         <h2>{{ $user->name }}</h2>
                                         <span class="position">{{ $user->is_expert_label  ?? 'User' }}</span>
                                         <span class="position">{{ $user->is_job_seeker_label  ?? 'User' }}</span>
                                         <p class="mb-2">{{ $user->bio ?? 'No description available.' }}</p>
-                                        <span class="seen">Last Activity 4 months ago</span>
-                                        <p><a href="{{ route('profile.show', $user) }}" class="btn btn-outline-primary btn-sm"><i class="fa fa-user"></i>Profile</a></p>
+                                        @php
+                                            $website = $user->social_links['website'] ?? null;
+                                        @endphp
+
+                                        @if($website)
+                                            <a href="{{ $website }}" target="_blank" class="seen" title="{{ $website }}">
+                                                <i class="icon-link2"></i> Follow {{ $user->name }} on Their social profile
+                                            </a>
+                                        @else
+                                            <span class="seen"><i class="icon-link2"></i> No social link available for {{ $user->name }}</span>
+                                        @endif
+
+
+
+                                        <p><a href="{{ route('profile.show', $user) }}"
+                                              class="btn btn-outline-primary btn-sm"><i
+                                                    class="fa fa-user"></i>Profile</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -72,20 +89,21 @@
                                 @endif
 
 
-
                             </div>
                         </div>
                     </div>
 
                 </div>
                 <div class="col-lg-4 sidebar">
-                    <form method="GET" action="{{url('/specialization') . '?title=' . urlencode($title) }}" class="search-form mb-3">
+                    <form method="GET" action="{{url('/specialization') . '?title=' . urlencode($title) }}"
+                          class="search-form mb-3">
                         <div class="sidebar-box bg-white p-4 ftco-animate">
                             <h3 class="heading-sidebar">Select Name</h3>
                             <input type="hidden" name="title" value="{{ $title }}">
                             <div class="form-group">
                                 <span class="icon icon-search"></span>
-                                <input type="text" name="name" value="{{$name}}" class="form-control" placeholder="Search...">
+                                <input type="text" name="name" value="{{$name}}" class="form-control"
+                                       placeholder="Search...">
                             </div>
 
 
@@ -95,7 +113,8 @@
                             <h3 class="heading-sidebar">Select Location</h3>
                             <div class="form-group">
                                 <span class="icon icon-search"></span>
-                                <input type="text"  name="location" value="{{$location}}" class="form-control" placeholder="Search...">
+                                <input type="text" name="location" value="{{$location}}" class="form-control"
+                                       placeholder="Search...">
                             </div>
 
                         </div>
@@ -117,7 +136,8 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-7 text-center heading-section heading-section-white ftco-animate">
                         <h2>Subcribe to our Newsletter</h2>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in</p>
+                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
+                            there live the blind texts. Separated they live in</p>
                         <div class="row d-flex justify-content-center mt-4 mb-4">
                             <div class="col-md-12">
                                 <form action="#" class="subscribe-form">

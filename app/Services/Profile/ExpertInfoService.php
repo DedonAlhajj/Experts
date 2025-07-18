@@ -65,7 +65,7 @@ class ExpertInfoService
     {
         $cacheKey = "autocomplete_titles:{$category}:" . md5($query ?? '');
 
-        return Cache::remember($cacheKey, now()->addHours(6), function () use ($category, $query) {
+        return Cache::remember($cacheKey, now()->addHours(2), function () use ($category, $query) {
             return ExpertInfo::select('title')
                 ->where('category', $category)
                 ->whereNotNull('title')

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Services\Profile\ProfileService;
 use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Throwable;
@@ -28,7 +29,7 @@ class FrontDashboardController extends Controller
      * If an error occurs, redirects back with an error message.
      *
      * @return View|RedirectResponse
-     *@throws Exception|Throwable If data retrieval fails.
+     * @throws Exception|Throwable If data retrieval fails.
      *
      */
     public function home(): View|RedirectResponse
@@ -49,9 +50,9 @@ class FrontDashboardController extends Controller
      *
      * Returns the `blog` view. If an error occurs, redirects back with an error message.
      *
+     * @return View|RedirectResponse
      * @throws Exception If view rendering fails.
      *
-     * @return View|RedirectResponse
      */
     public function blog(): View|RedirectResponse
     {
@@ -69,9 +70,9 @@ class FrontDashboardController extends Controller
      *
      * Returns the `contact` view. If an error occurs, redirects back with an error message.
      *
+     * @return View|RedirectResponse
      * @throws Exception If view rendering fails.
      *
-     * @return View|RedirectResponse
      */
     public function contact(): View|RedirectResponse
     {
@@ -83,5 +84,26 @@ class FrontDashboardController extends Controller
             return Redirect::back()->with('error', 'Error loading Contact Page');
         }
     }
+
+    public function cache()
+    {
+        try {
+            Cache::forget('homepage_top_certificates');
+            Cache::forget('homepage_user_stats');
+            Cache::forget('homepage_grouped_specializations');
+
+            //self::forgetAutocompleteCache($category, $query);
+            return Redirect::route('home')->with('success', 'Cache deleted successfully.');
+        } catch (Exception $ex) {
+            return Redirect::back()->with('error', 'Error loading Contact Page');
+        }
+    }
+
+    public static function forgetAutocompleteCache(string $category, ?string $query): void
+    {
+        $cacheKey = "autocomplete_titles:{$category}:" . md5($query ?? '');
+        Cache::forget($cacheKey);
+    }
+
 
 }

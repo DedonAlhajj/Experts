@@ -42,7 +42,17 @@
                                         <span class="position">{{ $user->is_expert_label  ?? 'User' }}</span>
                                         <span class="position">{{ $user->is_job_seeker_label  ?? 'User' }}</span>
                                         <p class="mb-2">{{ $user->bio ?? 'No description available.' }}</p>
-                                        <span class="seen">Last Activity 4 months ago</span>
+                                        @php
+                                            $website = $user->social_links['website'] ?? null;
+                                        @endphp
+
+                                        @if($website)
+                                            <a href="{{ $website }}" target="_blank" class="seen" title="{{ $website }}">
+                                                <i class="icon-link2"></i> Follow {{ $user->name }} on Their social profile
+                                            </a>
+                                        @else
+                                            <span class="seen"><i class="icon-link2"></i> No social link available for {{ $user->name }}</span>
+                                        @endif
                                         <p><a href="{{ route('profile.show', $user) }}" class="btn btn-outline-primary btn-sm"><i class="fa fa-user"></i>Profile</a></p>
 
                                     </div>

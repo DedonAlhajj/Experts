@@ -166,10 +166,25 @@
                             <p class="mb-0 font-weight-bold">Phone</p>
                             <p class="mb-4"><a href="#">{{$user->phone}}</a></p>
 
+                            <p class="mb-0 font-weight-bold">Their social profile</p>
+                            <p class="mb-4"><a href="#">
+                                    @php
+                                        $website = $user->social_links['website'] ?? null;
+                                        $domain = $website ? parse_url($website, PHP_URL_HOST) : null;
+                                    @endphp
+
+                                    @if($domain)
+                                        {{ $domain }}
+                                    @else
+                                        <span class="seen">NO Link related</span>
+                                    @endif
+                                </a></p>
                             <p class="mb-0 font-weight-bold">Email Address</p>
                             <p class="mb-0"><a href="#"><span class="__cf_email__"
                                                               data-cfemail="671e081215020a060e0b2703080a060e094904080a">{{$user->email}}</span></a>
                             </p>
+
+
 
                         </div>
 

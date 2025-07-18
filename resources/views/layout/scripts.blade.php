@@ -33,3 +33,55 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+<script>
+    function previewProfile(event) {
+        const file = event.target.files[0];
+        const warning = document.getElementById('profile-size-warning');
+        const preview = document.getElementById('preview-image');
+        const defaultImage = '{{ asset('images/default.jpg') }}';
+        const maxSize = 1000;
+
+        if (file) {
+            const sizeKB = file.size / 1024;
+
+            if (sizeKB > maxSize) {
+                warning.className = 'alert alert-danger mt-2 p-2';
+                warning.classList.remove('d-none');
+                warning.innerHTML = `<strong>❌ File too large!</strong> Image size: ${sizeKB.toFixed(1)}KB — Max allowed: ${maxSize}KB`;
+                event.target.value = '';
+                preview.src = defaultImage;
+            } else {
+                warning.classList.add('d-none');
+                preview.src = URL.createObjectURL(file);
+            }
+        } else {
+            warning.classList.add('d-none');
+            preview.src = defaultImage;
+        }
+    }
+
+    function updateFileName(event) {
+        const file = event.target.files[0];
+        const nameBox = document.getElementById('cv-file-name');
+        const warning = document.getElementById('cv-size-warning');
+        const maxSize = 1024;
+
+        if (file) {
+            const sizeKB = file.size / 1024;
+
+            if (sizeKB > maxSize) {
+                warning.className = 'alert alert-danger mt-2 p-2';
+                warning.classList.remove('d-none');
+                warning.innerHTML = `<strong>❌ File too large!</strong> CV size: ${sizeKB.toFixed(1)}KB — Max allowed: ${maxSize}KB`;
+                event.target.value = '';
+                nameBox.innerHTML = 'Click to upload CV (PDF)';
+            } else {
+                warning.classList.add('d-none');
+                nameBox.innerHTML = 'Selected file: ' + file.name;
+            }
+        } else {
+            warning.classList.add('d-none');
+            nameBox.innerHTML = 'Click to upload CV (PDF)';
+        }
+    }
+</script>

@@ -13,7 +13,7 @@
                 <li class="nav-item"><a href="{{route('getJobSeeker.index')}}" class="nav-link">Job Seekers</a></li>
                 <li class="nav-item"><a href="{{route('experts.index')}}" class="nav-link">Experts</a></li>
                 <li class="nav-item"><a href="{{route('blog')}}" class="nav-link">Blog</a></li>
-                <li class="nav-item"><a href="{{route('contact')}}" class="nav-link">Contact</a></li>
+{{--                <li class="nav-item"><a href="{{route('contact')}}" class="nav-link">Contact</a></li>--}}
 
                 @guest
                     <li class="nav-item cta mr-md-1"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
@@ -44,6 +44,8 @@
 
                             @if (Auth::user()->is_admin)
                                 <a class="dropdown-item" href="{{route('admin.inactive-users') }}">Inactive Users</a>
+
+                                <a class="dropdown-item" href="{{route('cache.forget') }}">Cache Forget</a>
                             @endif
 
                             <form method="POST" action="{{ route('logout') }}">

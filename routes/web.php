@@ -48,6 +48,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::put('/expert-info/{expertInfo}', [ExpertController::class, 'update'])->name('expert-info.update');
 
     Route::middleware(['is_admin'])->group(function () {
+        Route::get('/cache', [FrontDashboardController::class, 'cache'])->name('cache.forget');
         Route::get('/member/inactive-users', [UserController::class, 'inactiveUsers'])
             ->name('admin.inactive-users');
 
