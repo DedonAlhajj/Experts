@@ -6,6 +6,7 @@ use App\Action\SyncExpertInfosAction;
 use App\Action\UpdateUserInfoAction;
 use App\Action\UploadCvFileAction;
 use App\Action\UploadProfileImageAction;
+use App\Exceptions\MediaUploadException;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -53,11 +54,18 @@ class ProfileService
 
             DB::commit();
             // رفع الملفات
+
             (new UploadProfileImageAction())->execute($user, $profileImage);
-            (new UploadCvFileAction())->execute($user, $cvFile); // نفس منطق الصورة
+            (new UploadCvFileAction())->execute($user, $cvFile);
+
 
         } catch (\Throwable $e) {
             DB::rollBack();
+
+            // ✅ إذا كان الخطأ من نوع MediaUploadException، نعيده كما هو
+            if ($e instanceof MediaUploadException) {
+                throw $e;
+            }
             Log::error("Profile update failed for user {$user->id}", [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -159,7 +167,7 @@ class ProfileService
         try {
             return $this->buildFilteredUsersQuery(
                 baseQuery: User::query()
-                    ->select('id', 'name', 'slug', 'country', 'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
+                    ->select('id', 'name', 'slug', 'country','social_links', 'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
                     ->with('media')
                     ->where('is_active', 1),
                 location: $location,
@@ -264,13 +272,13 @@ class ProfileService
         try {
             $stats = $this->getHomepageStats();
             $specializations = $this->getHomepageSpecializations();
-            $top6Specializations = $specializations->take(6);
-            $users = User::active()->latest()->take(5)->get();
+            $certificates = $this->getHomepageCertificates();
+            $users = $this->getActiveUsers();
             $experts = $this->getRandomExperts();
             $jobSeekers = $this->getRandomJobSeekers();
 
 
-            return compact('stats', 'specializations', 'top6Specializations', 'users', 'experts', 'jobSeekers');
+            return compact('stats', 'specializations', 'certificates', 'users', 'experts', 'jobSeekers');
 
         } catch (\Throwable $e) {
             Log::error('Error loading homepage user stats: ' . $e->getMessage());
@@ -291,6 +299,14 @@ class ProfileService
         }
     }
 
+    protected function getActiveUsers()
+    {
+        return User::active()
+            ->select('id', 'name', 'slug', 'country','social_links',
+                'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
+            ->latest()->take(5)->get();
+    }
+
     protected function getRandomExperts(): Collection
     {
         return User::active()
@@ -300,7 +316,6 @@ class ProfileService
             ->limit(5)
             ->get();
     }
-
 
     protected function getRandomJobSeekers(): Collection
     {
@@ -326,6 +341,16 @@ class ProfileService
             fn() => $this->getSpecializationsAndTheirNumber(16)
         );
     }
+
+    protected function getHomepageCertificates(): Collection
+    {
+        return Cache::remember(
+            'homepage_top_certificates',
+            now()->addMinutes(15),
+            fn() => $this->getTopCertificates(6)
+        );
+    }
+
 
     protected function getActiveStats(): object
     {
@@ -353,6 +378,18 @@ class ProfileService
             ->get();
     }
 
+    public function getTopCertificates(?int $limit = 6, ?string $title = null): Collection
+    {
+        return DB::table('expert_infos')
+            ->select('title_normalized', DB::raw('MAX(title) as display_title'), DB::raw('COUNT(*) as total'))
+            ->where('category', 'certificate')
+            ->when($title, fn($query) => $query->where('title_normalized', 'LIKE', '%' . strtolower($title) . '%')
+            )
+            ->groupBy('title_normalized')
+            ->orderByDesc('total')
+            ->when($limit, fn($query) => $query->limit($limit))
+            ->get();
+    }
 
     /**
      * Builds a filtered query for users based on location, name, title, and category.
