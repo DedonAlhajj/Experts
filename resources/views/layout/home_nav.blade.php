@@ -57,10 +57,10 @@
                                      aria-orientation="vertical">
                                     <a class="nav-link active mr-md-1" id="v-pills-1-tab" data-toggle="pill"
                                        href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">Find
-                                        a Job</a>
+                                        a Specializations</a>
 
                                     <a class="nav-link" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2"
-                                       role="tab" aria-controls="v-pills-2" aria-selected="false">Find a Candidate</a>
+                                       role="tab" aria-controls="v-pills-2" aria-selected="false">Find a Experts</a>
 
                                 </div>
                             </div>
@@ -100,15 +100,7 @@
                                          aria-labelledby="v-pills-performance-tab">
                                         <form method="GET" action="{{ route('experts.index') }}" class="search-job">
                                             <div class="row">
-                                                <div class="col-md">
-                                                    <div class="form-group">
-                                                        <div class="form-field">
-                                                            <div class="icon"><span class="icon-user"></span></div>
-                                                            <input type="text" name="name" class="form-control"
-                                                                   placeholder="eg. Adam Scott">
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                                 <div class="col-md">
                                                     <div class="form-group">
                                                         <div class="form-field">
@@ -132,7 +124,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md">
+                                                <div class="col-md-3">
                                                     <div class="form-group">
                                                         <div class="form-field">
                                                             <button type="submit" class="form-control btn btn-primary">

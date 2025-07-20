@@ -17,12 +17,12 @@ return new class extends Migration
 
             $table->enum('category', ['skill', 'certificate', 'portfolio', 'experience']);
             $table->string('title')->nullable();          // اسم المهارة أو الشهادة
-            $table->string('institution')->nullable();    // جهة العمل أو المؤسسة
-            $table->text('description')->nullable();
-            $table->string('attachment_url')->nullable(); // رابط لصورة أو ملف
-
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+//            $table->string('institution')->nullable();    // جهة العمل أو المؤسسة
+//            $table->text('description')->nullable();
+//            $table->string('attachment_url')->nullable(); // رابط لصورة أو ملف
+//
+//            $table->date('start_date')->nullable();
+//            $table->date('end_date')->nullable();
 
             $table->timestamps();
         });
