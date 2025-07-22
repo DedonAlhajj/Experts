@@ -34,7 +34,7 @@ trait HandlesMediaUploads
         $maxSizeKB = match ($collection) {
             'profile_image' => 1000,        // ⛔ الصور > 300KB مرفوضة
             'cv_file'       => 1024,       // ⛔ ملفات CV > 1MB مرفوضة
-            default         => 512,        // حد افتراضي 512KB
+            default         => 1000,        // حد افتراضي 512KB
         };
 
         if ($sizeKB > $maxSizeKB) {

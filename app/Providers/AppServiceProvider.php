@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Observers\ExpertInfoObserver;
 use App\Observers\UserInfoObserver;
 use App\Policies\UserPolicy;
+use App\Services\SettingService;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,7 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton('setting', function () {
+            return new SettingService();
+        });
     }
 
     /**
@@ -30,5 +34,10 @@ class AppServiceProvider extends ServiceProvider
     {
         ExpertInfo::observe(ExpertInfoObserver::class);
         User::observe(UserInfoObserver::class);
+        Blade::directive('setting', function ($key) {
+            return "<?php echo \Setting::get($key); ?>";
+        });
     }
+
+
 }

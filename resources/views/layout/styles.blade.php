@@ -19,6 +19,8 @@
 <link rel="stylesheet" href="{{asset('css/icomoon.css')}}">
 <link rel="stylesheet" href="{{asset('css/style.css')}}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 <style>.awesomplete {
         width: 100%;
     }

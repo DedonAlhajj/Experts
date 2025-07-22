@@ -8,6 +8,7 @@ use App\Action\UploadCvFileAction;
 use App\Action\UploadProfileImageAction;
 use App\Exceptions\MediaUploadException;
 use App\Models\User;
+use App\Services\AdService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -18,6 +19,13 @@ use RuntimeException;
 
 class ProfileService
 {
+
+    protected AdService $adService;
+
+    public function __construct(AdService $adService)
+    {
+        $this->adService = $adService;
+    }
 
     /**
      * Updates the user's profile information, experiences, and media files.
@@ -276,9 +284,10 @@ class ProfileService
             $users = $this->getActiveUsers();
             $experts = $this->getRandomExperts();
             $jobSeekers = $this->getRandomJobSeekers();
+            $ads = $this->adService->getVisibleAdsByPosition('header');
 
 
-            return compact('stats', 'specializations', 'certificates', 'users', 'experts', 'jobSeekers');
+            return compact('stats', 'specializations', 'certificates', 'users', 'experts', 'jobSeekers','ads');
 
         } catch (\Throwable $e) {
             Log::error('Error loading homepage user stats: ' . $e->getMessage());

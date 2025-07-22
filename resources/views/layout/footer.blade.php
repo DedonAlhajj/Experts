@@ -5,21 +5,18 @@
                 <div class="ftco-footer-widget mb-4">
                     <h2 class="ftco-heading-2">Skillhunt Jobboard</h2>
                     <p style="    width: 75%;">
-                        An intelligent platform that connects experts and job seekers within a
-                        secure digital environment, empowering everyone to showcase their professional
-                        experience and explore opportunities that match their aspirations in fields like technology,
-                        design, and education.
+                        @setting('footer_text')
                     </p>
 
                     <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-3">
-                        <li class="ftco-animate"><a href="https://www.almounkez.com/news/home"><span class="icon-link2"></span></a></li>
+                        <li class="ftco-animate"><a href="@setting('url_general')"><span class="icon-link2"></span></a></li>
 
-                        <li class="ftco-animate"><a href="https://sy.linkedin.com/company/inno-sys"><span class="icon-linkedin"></span></a></li>
-                        <li class="ftco-animate"><a href="https://www.telegram.com/almounkez/"><span class="icon-telegram"></span></a></li>
-                        <li class="ftco-animate"><a href="innosys@almounkez.com"><span class="icon-mail-forward"></span></a></li>
-                        <li class="ftco-animate"><a href="https://x.com/almounkez"><span class="icon-twitter"></span></a></li>
-                        <li class="ftco-animate"><a href="https://www.facebook.com/Innosys.me/"><span class="icon-facebook"></span></a></li>
-                        <li class="ftco-animate"><a href="https://instagram.com/almounkez"><span class="icon-instagram"></span></a></li>
+                        <li class="ftco-animate"><a href="@setting('linkedIn_link')"><span class="icon-linkedin"></span></a></li>
+                        <li class="ftco-animate"><a href="@setting('telegram_link')"><span class="icon-telegram"></span></a></li>
+                        <li class="ftco-animate"><a href="@setting('general_mail')"><span class="icon-mail-forward"></span></a></li>
+                        <li class="ftco-animate"><a href="@setting('X_url')"><span class="icon-twitter"></span></a></li>
+                        <li class="ftco-animate"><a href="@setting('facebook_url')"><span class="icon-facebook"></span></a></li>
+                        <li class="ftco-animate"><a href="@setting('instagram')"><span class="icon-instagram"></span></a></li>
                     </ul>
                 </div>
             </div>
@@ -47,17 +44,17 @@
                                 <span class="icon icon-map-marker"></span>
                                 <span class="text">
                                     <a href="https://maps.app.goo.gl/QGQknRJM7h6yke796" target="_blank" rel="noopener">
-                                        Barzeh Residences District, near Alnoman Garden, Damascus, Syria
+                                        @setting('location')
                                     </a></span>
                             </li>
 
-                            <li><a href="#"><span class="icon icon-phone"></span><span class="">+9631151598870</span></a></li>
-                            <li><a href="#"><span class="icon icon-phone"></span><span class="">+9631151598871</span></a></li>
+                            <li><a href="#"><span class="icon icon-phone"></span><span class="">@setting('phone 1')</span></a></li>
+                            <li><a href="#"><span class="icon icon-phone"></span><span class="">@setting('phone 2')</span></a></li>
 
 
-                            <li><a href="#"><span class="icon icon-fax"></span><span class="">+9631151598871</span></a></li>
+                            <li><a href="#"><span class="icon icon-fax"></span><span class="">@setting('fax_number')</span></a></li>
 
-                            <li><a href="innosys@almounkez.com"><span class="icon icon-envelope"></span><span class="text">innosys@almounkez.com</span></a></li>
+                            <li><a href="@setting('general_mail')"><span class="icon icon-envelope"></span><span class="text">@setting('general_mail')</span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -67,7 +64,7 @@
             <div class="col-md-12 text-center">
 
                 <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This website is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://www.almounkez.com/news/home" target="_blank">almounkez</a>
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This website is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="@setting('url_general')" target="_blank">@setting('made_by_footer')</a>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
             </div>
         </div>

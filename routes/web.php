@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdController;
 use App\Http\Controllers\ExpertController;
 use App\Http\Controllers\FrontDashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +50,30 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::put('/expert-info/{expertInfo}', [ExpertController::class, 'update'])->name('expert-info.update');
 
     Route::middleware(['is_admin'])->group(function () {
+
+        Route::prefix('ads')->group(function () {
+            Route::get('/', [AdController::class, 'index'])->name('ads.index');
+            Route::get('/create', [AdController::class, 'create'])->name('ads.create');
+            Route::post('/', [AdController::class, 'store'])->name('ads.store');
+            Route::get('/{ad}/edit', [AdController::class, 'edit'])->name('ads.edit');
+            Route::put('/{ad}', [AdController::class, 'update'])->name('ads.update');
+            Route::delete('/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
+
+        });
+        Route::get('/ads/{ad}/go', [AdController::class, 'redirectToAd'])->name('ads.redirect');
+
+
+// web.php
+        Route::prefix('settings')->group(function () {
+            Route::get('/', [SettingController::class, 'index'])->name('settings.index');
+            Route::get('/create', [SettingController::class, 'create'])->name('settings.create'); // صفحة الإضافة
+            Route::post('/', [SettingController::class, 'store'])->name('settings.store'); // حفظ الإعداد
+            Route::get('/{key}/edit', [SettingController::class, 'edit'])->name('settings.edit');
+            Route::put('/{key}', [SettingController::class, 'update'])->name('settings.update');
+            Route::delete('/{key}', [SettingController::class, 'destroy'])->name('settings.destroy');
+        });
+
+
         Route::get('/cache', [FrontDashboardController::class, 'cache'])->name('cache.forget');
         Route::get('/member/inactive-users', [UserController::class, 'inactiveUsers'])
             ->name('admin.inactive-users');

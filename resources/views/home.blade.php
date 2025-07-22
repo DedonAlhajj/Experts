@@ -3,6 +3,16 @@
 @section('title', 'Home')
 
 @section('content')
+
+<style>.swiper-slide img {
+        animation: breathe 5s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50%      { transform: scale(1.02); opacity: 0.95; }
+    }
+</style>
     @include('layout.home_nav')
 
 
@@ -134,50 +144,41 @@
                 <div class="col-lg-3 sidebar">
                     <div class="row justify-content-center pb-3">
                         <div class="col-md-12 heading-section ftco-animate">
-                            <h2 class="mb-4">Top Recruitments</h2>
+                            <h2 class="mb-4">Top Advertisements</h2>
                         </div>
                     </div>
+
                     <div class="sidebar-box ftco-animate">
-                        <div class="lolo">
-                            <a href="#" class="company-wrap"><img src="images/company-1.jpg" class="img-fluid"
-                                                                  alt="Colorlib Free Template"></a>
-                            <div class="text p-3">
-                                <h3><a href="#">Company Company</a></h3>
-                                <p><span class="number">500</span> <span>Open position</span></p>
+                        <div class="swiper ad-sidebar-swiper">
+                            <div class="swiper-wrapper">
+                                @foreach ($ads as $ad)
+                                    @php
+                                        $img = $ad->hasMedia('ad')
+                                            ? str_replace(config('app.url'), request()->getSchemeAndHttpHost(), $ad->getFirstMediaUrl('ad'))
+                                            : asset('images/default.jpg');
+                                    @endphp
+
+                                    <div class="swiper-slide text-center">
+                                        <a href="{{ route('ads.redirect', $ad) }}" target="_blank" class="d-block">
+                                            <img src="{{ $img }}" class="img-fluid rounded mb-2" style="max-height: 175px; object-fit: cover;" alt="{{ $ad->title }}">
+                                            <h6 class="fw-bold text-dark">{{ Str::limit($ad->title, 50) }}</h6>
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
-                    <div class="sidebar-box ftco-animate">
-                        <div class="">
-                            <a href="#" class="company-wrap"><img src="images/company-2.jpg" class="img-fluid"
-                                                                  alt="Colorlib Free Template"></a>
-                            <div class="text p-3">
-                                <h3><a href="#">Facebook Company</a></h3>
-                                <p><span class="number">700</span> <span>Open position</span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sidebar-box ftco-animate">
-                        <div class="">
-                            <a href="#" class="company-wrap"><img src="images/company-3.jpg" class="img-fluid"
-                                                                  alt="Colorlib Free Template"></a>
-                            <div class="text p-3">
-                                <h3><a href="#">IT Programming INC</a></h3>
-                                <p><span class="number">700</span> <span>Open position</span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sidebar-box ftco-animate">
-                        <div class="">
-                            <a href="#" class="company-wrap"><img src="images/company-4.jpg" class="img-fluid"
-                                                                  alt="Colorlib Free Template"></a>
-                            <div class="text p-3">
-                                <h3><a href="#">IT Programming INC</a></h3>
-                                <p><span class="number">700</span> <span>Open position</span></p>
-                            </div>
-                        </div>
-                    </div>
+
+
+
+
+
+
+
+
                 </div>
+
+
             </div>
         </div>
     </section>
@@ -340,3 +341,27 @@
 
 
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        new Swiper('.ad-sidebar-swiper', {
+            direction: 'vertical',
+            slidesPerView: 1,
+            loop: true,
+            effect: 'fade', // ✅ استبدال بصري ناعم
+            fadeEffect: {
+                crossFade: true // ✅ يجعل القديم يتلاشى أثناء ظهور الجديد
+            },
+            autoplay: {
+                delay: 5000,       // 5 ثواني بين كل إعلان
+                disableOnInteraction: false
+            },
+            allowTouchMove: false,
+            autoHeight: true,
+            speed: 1000,          // ✅ مدة الانتقال بين الإعلانات (كلما زادت زاد نعومة التغيير)
+        });
+    });
+</script>
+
+
+
