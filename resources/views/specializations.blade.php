@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Specializations')
+@section('title', Setting::get('home.page_2.breadcrumb_2'))
 
 @section('content')
     <div class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -8,9 +8,9 @@
         <div class="container">
             <div class="row no-gutters slider-text align-items-end justify-content-start">
                 <div class="col-md-12 ftco-animate text-center mb-5">
-                    <p class="breadcrumbs mb-0"><span class="mr-3"><a href="{{route('home')}}">Home
-                                <i class="ion-ios-arrow-forward"></i></a></span> <span>Specializations</span></p>
-                    <h1 class="mb-3 bread">Browse Specializations</h1>
+                    <p class="breadcrumbs mb-0"><span class="mr-3"><a href="{{route('home')}}">@setting('home.breadcrumb_1')
+                                <i class="ion-ios-arrow-forward"></i></a></span> <span>@setting('home.page_2.breadcrumb_2')</span></p>
+                    <h1 class="mb-3 bread">@setting('home.page_2.header_text_1')</h1>
                 </div>
             </div>
         </div>
@@ -22,8 +22,8 @@
         <div class="container">
             <div class="row justify-content-center mb-4">
                 <div class="col-md-7 text-center heading-section ftco-animate">
-                    <span class="subheading">Browse specializations</span>
-                    <h2 class="mb-4">Advance Search</h2>
+                    <span class="subheading">@setting('home.page_2.subsection_1.text_1')</span>
+                    <h2 class="mb-4">@setting('home.page_2.subsection_1.text_2')</h2>
                 </div>
             </div>
             <div class="row">
@@ -32,7 +32,7 @@
                         <div class="col-md-12 nav-link-wrap">
                             <div class="nav nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
-                                <a class="nav-link" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">Find a Candidate</a>
+                                <a class="nav-link" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">@setting('form_title2')</a>
 
                             </div>
                         </div>

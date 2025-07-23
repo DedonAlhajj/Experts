@@ -17,11 +17,16 @@ class SettingController extends Controller
         $this->settingService = $settingService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $settings = $this->settingService->paginate(6);
-        return view('settings.index', compact('settings'));
+        $group = $request->input('group');
+        $key   = $request->input('key');
+
+        $settings = $this->settingService->paginate(6, $group, $key);
+
+        return view('settings.index', compact('settings', 'group', 'key'));
     }
+
 
     public function create()
     {

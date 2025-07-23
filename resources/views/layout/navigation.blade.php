@@ -11,11 +11,11 @@
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="{{ route('home') }}" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="{{route('specializations')}}" class="nav-link">Specializations</a></li>
-                <li class="nav-item"><a href="{{route('getJobSeeker.index')}}" class="nav-link">Job Seekers</a></li>
-                <li class="nav-item"><a href="{{route('experts.index')}}" class="nav-link">Experts</a></li>
-                <li class="nav-item"><a href="{{route('blog')}}" class="nav-link">Blog</a></li>
+                <li class="nav-item active"><a href="{{ route('home') }}" class="nav-link">@setting('home.nav.item_1')</a></li>
+                <li class="nav-item"><a href="{{route('specializations')}}" class="nav-link">@setting('home.nav.item_2')</a></li>
+                <li class="nav-item"><a href="{{route('getJobSeeker.index')}}" class="nav-link">@setting('home.nav.item_3')</a></li>
+                <li class="nav-item"><a href="{{route('experts.index')}}" class="nav-link">@setting('home.nav.item_4')</a></li>
+                <li class="nav-item"><a href="{{route('blog')}}" class="nav-link">@setting('home.nav.item_5')</a></li>
 {{--                <li class="nav-item"><a href="{{route('contact')}}" class="nav-link">Contact</a></li>--}}
 
                 @guest

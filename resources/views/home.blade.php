@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Home')
+@section('title', Setting::get('home.breadcrumb_1'))
 
 @section('content')
 
@@ -20,8 +20,8 @@
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-md-7 heading-section text-center ftco-animate">
-                    <span class="subheading">Expert's specializations</span>
-                    <h2 class="mb-0">Top specializations</h2>
+                    <span class="subheading">@setting('home.section_2.title_1')</span>
+                    <h2 class="mb-0">@setting('home.section_2.title_2')</h2>
                 </div>
             </div>
             <div class="d-flex flex-wrap">
@@ -51,10 +51,8 @@
                     <div class="media block-6 services d-block">
                         <div class="icon"><span class="flaticon-resume"></span></div>
                         <div class="media-body">
-                            <h3 class="heading mb-3">Browse a Lot of Expert Profiles</h3>
-                            <p>Explore a rapidly growing network of professionals across
-                                diverse fields—whether they're seeking job opportunities,
-                                showcasing their expertise, or doing both.</p>
+                            <h3 class="heading mb-3">@setting('home.section_3.block_1.title')</h3>
+                            <p>@setting('home.section_3.block_1.text')</p>
                         </div>
                     </div>
                 </div>
@@ -62,10 +60,8 @@
                     <div class="media block-6 services d-block">
                         <div class="icon"><span class="flaticon-team"></span></div>
                         <div class="media-body">
-                            <h3 class="heading mb-3">Flexible Talent Connections</h3>
-                            <p>Discover top talent effortlessly,
-                                follow their latest updates, and connect over
-                                opportunities or services that align with your career goals or project needs.</p>
+                            <h3 class="heading mb-3">@setting('home.section_3.block_2.title')</h3>
+                            <p>@setting('home.section_3.block_2.text')</p>
                         </div>
                     </div>
                 </div>
@@ -73,9 +69,8 @@
                     <div class="media block-6 services d-block">
                         <div class="icon"><span class="flaticon-career"></span></div>
                         <div class="media-body">
-                            <h3 class="heading mb-3">Leading Career Tracks</h3>
-                            <p>Dive into the most in-demand specialties and explore
-                                the expertise of leaders in tech, design, business, and beyond.</p>
+                            <h3 class="heading mb-3">@setting('home.section_3.block_3.title')</h3>
+                            <p>@setting('home.section_3.block_3.text')</p>
                         </div>
                     </div>
                 </div>
@@ -83,10 +78,8 @@
                     <div class="media block-6 services d-block">
                         <div class="icon"><span class="flaticon-employees"></span></div>
                         <div class="media-body">
-                            <h3 class="heading mb-3">Find Top-Tier Professionals</h3>
-                            <p>Easily locate experts with
-                                the right skills and proven experience using an intelligent,
-                                lightning-fast search system.</p>
+                            <h3 class="heading mb-3">@setting('home.section_3.block_4.title')</h3>
+                            <p>@setting('home.section_3.block_4.text')</p>
                         </div>
                     </div>
                 </div>
@@ -100,8 +93,8 @@
                 <div class="col-lg-9 pr-lg-5">
                     <div class="row justify-content-center pb-3">
                         <div class="col-md-12 heading-section ftco-animate">
-                            <span class="subheading">Recently Added Experts</span>
-                            <h2 class="mb-4">Newest Members to Join the Platform</h2>
+                            <span class="subheading">@setting('home.section_4.heading_1')</span>
+                            <h2 class="mb-4">@setting('home.section_4.heading_2')</h2>
                         </div>
                     </div>
                     <div class="row">
@@ -144,7 +137,7 @@
                 <div class="col-lg-3 sidebar">
                     <div class="row justify-content-center pb-3">
                         <div class="col-md-12 heading-section ftco-animate">
-                            <h2 class="mb-4">Top Advertisements</h2>
+                            <h2 class="mb-4">@setting('home.section_4.heading_3')</h2>
                         </div>
                     </div>
 
@@ -190,7 +183,7 @@
             <div class="row justify-content-center mb-4">
                 <div class="col-md-7 text-center heading-section ftco-animate">
                     <span class="subheading">Testimonial</span>
-                    <h2 class="mb-4">Featured Experts You May Want to Connect With</h2>
+                    <h2 class="mb-4">@setting('home.section_5.title')</h2>
                 </div>
             </div>
             <div class="row ftco-animate">
@@ -236,8 +229,8 @@
         <div class="container">
             <div class="row justify-content-center pb-3">
                 <div class="col-md-10 heading-section heading-section-white text-center ftco-animate">
-                    <span class="subheading">Experts</span>
-                    <h2 class="mb-4">Recently Registered Experts with Valuable Experience</h2>
+                    <span class="subheading">@setting('home.section_6.label')</span>
+                    <h2 class="mb-4">@setting('home.section_6.description')</h2>
                 </div>
             </div>
         </div>
@@ -273,8 +266,8 @@
         <div class="container">
             <div class="row justify-content-center mb-5 pb-3">
                 <div class="col-md-7 heading-section text-center ftco-animate">
-                    <span class="subheading">Our Job Seekers</span>
-                    <h2><span>Talented Job Seekers</span> Ready for New Opportunities</h2>
+                    <span class="subheading">@setting('home.section_7.title')</span>
+                    <h2><span>@setting('home.section_7.description')</span></h2>
                 </div>
             </div>
             <div class="row d-flex">
@@ -343,6 +336,7 @@
 @endsection
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script>
+    const adDelay  = {{ Setting::get('ads_rotation_delay', 5000) }};
     document.addEventListener('DOMContentLoaded', function () {
         new Swiper('.ad-sidebar-swiper', {
             direction: 'vertical',
@@ -353,7 +347,7 @@
                 crossFade: true // ✅ يجعل القديم يتلاشى أثناء ظهور الجديد
             },
             autoplay: {
-                delay: 5000,       // 5 ثواني بين كل إعلان
+                delay: adDelay,       // 5 ثواني بين كل إعلان
                 disableOnInteraction: false
             },
             allowTouchMove: false,

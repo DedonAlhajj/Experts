@@ -20,10 +20,21 @@ class SettingService
 {
     use HandlesSettingImages;
 
-    public function paginate(int $count = 20): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function paginate(int $count = 20, ?string $group = null, ?string $key = null): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        return Setting::orderBy('key')->paginate($count);
+        $query = Setting::query();
+
+        if ($group) {
+            $query->where('group', $group);
+        }
+
+        if ($key) {
+            $query->where('key', 'like', '%' . $key . '%');
+        }
+
+        return $query->orderBy('key')->paginate($count);
     }
+
 
     public function allCache(): \Illuminate\Support\Collection
     {

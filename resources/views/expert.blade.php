@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Experts')
+@section('title', Setting::get('home.page_4.breadcrumb'))
 
 @section('content')
     <div class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -8,9 +8,9 @@
         <div class="container">
             <div class="row no-gutters slider-text align-items-end justify-content-start">
                 <div class="col-md-12 ftco-animate text-center mb-5">
-                    <p class="breadcrumbs mb-0"><span class="mr-3"><a href="{{route('home')}}">Home
-                                <i class="ion-ios-arrow-forward"></i></a></span> <span>Experts</span></p>
-                    <h1 class="mb-3 bread">Browse Experts</h1>
+                    <p class="breadcrumbs mb-0"><span class="mr-3"><a href="{{route('home')}}">@setting('home.breadcrumb_1')
+                                <i class="ion-ios-arrow-forward"></i></a></span> <span>@setting('home.page_4.breadcrumb')</span></p>
+                    <h1 class="mb-3 bread">@setting('home.page_4.header_text')</h1>
                 </div>
             </div>
         </div>

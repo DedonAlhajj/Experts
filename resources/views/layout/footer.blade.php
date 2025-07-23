@@ -3,7 +3,7 @@
         <div class="row mb-5">
             <div class="col-md-5">
                 <div class="ftco-footer-widget mb-4">
-                    <h2 class="ftco-heading-2">Skillhunt Jobboard</h2>
+                    <h2 class="ftco-heading-2">@setting('footer_title')</h2>
                     <p style="    width: 75%;">
                         @setting('footer_text')
                     </p>
@@ -24,12 +24,12 @@
                 <div class="ftco-footer-widget mb-4">
                     <h2 class="ftco-heading-2">Pages</h2>
                     <ul class="list-unstyled">
-                        <li ><a href="{{ route('home') }}" class="pb-1 d-block">Home</a></li>
-                        <li ><a href="{{route('specializations')}}" class="pb-1 d-block">Specializations</a></li>
-                        <li ><a href="{{route('getJobSeeker.index')}}" class="pb-1 d-block">Job Seekers</a></li>
-                        <li ><a href="{{route('experts.index')}}" class="pb-1 d-block">Experts</a></li>
-                        <li ><a href="{{route('blog')}}" class="pb-1 d-block">Blog</a></li>
-                        <li ><a href="{{route('contact')}}" class="pb-1 d-block">Contact</a></li>
+                        <li ><a href="{{ route('home') }}" class="pb-1 d-block">@setting('home.nav.item_1')</a></li>
+                        <li ><a href="{{route('specializations')}}" class="pb-1 d-block">@setting('home.nav.item_2')</a></li>
+                        <li ><a href="{{route('getJobSeeker.index')}}" class="pb-1 d-block">@setting('home.nav.item_3')</a></li>
+                        <li ><a href="{{route('experts.index')}}" class="pb-1 d-block">@setting('home.nav.item_4')</a></li>
+                        <li ><a href="{{route('blog')}}" class="pb-1 d-block">@setting('home.nav.item_5')</a></li>
+                        <li ><a href="{{route('contact')}}" class="pb-1 d-block">@setting('home.nav.item_6')</a></li>
 
 
                     </ul>
