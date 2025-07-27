@@ -39,7 +39,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -54,6 +54,12 @@ return [
             'driver' => 'local',
             'root' => public_path('expert_files/ads'),
             'url' => env('APP_URL') . '/expert_files/ads',
+            'visibility' => 'public',
+        ],
+        'newsletters' => [
+            'driver' => 'local',
+            'root' => public_path('expert_files/newsletters'),
+            'url' => env('APP_URL') . '/expert_files/newsletters',
             'visibility' => 'public',
         ],
         'cv_file' => [

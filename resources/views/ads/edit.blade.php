@@ -125,8 +125,7 @@
                                 <label class="custom-upload">
                                     @php
                                         $bgUrl = $ad->hasMedia('ad')
-                                            ? str_replace(config('app.url'), request()->getSchemeAndHttpHost(),
-                                            $ad->getFirstMediaUrl('ad'))
+                                            ? $ad->getFirstMediaUrl('ad')
                                             : asset('images/default.jpg');
                                     @endphp
                                         <img id="preview-image" src="{{ $bgUrl }}" alt="Ad Image">

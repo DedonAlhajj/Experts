@@ -27,6 +27,13 @@
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
     ),
   ),
+  'mostafaznv/pdf-optimizer' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Mostafaznv\\PdfOptimizer\\PdfOptimizerServiceProvider',
+    ),
+  ),
   'nesbot/carbon' => 
   array (
     'providers' => 

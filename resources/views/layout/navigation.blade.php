@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container-fluid px-md-4	">
         <a class="navbar-brand" href="{{ route('home') }}">
-            <img src="{{ asset('storage/' . Setting::get('logo')) }}" alt="Almounkez Logo" height="50">
+            <img src="{{ asset('storage/' . Setting::get('logo')) }}"
+                 onerror="this.onerror=null; this.src='{{ asset('images/default.png') }}';"
+                 alt="Almounkez Logo" height="50">
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -51,6 +53,8 @@
                                 <a class="dropdown-item" href="{{route('cache.forget') }}">Cache Forget</a>
                                 <a class="dropdown-item" href="{{route('ads.index') }}">Ads</a>
                                 <a class="dropdown-item" href="{{route('settings.index') }}">Settings</a>
+                                <a class="dropdown-item" href="{{route('newsletter.index')}}">Subscribers</a>
+                                <a class="dropdown-item" href="{{route('newsletters.index')}}">Newsletters</a>
 
                             @endif
 

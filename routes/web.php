@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\ExpertController;
 use App\Http\Controllers\FrontDashboardController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
@@ -38,6 +39,8 @@ Route::get('/blog', [FrontDashboardController::class, 'blog'])->name('blog');
 Route::get('/contact', [FrontDashboardController::class, 'contact'])->name('contact');
 
 
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+
 
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -62,6 +65,22 @@ Route::middleware(['auth','verified'])->group(function () {
         });
         Route::get('/ads/{ad}/go', [AdController::class, 'redirectToAd'])->name('ads.redirect');
 
+
+        Route::prefix('admin/newsletter')->group(function () {
+            Route::get('/', [NewsletterController::class, 'index'])->name('newsletter.index');
+            Route::delete('/{id}', [NewsletterController::class, 'destroy'])->name('newsletter.destroy');
+        });
+
+        Route::prefix('admin/newsletters')->group(function () {
+            Route::get('/', [NewsletterController::class, 'indexLetters'])->name('newsletters.index');            // عرض كل النشرات
+            Route::get('/create', [NewsletterController::class, 'create'])->name('newsletters.create');    // واجهة الإضافة
+            Route::post('/', [NewsletterController::class, 'store'])->name('newsletters.store');           // تخزين النشرة
+            Route::get('/{newsletter}', [NewsletterController::class, 'show'])->name('newsletters.show');  // عرض نشرة واحدة
+            Route::get('/{id}/edit', [NewsletterController::class, 'edit'])->name('newsletters.edit');
+            Route::put('/{id}', [NewsletterController::class, 'update'])->name('newsletters.update');
+            Route::post('/newsletters/{id}/send', [NewsletterController::class, 'send'])->name('newsletters.send');
+            Route::delete('/{id}', [NewsletterController::class, 'destroyLetters'])->name('newsletters.destroyLetters');
+        });
 
 // web.php
         Route::prefix('settings')->group(function () {

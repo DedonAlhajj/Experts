@@ -47,6 +47,8 @@ class AdService
             $this->mediaUploader->execute($ad, $image, 'ad');
 
             DB::commit();
+            cache()->forget('ads:by_position');
+
             return true;
 
         } catch (\Throwable $e) {
@@ -79,6 +81,7 @@ class AdService
             $this->mediaUploader->execute($ad, $image, 'ad');
 
             DB::commit();
+            cache()->forget('ads:by_position');
             return true;
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -98,7 +101,7 @@ class AdService
             $ad->clearMediaCollection('ad');
 
             $ad->delete();
-
+            cache()->forget('ads:by_position');
             return true;
         } catch (\Throwable $e) {
             Log::error('فشل حذف الإعلان', ['error' => $e->getMessage()]);
@@ -129,6 +132,23 @@ class AdService
             ->limit($limit)
             ->get();
     }
+
+
+    public function getVisibleAdsGroupedByPosition(): array
+    {
+        return cache()->remember('ads:by_position', 300, function () {
+            return Ad::visible()
+                ->whereIn('position', ['header', 'sidebar', 'footer', 'inline'])
+                ->orderBy('start_at', 'desc')
+                ->get()
+                ->groupBy('position')
+                ->map(fn($ads) => $ads->values()->all()) // ✅ تحويل إلى array
+                ->toArray();
+        });
+    }
+
+
+
 
 
 

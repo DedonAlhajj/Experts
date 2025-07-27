@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\ExpertInfo;
+use App\Models\Newsletters;
 use App\Models\User;
 use App\Observers\ExpertInfoObserver;
+use App\Observers\NewsletterObserver;
 use App\Observers\UserInfoObserver;
 use App\Policies\UserPolicy;
 use App\Services\SettingService;
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Newsletters::observe(NewsletterObserver::class);
         ExpertInfo::observe(ExpertInfoObserver::class);
         User::observe(UserInfoObserver::class);
         Blade::directive('setting', function ($key) {

@@ -7,6 +7,7 @@ use App\Action\UpdateUserInfoAction;
 use App\Action\UploadCvFileAction;
 use App\Action\UploadProfileImageAction;
 use App\Exceptions\MediaUploadException;
+use App\Jobs\UploadMediaFileJob;
 use App\Models\User;
 use App\Services\AdService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -62,9 +63,15 @@ class ProfileService
 
             DB::commit();
             // رفع الملفات
+            $tempProfilePath = $profileImage->store('temp_uploads');
+            $tempCvPath = $cvFile->store('temp_uploads');
 
-            (new UploadProfileImageAction())->execute($user, $profileImage);
-            (new UploadCvFileAction())->execute($user, $cvFile);
+            UploadMediaFileJob::dispatch($user, $tempProfilePath, 'profile_image');
+            UploadMediaFileJob::dispatch($user, $tempCvPath, 'cv_file');
+
+
+//            (new UploadProfileImageAction())->execute($user, $profileImage);
+//            (new UploadCvFileAction())->execute($user, $cvFile);
 
 
         } catch (\Throwable $e) {
@@ -275,6 +282,8 @@ class ProfileService
      * @throws \Throwable If any part of the process fails.
      *
      */
+
+    /*حسنا يوجد مشكلة انه في السلايد الخاص بالاعلانات يعمل  وتختفي علان ويظهر الاخر لكن يوجد مشكلة او تحميل الصفحة يكون كل شي تمام بعد الدورة الثانية للاعلانات يصبح عبى الاعلانات ضبابية او شفافية لاعراف اسمها التأثير */
     public function getActiveUsersWithStats(): array
     {
         try {
@@ -284,7 +293,7 @@ class ProfileService
             $users = $this->getActiveUsers();
             $experts = $this->getRandomExperts();
             $jobSeekers = $this->getRandomJobSeekers();
-            $ads = $this->adService->getVisibleAdsByPosition('header');
+            $ads = $this->adService->getVisibleAdsGroupedByPosition();
 
 
             return compact('stats', 'specializations', 'certificates', 'users', 'experts', 'jobSeekers','ads');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\AdService;
 use App\Services\Profile\ProfileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,11 +14,14 @@ class UserController extends Controller
 {
 
     protected ProfileService $profileService;
+    protected AdService $adService;
 
-    public function __construct(ProfileService $profileService)
+    public function __construct(ProfileService $profileService,AdService $adService)
     {
+        $this->adService = $adService;
         $this->profileService = $profileService;
     }
+
 
 
     /**
@@ -38,14 +42,14 @@ class UserController extends Controller
         try {
             $location = $request->input('location');
             $name = $request->input('name');
-
+            $ads = $this->adService->getVisibleAdsGroupedByPosition();
             $experts = $this->profileService->filterUserBySpecialization(
                 location: $location,
                 title: $title,
                 name: $name
             );
 
-            return view('expert-by-specialization', compact('experts', 'title', 'location', 'name'));
+            return view('expert-by-specialization', compact('experts', 'ads','title', 'location', 'name'));
 
         } catch (\Throwable $e) {
 
@@ -72,9 +76,10 @@ class UserController extends Controller
             $title = $request->input('title');
             $location = $request->input('location');
             $name = $request->input('name');
+            $ads = $this->adService->getVisibleAdsGroupedByPosition();
             $experts = $this->profileService->getExperts($location, $title,$name);
 
-            return view('expert', compact('experts','title','location','name'));
+            return view('expert', compact('experts','ads','title','location','name'));
 
         } catch (\Throwable $e) {
 
@@ -99,8 +104,9 @@ class UserController extends Controller
             $title = $request->input('title');
             $location = $request->input('location');
             $name = $request->input('name');
+            $ads = $this->adService->getVisibleAdsGroupedByPosition();
             $getJobSeeker = $this->profileService->getJobSeeker($location, $title,$name);
-            return view('job_seeker', compact('getJobSeeker','title','location','name'));
+            return view('job_seeker', compact('getJobSeeker','ads','title','location','name'));
 
         } catch (\Throwable $e) {
 
@@ -178,8 +184,9 @@ class UserController extends Controller
                 limit: null,
                 title: $title
             );
+            $ads = $this->adService->getVisibleAdsGroupedByPosition();
 
-            return view('specializations', compact('specializations', 'title'));
+            return view('specializations', compact('specializations', 'title','ads'));
 
 
         } catch (\Throwable $e) {

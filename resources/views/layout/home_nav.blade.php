@@ -226,3 +226,31 @@
         </div>
     </div>
 </section>
+@if(isset($ads['header']) && count($ads['header']))
+    <div class="ad-banner-area" style=" padding-top: 30px;">
+        <div class="container">
+            <div class="swiper ad-banner-swiper" style="height: 96px;">
+                <div class="swiper-wrapper">
+                    @foreach($ads['header'] as $ad)
+                        @php
+                            $img = $ad->hasMedia('ad')
+                                ? $ad->getFirstMediaUrl('ad')
+                                : asset('images/default.jpg');
+                        @endphp
+                        <div class="swiper-slide">
+                            <a href="{{ route('ads.redirect', $ad) }}" target="_blank" class="d-block w-100 h-100">
+                                <img src="{{ $img }}"
+                                     class="img-fluid"
+                                     style="height: 96px; object-fit: cover; width: 100%; display: block;"
+                                     alt="{{ $ad->title }}">
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+
+

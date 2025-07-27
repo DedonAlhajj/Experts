@@ -33,7 +33,7 @@ class FrontDashboardController extends Controller
      *
      */
     public function home(): View|RedirectResponse
-    {
+    {cache()->forget('ads:by_position');
         try {
             $data = $this->profileService->getActiveUsersWithStats();
 
@@ -88,6 +88,7 @@ class FrontDashboardController extends Controller
     public function cache()
     {
         try {
+            cache()->forget('ads:by_position');
             Cache::forget('homepage_top_certificates');
             Cache::forget('homepage_user_stats');
             Cache::forget('homepage_grouped_specializations');

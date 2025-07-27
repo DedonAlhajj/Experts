@@ -272,48 +272,67 @@
             </div>
         </div>
     </div>
-    <div class="row no-gutters mb-4">
+    <div class="row no-gutters mb-4 align-items-center">
+        {{-- صورة المعاينة --}}
         <div class="col-md-4">
             <label class="custom-upload">
-                {{-- معاينة أولية --}}
-                @php
-                    $bgUrl = $user->hasMedia('profile_image')
-                        ? str_replace(config('app.url'), request()->getSchemeAndHttpHost(),
-                        $user->getFirstMediaUrl('profile_image'))
-                        : asset('images/default.jpg');
-                @endphp
-                <img id="preview-image" src="{{$bgUrl }}" alt="Profile Image"/>
-                <input type="file" name="profile_image" accept="image/*"
-                       onchange="previewProfile(event)">
+                <div class="upload-box text-center">
+                    <i class="fas fa-cloud-upload-alt fs-2 mb-2"></i>
+                    <p class="small mb-0">Select Image</p>
+                </div>
+                <input type="file" name="profile_image" accept="image/*" onchange="previewProfile1(event)">
             </label>
             @error('profile_image')
             <span class="text-danger small">{{ $message }}</span>
             @enderror
             <div id="profile-size-warning" class="alert d-none mt-2 p-2" role="alert"></div>
         </div>
+        <div class="col-md-4 mb-3 mb-md-0">
+            <img id="preview-image"
+                 src="{{ $user->getFirstMediaUrl('profile_image') ?? '#' }}"
+                 alt="Profile Image"
+                 class="img-fluid rounded border"
+                 style="max-height: 200px; display: {{ $user->hasMedia('profile_image') ? 'block' : 'none' }};"
+            />
+        </div>
+
+        {{-- مربع رفع الصورة --}}
+
+    </div>
+
+
+    <div class="row no-gutters mb-4 align-items-center">
         <div class="col-md-8">
             @php
                 $cvUrl = $user->hasMedia('cv_file')
-                  ? str_replace(config('app.url'), request()->getSchemeAndHttpHost(), $user->getFirstMediaUrl('cv_file'))
+                  ? $user->getFirstMediaUrl('cv_file')
                   : null;
             @endphp
 
-            <label class="custom-file-upload"><span id="cv-file-name">{{ $cvUrl ? 'Current file: ' . basename($cvUrl) : 'Click to upload CV (PDF)' }}</span>
-                <input type="file" name="cv_file" accept=".pdf" onchange="updateFileName(event)">
+            {{-- مربع رفع الـ PDF --}}
+            <label class="custom-file-upload d-block">
+                <div class="upload-box text-center py-3">
+                    <i class="fas fa-file-upload fs-3 mb-2"></i>
+                    <p class="small mb-0">Select CV (PDF)</p>
+                </div>
+                <input type="file" name="cv_file" accept=".pdf" onchange="updateFileName1(event)">
+                <span id="cv-file-name" class="small text-muted d-block mt-1"></span>
+
             </label>
 
+            {{-- أيقونة التنزيل --}}
             @if ($cvUrl)
-                <a href="{{ $cvUrl }}" target="_blank" title="Download CV">
+                <a href="{{ $cvUrl }}" target="_blank" title="Download CV" style="display: flex; align-items: center; gap: 8px;">
                     <div class="icon download-icon">
                         <span class="icon-download"></span>
                     </div>
+                    <span class="small text-muted">{{ basename($cvUrl) }}</span>
                 </a>
             @endif
 
 
-
             @error('cv_file')
-            <span class="text-danger small">{{ $message }}</span>
+            <span class="text-danger small d-block mt-1">{{ $message }}</span>
             @enderror
             <div id="cv-size-warning" class="alert d-none mt-2 p-2" role="alert"></div>
         </div>

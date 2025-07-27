@@ -82,8 +82,8 @@
             const search = lastInput.value;
 
             if (search.length < 1) return;
+            fetch("{{ url('/api/autocomplete-titles') }}?category=" + category + "&q=" + encodeURIComponent(search))
 
-            fetch(`/api/autocomplete-titles?category=${category}&q=${encodeURIComponent(search)}`)
                 .then(response => response.json())
                 .then(data => {
                     lastInput.awesomplete.list = data;

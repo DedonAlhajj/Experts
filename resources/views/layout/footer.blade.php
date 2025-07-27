@@ -1,3 +1,30 @@
+
+@if(isset($ads['footer']) && count($ads['footer']))
+    <div class="ad-banner-area" style="padding-top: 33px;">
+        <div class="container">
+            <div class="swiper ad-banner-swiper" style="height: 96px;">
+                <div class="swiper-wrapper">
+                    @foreach($ads['footer'] as $ad)
+                        @php
+                            $img = $ad->hasMedia('ad')
+                                ? $ad->getFirstMediaUrl('ad')
+                                : asset('images/default.jpg');
+                        @endphp
+                        <div class="swiper-slide">
+                            <a href="{{ route('ads.redirect', $ad) }}" target="_blank" class="d-block w-100 h-100">
+                                <img src="{{ $img }}"
+                                     class="img-fluid"
+                                     style="height: 96px; object-fit: cover; width: 100%; display: block;"
+                                     alt="{{ $ad->title }}">
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
 <footer class="ftco-footer ftco-bg-dark ftco-section">
     <div class="container">
         <div class="row mb-5">

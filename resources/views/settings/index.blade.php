@@ -11,7 +11,8 @@
                 <div class="col-md-12 ftco-animate text-center mb-5">
                     <p class="breadcrumbs mb-0"><span class="mr-3"><a href="{{route('home')}}">Home
                                 <i class="ion-ios-arrow-forward"></i></a></span> <span>Settings</span></p>
-                    <h1 class="mb-3 bread">Our Setting <a href="{{route('settings.create')}}" class="btn btn-sm btn-outline-warning" title="Edit">
+                    <h1 class="mb-3 bread">Our Setting <a href="{{route('settings.create')}}"
+                                                          class="btn btn-sm btn-outline-warning" title="Edit">
                             <i class="icon-add"></i>
                         </a></h1>
                 </div>
@@ -19,7 +20,7 @@
         </div>
     </div>
 
-    <section class="ftco-section">
+    <section class="ftco-section bg-light">
         <div class="container">
             <div class="row">
                 <div class="ftco-search">
@@ -151,29 +152,7 @@
         </div>
     </section>
 
-    <section class="ftco-section-parallax">
-        <div class="parallax-img d-flex align-items-center">
-            <div class="container">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-7 text-center heading-section heading-section-white ftco-animate">
-                        <h2>Subcribe to our Newsletter</h2>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-                            there live the blind texts. Separated they live in</p>
-                        <div class="row d-flex justify-content-center mt-4 mb-4">
-                            <div class="col-md-12">
-                                <form action="#" class="subscribe-form">
-                                    <div class="form-group d-flex">
-                                        <input type="text" class="form-control" placeholder="Enter email address">
-                                        <input type="submit" value="Subscribe" class="submit px-3">
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
 
 @endsection
