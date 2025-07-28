@@ -3,6 +3,20 @@
 @section('title', 'ads')
 
 @section('content')
+    <style>
+        .badge-position {
+            background: linear-gradient(45deg, #17a2b8, #138496);
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            padding: 6px 12px;
+            display: inline-block;
+            text-transform: capitalize;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+    </style>
     <div class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');"
          data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
@@ -79,10 +93,13 @@
             <i class="icon-calendar mr-1"></i> {{ $displayPeriod }}
         </span>
                                 </div>
+                                <div class="badge-position mb-2">
+                                    <i class="icon-map-marker mr-1"></i> {{ $ad->position }}
+                                </div>
 
                                 {{-- 🔹 العنوان أو الوصف --}}
                                 <h5 class="heading mb-2 font-weight-bold">
-                                    <a href="{{ $ad->link ?? route('ads.show', $ad) }}" class="text-dark">
+                                    <a  class="text-dark">
                                         {{ $ad->description }}
                                     </a>
                                 </h5>

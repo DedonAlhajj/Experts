@@ -41,6 +41,9 @@ Route::get('/contact', [FrontDashboardController::class, 'contact'])->name('cont
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
+Route::get('/autocomplete-expert-countries',
+    [ExpertController::class, 'autocompleteCountriesByExpertise'])
+    ->name('autocomplete.expert.countries');
 
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

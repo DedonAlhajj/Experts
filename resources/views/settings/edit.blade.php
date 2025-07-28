@@ -81,6 +81,11 @@
                                 @endif
                             </div>
 
+                            <div class="mb-3">
+                                <label for="group" class="form-label">Group</label>
+                                <input type="text" name="group" class="form-control" value="{{ old('group', $setting->group) }}">
+                            </div>
+
                             {{-- الوصف --}}
                             <div class="mb-3">
                                 <label class="form-label">Description</label>

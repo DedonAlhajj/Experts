@@ -22,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // routes/api.php
 Route::middleware('throttle:30,1') // 30 طلب/دقيقة لكل IP
 ->get('/autocomplete-titles', [ExpertController::class, 'autocompleteTitles']);
+
+

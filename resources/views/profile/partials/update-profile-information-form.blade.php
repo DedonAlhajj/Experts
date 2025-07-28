@@ -132,7 +132,7 @@
             <div class="form-group">
                 <p for="fullname" class="label-fill">Phone</p>
                 <div class="form-field">
-                    <div class="icon"><span class="icon-phone"></span></div>
+{{--                    <div class="icon"><span class="icon-phone"></span></div>--}}
                     <input type="text" id="fullname" name="phone"
                            value="{{old('phone', $user->phone)}}" class="form-control"
                            placeholder="Phone">
@@ -146,7 +146,7 @@
                     <p class="label-fill">Email</p>
 
                     {{-- 🔄 أيقونة البريد --}}
-                    <div class="icon"><span class="icon-contact_mail"></span></div>
+{{--                    <div class="icon"><span class="icon-contact_mail"></span></div>--}}
 
                     {{-- 📝 حقل الإدخال --}}
                     <input type="email"
@@ -191,7 +191,7 @@
             <div class="form-group">
                 <p for="fullname" class="label-fill">Country</p>
                 <div class="form-field">
-                    <div class="icon"><span class="icon-map-marker"></span></div>
+{{--                    <div class="icon"><span class="icon-map-marker"></span></div>--}}
                     <input type="text" id="country" name="country"
                            value="{{ old('country', $user->country) }}"
                            class="form-control awesomplete"
@@ -207,7 +207,7 @@
             <div class="form-group">
                 <p for="fullname" class="label-fill">City</p>
                 <div class="form-field">
-                    <div class="icon"><span class="icon-location_city"></span></div>
+{{--                    <div class="icon"><span class="icon-location_city"></span></div>--}}
                     <input type="text" id="city" name="city"
                            value="{{ old('city', $user->city) }}"
                            class="form-control awesomplete"
@@ -225,7 +225,7 @@
             <div class="form-group">
                 <p for="fullname" class="label-fill">Nationality</p>
                 <div class="form-field">
-                    <div class="icon"><span class="icon-flag"></span></div>
+{{--                    <div class="icon"><span class="icon-flag"></span></div>--}}
                     <input type="text" id="nationality" name="nationality"
                            value="{{ old('nationality', $user->nationality) }}"
                            class="form-control awesomplete"
@@ -241,7 +241,7 @@
             <div class="form-group">
                 <p for="fullname" class="label-fill">Address</p>
                 <div class="form-field">
-                    <div class="icon"><span class="icon-home"></span></div>
+{{--                    <div class="icon"><span class="icon-home"></span></div>--}}
                     <input type="text" id="address" name="address"
                            value="{{ old('address', $user->address) }}"
                            class="form-control"
@@ -326,7 +326,7 @@
                     <div class="icon download-icon">
                         <span class="icon-download"></span>
                     </div>
-                    <span class="small text-muted">{{ basename($cvUrl) }}</span>
+                    <span class="small text-muted">Your Cv</span>
                 </a>
             @endif
 

@@ -63,6 +63,11 @@
                                                 {{-- يتم استبداله تلقائيًا بـ JS --}}
                                             </div>
 
+                                            <div class="mb-3">
+                                                <label for="group" class="form-label">Group</label>
+                                                <input type="text" name="group" class="form-control" value="{{ old('group') }}">
+                                            </div>
+
                                             {{-- الوصف --}}
                                             <div class="mb-3">
                                                 <label for="description" class="form-label">Description</label>

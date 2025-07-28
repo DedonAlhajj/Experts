@@ -110,7 +110,7 @@
                     <div class="swiper ad-left-swiper"
                          style="height: 500px;   padding-left: 30px; padding-top: 44px; overflow: hidden;">
                         <div class="swiper-wrapper">
-                            @foreach($ads['sidebar'] ?? [] as $ad)
+                            @foreach($ads['sidebarLeft'] ?? [] as $ad)
                                 <div class="swiper-slide mb-3">
                                     <a href="{{ route('ads.redirect', $ad) }}" target="_blank">
                                         <img src="{{ $ad->getFirstMediaUrl('ad') ?? asset('images/default.jpg') }}"
@@ -157,7 +157,7 @@
                          style="height: 500px;  padding-right: 30px;   padding-top: 44px; overflow: hidden;">
 
                         <div class="swiper-wrapper">
-                            @foreach($ads['sidebar'] ?? [] as $ad)
+                            @foreach($ads['sidebarRight'] ?? [] as $ad)
                                 <div class="swiper-slide mb-3">
                                     <a href="{{ route('ads.redirect', $ad) }}" target="_blank">
                                         <img src="{{ $ad->getFirstMediaUrl('ad') ?? asset('images/default.jpg') }}"
@@ -179,7 +179,7 @@
         <div class="container">
             <div class="swiper ad-mobile-swiper">
                 <div class="swiper-wrapper">
-                    @foreach($ads['sidebar'] ?? [] as $ad)
+                    @foreach($ads['sidebarLeft'] ?? [] as $ad)
                         <div class="swiper-slide text-center" style=" display: flex;
     justify-content: center;
     align-items: center;
@@ -305,8 +305,8 @@
     align-items: center;">
                         <div class="swiper ad-sidebar-swiper" style="overflow: hidden;">
                             <div class="swiper-wrapper">
-                                @if(isset($ads['sidebar']))
-                                    @foreach ($ads['sidebar'] as $ad)
+                                @if(isset($ads['sidebarRight']))
+                                    @foreach ($ads['sidebarRight'] as $ad)
                                         @php
                                             $img = $ad->hasMedia('ad')
                                                 ? $ad->getFirstMediaUrl('ad')
@@ -371,7 +371,6 @@
         <div class="container">
             <div class="row justify-content-center mb-4">
                 <div class="col-md-7 text-center heading-section ftco-animate">
-                    <span class="subheading">Testimonial</span>
                     <h2 class="mb-4">@setting('home.section_5.title')</h2>
                 </div>
             </div>
@@ -596,7 +595,7 @@
                 delay: {{ Setting::get('ads_rotation_delay', 5000) }},
                 disableOnInteraction: false
             },
-            speed: 600,
+            speed: 800,
             allowTouchMove: false,
             autoHeight: false,
             observer: true,

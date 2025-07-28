@@ -25,6 +25,7 @@ class UpdateSettingRequest extends FormRequest
             'value' => 'nullable|string', // لجميع الأنواع ما عدا الصورة
             'image' => 'nullable|image|max:2048',
             'description' => 'nullable|string',
+            'group' =>['nullable', 'string'],
         ];
     }
 }

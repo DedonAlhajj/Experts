@@ -63,12 +63,15 @@ class ProfileService
 
             DB::commit();
             // رفع الملفات
-            $tempProfilePath = $profileImage->store('temp_uploads');
-            $tempCvPath = $cvFile->store('temp_uploads');
+            if ($profileImage) {
+                $tempProfilePath = $profileImage->store('temp_uploads');
+                UploadMediaFileJob::dispatch($user, $tempProfilePath, 'profile_image');
+            }
 
-            UploadMediaFileJob::dispatch($user, $tempProfilePath, 'profile_image');
-            UploadMediaFileJob::dispatch($user, $tempCvPath, 'cv_file');
-
+            if ($cvFile) {
+                $tempCvPath = $cvFile->store('temp_uploads');
+                UploadMediaFileJob::dispatch($user, $tempCvPath, 'cv_file');
+            }
 
 //            (new UploadProfileImageAction())->execute($user, $profileImage);
 //            (new UploadCvFileAction())->execute($user, $cvFile);
@@ -105,9 +108,16 @@ class ProfileService
      * @throws \RuntimeException If the query fails.
      *
      */
-    public function getExperts(?string $location = null, ?string $title = null, ?string $name = null): LengthAwarePaginator
+    public function getExperts(?string $location = null, ?string $title = null, ?string $name = null,?string $category = null ): LengthAwarePaginator
     {
         try {
+            // 🔑 تحديد مفتاح الترتيب حسب المستخدم (أو الجلسة إذا لم يكن مسجّل دخول)
+            $seedKey = 'expert_seed_' . (auth()->id() ?? session()->getId());
+
+            // 🎲 توليد أو استرجاع seed ثابت مؤقتًا (مدة دقيقتين)
+            $seed = Cache::remember($seedKey, now()->addMinutes(2), fn() => rand(1, 999999));
+
+            // 🚀 تنفيذ الاستعلام مع الترتيب العشوائي الثابت
             return $this->buildFilteredUsersQuery(
                 baseQuery: User::query()
                     ->select('id', 'name', 'slug', 'country', 'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
@@ -117,8 +127,8 @@ class ProfileService
                 location: $location,
                 title: $title,
                 name: $name,
-                category: "experience"
-            )->paginate(4);
+                category: $category
+            )->orderByRaw("RAND({$seed})")->paginate(4);
 
         } catch (\Exception $e) {
             Log::error('Failed to fetch experts', ['error' => $e->getMessage()]);
@@ -141,9 +151,12 @@ class ProfileService
      * @throws \RuntimeException If the query fails.
      *
      */
-    public function getJobSeeker(?string $location = null, ?string $title = null, ?string $name = null): LengthAwarePaginator
+    public function getJobSeeker(?string $location = null, ?string $title = null, ?string $name = null ,?string $category = null ): LengthAwarePaginator
     {
         try {
+            $seedKey = 'job_seeker_seed_' . auth()->id();
+            $seed = Cache::remember($seedKey, now()->addMinutes(2), fn() => rand(1, 999999));
+
             return $this->buildFilteredUsersQuery(
                 baseQuery: User::query()
                     ->select('id', 'name', 'slug', 'country', 'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
@@ -153,8 +166,9 @@ class ProfileService
                 location: $location,
                 title: $title,
                 name: $name,
-                category: "experience"
-            )->paginate(4);
+                category: $category
+            )->orderByRaw("RAND({$seed})")->paginate(4);
+
 
         } catch (\Exception $e) {
             Log::error('Failed to fetch JobSeeker', ['error' => $e->getMessage()]);
@@ -177,19 +191,26 @@ class ProfileService
      * @throws \RuntimeException If the query fails.
      *
      */
-    public function filterUserBySpecialization(?string $location = null, ?string $title = null, ?string $name = null): LengthAwarePaginator
+    public function filterUserBySpecialization(?string $location = null, ?string $title = null, ?string $name = null,?string $category = null): LengthAwarePaginator
     {
         try {
+            // 🔑 مفتاح الترتيب الخاص للمستخدم أو للجلسة
+            $seedKey = 'specialization_seed_' . (auth()->id() ?? session()->getId());
+
+            // 🎲 توليد أو استرجاع رقم seed ثابت لمدة مؤقتة
+            $seed = Cache::remember($seedKey, now()->addMinutes(2), fn() => rand(1, 999999));
+
+            // ⚙️ تنفيذ الاستعلام مع ترتيب عشوائي حسب seed ثابت
             return $this->buildFilteredUsersQuery(
                 baseQuery: User::query()
-                    ->select('id', 'name', 'slug', 'country','social_links', 'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
+                    ->select('id', 'name', 'slug', 'country', 'social_links', 'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
                     ->with('media')
                     ->where('is_active', 1),
                 location: $location,
                 title: $title,
                 name: $name,
-
-            )->paginate(4);
+                category: $category
+            )->orderByRaw("RAND({$seed})")->paginate(4);
 
         } catch (\Exception $e) {
             Log::error('Failed to fetch filterUserBySpecialization', ['error' => $e->getMessage()]);
@@ -212,19 +233,20 @@ class ProfileService
      * @throws \RuntimeException If the query fails.
      *
      */
-    public function inactiveUsers(?string $location = null, ?string $title = null, ?string $name = null): LengthAwarePaginator
+    public function inactiveUsers(?string $location = null, ?string $title = null, ?string $name = null, ?string $category = null): LengthAwarePaginator
     {
         try {
             return $this->buildFilteredUsersQuery(
                 baseQuery: User::query()
                     ->select('id', 'name', 'slug', 'country', 'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
                     ->with('media')
+                    ->notAdmin()
                     ->inactive(),
 
                 location: $location,
                 title: $title,
                 name: $name,
-                category: "experience"
+                category: $category
             )->paginate(5);
 
         } catch (\Exception $e) {
@@ -296,7 +318,7 @@ class ProfileService
             $ads = $this->adService->getVisibleAdsGroupedByPosition();
 
 
-            return compact('stats', 'specializations', 'certificates', 'users', 'experts', 'jobSeekers','ads');
+            return compact('stats', 'specializations', 'certificates', 'users', 'experts', 'jobSeekers', 'ads');
 
         } catch (\Throwable $e) {
             Log::error('Error loading homepage user stats: ' . $e->getMessage());
@@ -320,7 +342,7 @@ class ProfileService
     protected function getActiveUsers()
     {
         return User::active()
-            ->select('id', 'name', 'slug', 'country','social_links',
+            ->select('id', 'name', 'slug', 'country', 'social_links',
                 'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
             ->latest()->take(5)->get();
     }
@@ -444,16 +466,18 @@ class ProfileService
             $baseQuery->where('name', 'LIKE', '%' . strtolower($name) . '%');
         }
 
-        // 🧠 فلترة حسب الاختصاصات
-        $baseQuery->whereHas('infos', function ($query) use ($title, $category) {
-            if ($category) {
-                $query->where('category', $category);
-            }
+        if ($category !== null || !$title == null) {
+            // 🧠 فلترة حسب الاختصاصات
+            $baseQuery->whereHas('infos', function ($query) use ($title, $category) {
+                if ($category) {
+                    $query->where('category', $category);
+                }
 
-            if ($title) {
-                $query->where('title_normalized', 'LIKE', '%' . strtolower(trim($title)) . '%');
-            }
-        });
+                if ($title) {
+                    $query->where('title_normalized', 'LIKE', '%' . strtolower(trim($title)) . '%');
+                }
+            });
+        }
 
         return $baseQuery;
     }

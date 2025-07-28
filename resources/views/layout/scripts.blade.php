@@ -21,9 +21,20 @@
         }
         reader.readAsDataURL(event.target.files[0]);
     }
+
+    function previewProfile1(event) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const previewImg = document.getElementById('preview-image');
+            previewImg.src = e.target.result;
+            previewImg.style.display = 'block'; // 👈 هذا هو السطر المهم
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
 </script>
 <script>
-    function updateFileName(event) {
+    function updateFileName1(event) {
         const file = event.target.files[0];
         if (file) {
             document.getElementById('cv-file-name').textContent = `Selected: ${file.name}`;
@@ -84,4 +95,57 @@
     {{--        nameBox.innerHTML = 'Click to upload CV (PDF)';--}}
     {{--    }--}}
     {{--}--}}
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.min.js"></script>
+<script>
+    $(document).ready(function () {
+        console.log("🔍 Document ready fired");
+
+        const titleInput = $('#title1');
+        const locationSelect = $('#location');
+
+        console.log("🔧 title value:", titleInput.val());
+
+        function initSelect2(titleValue) {
+            console.log("🚀 Initializing Select2 with title:", titleValue);
+
+            locationSelect.select2({
+                placeholder: 'Countries with experts in this specialty...',
+                allowClear: true,
+                ajax: {
+                    url: 'http://localhost/experts/public/autocomplete-expert-countries',
+                    delay: 300,
+                    data: function () {
+                        console.log("📦 Sending request with title:", titleValue);
+                        return {
+                            title: titleValue,
+                            query: ''
+                        };
+                    },
+                    processResults: function (data) {
+                        console.log('✅ Countries received:', data);
+                        return { results: data };
+                    },
+                    error: function (xhr) {
+                        console.log('❌ AJAX Error:', xhr.responseText);
+                    }
+                }
+            });
+        }
+
+        initSelect2(titleInput.val());
+
+        titleInput.on('input', function () {
+            const currentTitle = $(this).val().trim();
+            console.log("🔄 Title changed:", currentTitle);
+
+            if (currentTitle.length > 0) {
+                locationSelect.empty().trigger('change');
+                locationSelect.select2('destroy');
+                initSelect2(currentTitle);
+            }
+        });
+    });
+
 </script>

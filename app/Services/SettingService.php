@@ -76,6 +76,7 @@ class SettingService
                 'value'       => $value,
                 'type'        => $data['type'],
                 'description' => $data['description'] ?? null,
+                'group'  => $data['group'] ?? null,
                 'editable'    => true,
             ]);
 
@@ -101,7 +102,9 @@ class SettingService
 
             $setting->update([
                 'value'       => $newValue,
+                'group'  => $data['group'] ?? null,
                 'description' => $data['description'] ?? $setting->description,
+
             ]);
 
             $this->forget($key); // بدلاً من Setting::forget(...)

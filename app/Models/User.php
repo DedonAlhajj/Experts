@@ -174,7 +174,10 @@ class User extends Authenticatable implements HasMedia , MustVerifyEmail
     {
         return $query->where('is_admin', true);
     }
-
+    public function scopeNotAdmin($query)
+    {
+        return $query->where('is_admin', false);
+    }
 
     public function getProfileImageUrlAttribute(): ?string
     {

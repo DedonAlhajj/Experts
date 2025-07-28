@@ -1,3 +1,56 @@
+<style>
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: calc(3.2rem); /* نفس ارتفاع input */
+        padding: 0.375rem 0.75rem;
+        line-height: 1.5;
+        border: 1px solid #e5e5e5;
+        border-radius: 0.25rem;
+        background-color: #fff;
+    }
+    .select2-selection__arrow {
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        right: 10px; /* لتقريب السهم مثل input */
+        position: absolute;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: #535353; /* غيري اللون حسب رغبتك */
+        font-size: 15px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        display: flex;
+        align-items: center; /* هذا يحاذيه عاموديًا */
+        height: 100%;
+        padding-left: 10px; /* نفس هوامش الإدخال */
+    }
+    .select2-selection--single {
+        position: relative;
+    }
+
+    .select2-selection__clear {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px; /* حسب المساحة المطلوبة بجانب السهم */
+        font-size: 1.2rem;
+        color: #dc3545;
+        cursor: pointer;
+        z-index: 10; /* يتأكد أنها فوق باقي العناصر */
+    }
+
+
+    .select2-selection__clear:hover {
+        color: #a71d2a;
+        opacity: 0.8;
+    }
+
+
+</style>
+
 <div class="hero-wrap img" style="background-image: url(images/bg_1.jpg);">
     <div class="overlay"></div>
     <div class="container">
@@ -76,7 +129,8 @@
                                                         <div class="form-field">
                                                             <div class="icon"><span class="icon-briefcase"></span></div>
                                                             <input type="text" name="title"
-                                                                   class="form-control" placeholder="eg. Garphic. Web Developer">
+                                                                   class="form-control"
+                                                                   placeholder="eg. Garphic. Web Developer">
 
                                                         </div>
                                                     </div>
@@ -103,13 +157,13 @@
                                                 <div class="col-md">
                                                     <div class="form-group">
                                                         <div class="form-field">
-                                                            <div class="form-field">
-                                                                <div class="icon"><span
-                                                                        class="icon-pencil"></span></div>
 
-                                                                <input type="text" name="title"
-                                                                       class="form-control" placeholder="eg. Garphic. Web Developer">
-                                                            </div>
+                                                            <div class="icon"><span
+                                                                    class="icon-pencil"></span></div>
+                                                            <input type="text" name="title" id="title1"
+                                                                   class="form-control" placeholder="eg. Garphic. Web Developer ....">
+
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -118,8 +172,8 @@
                                                         <div class="form-field">
                                                             <div class="icon"><span class="icon-map-marker"></span>
                                                             </div>
-                                                            <input type="text"  name="location"
-                                                                   class="form-control" placeholder="eg. Syria">
+                                                            <select name="location" id="location"
+                                                                    class="form-control"></select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -164,12 +218,12 @@
 
                         @php
                             $fallbackCertificates = [
-                                ['title' => 'Website & Software', 'icon' => 'flaticon-contact', 'total' => 143],
-                                ['title' => 'Education & Training', 'icon' => 'flaticon-mortarboard', 'total' => 143],
-                                ['title' => 'Graphic & UI/UX Design', 'icon' => 'flaticon-idea', 'total' => 143],
-                                ['title' => 'Accounting & Finance', 'icon' => 'flaticon-accounting', 'total' => 143],
-                                ['title' => 'Restaurant & Food', 'icon' => 'flaticon-dish', 'total' => 143],
-                                ['title' => 'Health & Hospital', 'icon' => 'flaticon-stethoscope', 'total' => 143],
+                                ['title' => 'Website & Software', 'icon' => 'flaticon-contact', 'total' => 0],
+                                ['title' => 'Education & Training', 'icon' => 'flaticon-mortarboard', 'total' => 0],
+                                ['title' => 'Graphic & UI/UX Design', 'icon' => 'flaticon-idea', 'total' => 0],
+                                ['title' => 'CompTIA IT Fundamentals', 'icon' => 'flaticon-accounting', 'total' => 0],
+                                ['title' => 'CompTIA A+', 'icon' => 'flaticon-dish', 'total' => 0],
+                                ['title' => 'CompTIA Network+', 'icon' => 'flaticon-stethoscope', 'total' => 0],
                             ];
 
                             $certCount = count($certificates);
@@ -205,7 +259,7 @@
 
                             <div class="col-md-2">
                                 <div class="top-category text-center no-border-left">
-                                    <h3 >
+                                    <h3>
                                         <a href="{{ route('experts.bySpecialization', ['title' => $fallback['title']]) }}">
                                             {{ $fallback['title'] }}</a>
                                     </h3>
@@ -251,6 +305,7 @@
         </div>
     </div>
 @endif
+
 
 
 

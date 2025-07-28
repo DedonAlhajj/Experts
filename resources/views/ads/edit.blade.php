@@ -58,12 +58,13 @@
                                         <div class="select-wrap">
                                             <div class="icon"><span class="icon-pin"></span></div>
                                             <select name="position" class="form-control">
-                                                @foreach(['header', 'sidebar', 'footer', 'inline'] as $pos)
+                                                @foreach(['header', 'sidebarLeft', 'sidebarRight', 'footer', 'inline'] as $pos)
                                                     <option value="{{ $pos }}" {{ old('position', $ad->position) === $pos ? 'selected' : '' }}>
-                                                        {{ ucfirst($pos) }}
+                                                        {{ ucfirst(str_replace(['sidebarLeft', 'sidebarRight'], ['Sidebar Left', 'Sidebar Right'], $pos)) }}
                                                     </option>
                                                 @endforeach
                                             </select>
+
                                         </div>
                                     </div>
                                 </div>

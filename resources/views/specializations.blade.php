@@ -78,6 +78,7 @@
                 </div>
             </div>
             <div class="d-flex flex-wrap">
+                @if($specializations && count($specializations))
                 @foreach($specializations as $item)
                     <div class="col-12 col-sm-6 col-md-3 mb-3">
                         <ul class="category text-center">
@@ -93,6 +94,9 @@
                         </ul>
                     </div>
                 @endforeach
+                @else
+                    <div class="text-center text-muted">There are no specializations currently.</div>
+                @endif
             </div>
         </div>
     </section>

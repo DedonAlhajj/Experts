@@ -7,6 +7,7 @@ use App\Services\AdService;
 use App\Services\Profile\ProfileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -193,5 +194,20 @@ class UserController extends Controller
 
             return Redirect::back()->with('error', $e->getMessage());
         }
+    }
+
+    public function suggestCountries(Request $request)
+    {
+        $search = strtolower($request->query('query'));
+
+        $countries = DB::table('users')
+            ->select('country')
+            ->whereNotNull('country')
+            ->where('country', 'LIKE', "%{$search}%")
+            ->distinct()
+            ->limit(10)
+            ->pluck('country');
+
+        return response()->json($countries);
     }
 }

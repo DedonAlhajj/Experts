@@ -10057,7 +10057,7 @@ textarea.form-control {
     font-weight: 600;
     font-size: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    animation: fadeOut 4s forwards;
+    animation: fadeOut 20s forwards;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -10275,3 +10275,21 @@ body {
     font-size: 1.2rem;
 }
 
+ .suggestions-box {
+     position: absolute;
+     z-index: 1000;
+     background: #fff;
+     border: 1px solid #ccc;
+     width: 100%;
+     max-height: 200px;
+     overflow-y: auto;
+ }
+
+.suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background: #f0f0f0;
+}

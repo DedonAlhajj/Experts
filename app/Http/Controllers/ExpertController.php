@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class ExpertController extends Controller
@@ -94,6 +95,43 @@ class ExpertController extends Controller
         );
 
         return response()->json($titles);
+    }
+
+    public function autocompleteCountry(Request $request)
+    {
+        $title = strtolower($request->query('title'));
+        $query = strtolower($request->query('query'));
+
+        $countries = DB::table('users')
+            ->join('expert_infos', 'users.id', '=', 'expert_infos.user_id')
+            ->whereNotNull('users.country')
+            ->where('expert_infos.title_normalized', 'LIKE', "%{$title}%")
+            ->where('users.country', 'LIKE', "%{$query}%")
+            ->select('users.country')
+            ->distinct()
+            ->limit(20)
+            ->pluck('users.country');
+
+        return response()->json($countries->map(function ($country) {
+            return ['id' => $country, 'text' => $country];
+        }));
+    }
+
+    public function autocompleteCountriesByExpertise(Request $request)
+    {
+        $title = strtolower($request->query('title'));
+
+        $countries = DB::table('users')
+            ->join('expert_infos', 'users.id', '=', 'expert_infos.user_id')
+            ->where('users.is_active', 1)
+            ->where('expert_infos.title_normalized', 'LIKE', "%{$title}%")
+            ->whereNotNull('users.country')
+            ->select('users.country')
+            ->distinct()
+            ->limit(15)
+            ->pluck('users.country');
+
+        return response()->json($countries->map(fn($c) => ['id' => $c, 'text' => $c]));
     }
 
 

@@ -23,7 +23,7 @@
     <section class="ftco-section bg-light">
         <div class="container">
             <div class="row">
-                <div class="ftco-search">
+                <div style="    margin-bottom: 20px;" class="ftco-search">
                     <div class="row">
                         <div class="col-md-12 nav-link-wrap">
                             <div class="nav nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">

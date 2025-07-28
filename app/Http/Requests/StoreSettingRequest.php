@@ -26,6 +26,7 @@ class StoreSettingRequest extends FormRequest
             'type' => ['required', 'in:text,email,number,image,boolean,link'],
             'value' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'max:2048'],
+            'group' =>['nullable', 'string'],
             'description' => ['nullable', 'string'],
         ];
     }

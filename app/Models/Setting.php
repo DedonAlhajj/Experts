@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     use HasFactory;
-    protected $fillable = ['key', 'value' , 'type','description', 'editable'];
+    protected $fillable = ['key', 'value' ,'group', 'type','description', 'editable'];
 
 
     public static function get(string $key, $default = null): mixed

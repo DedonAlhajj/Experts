@@ -24,7 +24,7 @@ class AdRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'position' => 'required|in:header,sidebar,footer,inline',
+            'position' => 'required|in:header,sidebarLeft,sidebarRight,footer,inline',
             'is_active' => 'boolean',
             'start_at' => 'nullable|date',
             'end_at' => 'nullable|date|after_or_equal:start_at',

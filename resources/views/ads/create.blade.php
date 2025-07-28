@@ -57,23 +57,13 @@
                                         <div class="select-wrap">
                                             <div class="icon"><span class="icon-pin"></span></div>
                                             <select name="position" class="form-control">
-                                                <option
-                                                    value="header" {{ old('position') == 'header' ? 'selected' : '' }}>
-                                                    Header
-                                                </option>
-                                                <option
-                                                    value="sidebar" {{ old('position') == 'sidebar' ? 'selected' : '' }}>
-                                                    Sidebar
-                                                </option>
-                                                <option
-                                                    value="footer" {{ old('position') == 'footer' ? 'selected' : '' }}>
-                                                    Footer
-                                                </option>
-                                                <option
-                                                    value="inline" {{ old('position') == 'inline' ? 'selected' : '' }}>
-                                                    Inline
-                                                </option>
+                                                <option value="header" {{ old('position') == 'header' ? 'selected' : '' }}>Header</option>
+                                                <option value="sidebarLeft" {{ old('position') == 'sidebarLeft' ? 'selected' : '' }}>Sidebar Left</option>
+                                                <option value="sidebarRight" {{ old('position') == 'sidebarRight' ? 'selected' : '' }}>Sidebar Right</option>
+                                                <option value="footer" {{ old('position') == 'footer' ? 'selected' : '' }}>Footer</option>
+                                                <option value="inline" {{ old('position') == 'inline' ? 'selected' : '' }}>Inline</option>
                                             </select>
+
                                         </div>
                                     </div>
                                 </div>

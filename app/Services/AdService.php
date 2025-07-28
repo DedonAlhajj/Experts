@@ -138,7 +138,7 @@ class AdService
     {
         return cache()->remember('ads:by_position', 300, function () {
             return Ad::visible()
-                ->whereIn('position', ['header', 'sidebar', 'footer', 'inline'])
+                ->whereIn('position', ['header', 'sidebarLeft', 'sidebarRight', 'footer', 'inline'])
                 ->orderBy('start_at', 'desc')
                 ->get()
                 ->groupBy('position')
