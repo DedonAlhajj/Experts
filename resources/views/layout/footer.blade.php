@@ -41,9 +41,9 @@
                         <li class="ftco-animate"><a href="@setting('linkedIn_link')"><span class="icon-linkedin"></span></a></li>
                         <li class="ftco-animate"><a href="@setting('telegram_link')"><span class="icon-telegram"></span></a></li>
                         <li class="ftco-animate"><a href="@setting('general_mail')"><span class="icon-mail-forward"></span></a></li>
-                        <li class="ftco-animate"><a href="@setting('X_url')"><span class="icon-twitter"></span></a></li>
+{{--                        <li class="ftco-animate"><a href="@setting('X_url')"><span class="icon-twitter"></span></a></li>--}}
                         <li class="ftco-animate"><a href="@setting('facebook_url')"><span class="icon-facebook"></span></a></li>
-                        <li class="ftco-animate"><a href="@setting('instagram')"><span class="icon-instagram"></span></a></li>
+{{--                        <li class="ftco-animate"><a href="@setting('instagram')"><span class="icon-instagram"></span></a></li>--}}
                     </ul>
                 </div>
             </div>

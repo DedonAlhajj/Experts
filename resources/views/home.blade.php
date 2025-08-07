@@ -247,7 +247,7 @@
                 <div class="col-lg-9 pr-lg-5">
                     <div class="row justify-content-center pb-3">
                         <div class="col-md-12 heading-section ftco-animate">
-                            <span class="subheading">@setting('home.section_4.heading_1')</span>
+{{--                            <span class="subheading">@setting('home.section_4.heading_1')</span>--}}
                             <h2 class="mb-4">@setting('home.section_4.heading_2')</h2>
                         </div>
                     </div>
@@ -418,7 +418,7 @@
         <div class="container">
             <div class="row justify-content-center pb-3">
                 <div class="col-md-10 heading-section heading-section-white text-center ftco-animate">
-                    <span class="subheading">@setting('home.section_6.label')</span>
+{{--                    <span class="subheading">@setting('home.section_6.label')</span>--}}
                     <h2 class="mb-4">@setting('home.section_6.description')</h2>
                 </div>
             </div>
@@ -456,7 +456,7 @@
         <div class="container">
             <div class="row justify-content-center mb-5 pb-3">
                 <div class="col-md-7 heading-section text-center ftco-animate">
-                    <span class="subheading">@setting('home.section_7.title')</span>
+{{--                    <span class="subheading">@setting('home.section_7.title')</span>--}}
                     <h2><span>@setting('home.section_7.description')</span></h2>
                 </div>
             </div>

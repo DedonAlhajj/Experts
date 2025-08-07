@@ -10219,10 +10219,17 @@ body {
     background-color: #f98e00;
     transform: scale(1.03);
 }
+
+.alert-wrapper {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap; /* حتى تنزل تحت بعض في الشاشات الضيقة */
+}
+
 /* الصندوق العام للرسالة */
 .side-alert {
     position: fixed;
-    top: 80px; /* لتكون تحت الـ navbar */
+    top: 88px; /* لتكون تحت الـ navbar */
     left: 20px;
     width: clamp(280px, 60%, 665px);
     max-width: 100%;
@@ -10239,8 +10246,35 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     border-left: 4px solid;
     z-index: 9999;
-}
+    /*min-height: 48px;*/
 
+    height: 48px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+@media (max-width: 600px) {
+    .side-alert {
+        white-space: normal;
+        height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+@media (max-width: 600px) {
+    .alert-wrapper {
+        flex-direction: column;
+    }
+
+    .side-alert {
+        min-height: auto;
+    }
+
+    .side-alert.success,
+    .side-alert.warning {
+        min-height: calc(var(--max-alert-height, auto)); /* نعيّن أقصى ارتفاع بشكل مرن */
+    }
+}
 /* نجاح */
 .side-alert.success {
     background-color: #ecfdf5;
@@ -10248,11 +10282,16 @@ body {
     border-color: #198754;
 }
 
+.side-alert form {
+    padding-top: 14px;
+}
+
 /* تحذير */
 .side-alert.warning {
     background-color: #fff4e5;
     color: #6c4700;
     border-color: #ffc107;
+
 }
 
 /* زر الإرسال */

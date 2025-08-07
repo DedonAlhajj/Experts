@@ -124,6 +124,7 @@ class ExpertController extends Controller
         $countries = DB::table('users')
             ->join('expert_infos', 'users.id', '=', 'expert_infos.user_id')
             ->where('users.is_active', 1)
+            ->where('users.is_expert', 1)
             ->where('expert_infos.title_normalized', 'LIKE', "%{$title}%")
             ->whereNotNull('users.country')
             ->select('users.country')

@@ -15,7 +15,7 @@
                            name="current_password"
                            class="form-control"
                            placeholder="Enter current password"
-                           autocomplete="current-password">
+                           autocomplete="off" required>
                 </div>
                 @error('current_password')
                 <p class="text-danger mt-1">{{ $message }}</p>
@@ -29,14 +29,19 @@
         <div class="col-md mr-md-2">
             <div class="form-group">
                 <p class="label-fill">New Password</p>
-                <div class="form-field">
+                <div class="form-field position-relative">
                     <div class="icon"><span class="icon-key"></span></div>
                     <input type="password"
                            name="password"
+                           id="newPassword"
                            class="form-control"
                            placeholder="Enter new password"
                            autocomplete="new-password">
+                    <button type="button" class="toggle-eye" data-target="newPassword">
+                        <i class="icon-eye"></i>
+                    </button>
                 </div>
+
                 @error('password')
                 <p class="text-danger mt-1">{{ $message }}</p>
                 @enderror
@@ -51,11 +56,18 @@
                 <p class="label-fill">Confirm Password</p>
                 <div class="form-field">
                     <div class="icon"><span class="icon-refresh"></span></div>
+
+
                     <input type="password"
                            name="password_confirmation"
+                           id="confirmPassword"
                            class="form-control"
                            placeholder="Confirm new password"
                            autocomplete="new-password">
+                    <button type="button" class="toggle-eye" data-target="confirmPassword">
+                        <i class="icon-eye"></i>
+                    </button>
+
                 </div>
                 @error('password_confirmation')
                 <p class="text-danger mt-1">{{ $message }}</p>
@@ -75,3 +87,7 @@
     </div>
 </form>
 
+<script>
+
+
+</script>

@@ -8,24 +8,31 @@
 </head>
 <body>
 
-{{-- يفضل وضعه داخل body مباشرة أو في منطقة ثابتة --}}
-@if (Auth::user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! Auth::user()->hasVerifiedEmail())
-    <div class="side-alert warning">
-        <span class="alert-icon">⚠️</span>
-        Your email address is <strong>unverified</strong>.
-        <form id="send-verification" method="POST" action="{{ route('verification.send') }}" class="d-inline">
-            @csrf
-            <button type="submit" class="resend-button">Click here to re-send the verification email</button>
-        </form>
-    </div>
-@endif
+<div class="alert-wrapper">
 
-@if (session('status') === 'verification-link-sent')
-    <div class="side-alert success">
-        <span class="alert-icon">✅</span>
-        A new verification link has been sent to your email address.
-    </div>
-@endif
+    {{-- يفضل وضعه داخل body مباشرة أو في منطقة ثابتة --}}
+    @if (Auth::user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! Auth::user()->hasVerifiedEmail())
+        <div class="side-alert warning">
+            <span class="alert-icon">⚠️</span>
+            Your email address is <strong>unverified</strong>.
+            <form id="send-verification" method="POST" action="{{ route('verification.send') }}" class="d-inline">
+                @csrf
+                <button type="submit" class="resend-button">Click here to re-send the verification email</button>
+            </form>
+        </div>
+    @endif
+
+    @if (session('status') === 'verification-link-sent')
+        <div class="side-alert success">
+            <span class="alert-icon">✅</span>
+            <div class="alert-body">A new verification link has been sent to your email address.</div>
+            <div style="height: 119px;"></div> {{-- عنصر فارغ ليعادل مكان الزر في الرسالة الأخرى --}}
+        </div>
+    @endif
+</div>
+
+
+
 
 @include('layout.navigation')
 

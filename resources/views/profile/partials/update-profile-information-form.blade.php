@@ -19,7 +19,7 @@
                     <input type="text" id="fullname" name="name"
                            value="{{ old('name', $user->name) }}"
                            class="form-control"
-                           placeholder="Enter your full name">
+                           placeholder="Enter your full name" required>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 <p for="fullname" class="label-fill">Birth Date</p>
                 <div class="form-field">
                     <div class="icon"><span class="icon-calendar"></span></div>
-                    <input name="date_of_birth" type="date"
+                    <input name="date_of_birth" type="date" required
                            value="{{old('date_of_birth', $user->date_of_birth?->format('Y-m-d'))}}"
                            class="form-control" placeholder="date of birth">
                 </div>
@@ -70,7 +70,7 @@
                     <div class="icon"><span class="icon-text_fields"></span></div>
                     <textarea name="bio" id="bio" rows="4"
                               class="form-control"
-                              cols="30" rows="5"
+                              cols="30" rows="5" required
                               placeholder="Your Bio">{{ old('bio', $user->bio) }}</textarea>
                     @error('bio')
                     <span class="text-danger small">{{ $message }}</span>
@@ -133,7 +133,7 @@
                 <p for="fullname" class="label-fill">Phone</p>
                 <div class="form-field">
 {{--                    <div class="icon"><span class="icon-phone"></span></div>--}}
-                    <input type="text" id="fullname" name="phone"
+                    <input type="text" id="fullname" name="phone" required
                            value="{{old('phone', $user->phone)}}" class="form-control"
                            placeholder="Phone">
                 </div>
@@ -195,7 +195,7 @@
                     <input type="text" id="country" name="country"
                            value="{{ old('country', $user->country) }}"
                            class="form-control awesomplete"
-                           placeholder="Country" autocomplete="off" />
+                           placeholder="Country" required autocomplete="off" />
                     @error('country')
                     <span class="text-danger small">{{ $message }}</span>
                     @enderror
@@ -211,7 +211,7 @@
                     <input type="text" id="city" name="city"
                            value="{{ old('city', $user->city) }}"
                            class="form-control awesomplete"
-                           placeholder="City" autocomplete="off" />
+                           placeholder="City" required autocomplete="off" />
 
                     @error('city')
                     <span class="text-danger small">{{ $message }}</span>
@@ -280,7 +280,7 @@
                     <i class="fas fa-cloud-upload-alt fs-2 mb-2"></i>
                     <p class="small mb-0">Select Image</p>
                 </div>
-                <input type="file" name="profile_image" accept="image/*" onchange="previewProfile1(event)">
+                <input type="file" name="profile_image" accept="image/*" onchange="previewProfile2(event)">
             </label>
             @error('profile_image')
             <span class="text-danger small">{{ $message }}</span>
@@ -315,7 +315,7 @@
                     <i class="fas fa-file-upload fs-3 mb-2"></i>
                     <p class="small mb-0">Select CV (PDF)</p>
                 </div>
-                <input type="file" name="cv_file" accept=".pdf" onchange="updateFileName1(event)">
+                <input type="file" name="cv_file" accept=".pdf" onchange="updateFileName2(event)">
                 <span id="cv-file-name" class="small text-muted d-block mt-1"></span>
 
             </label>

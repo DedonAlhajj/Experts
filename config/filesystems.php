@@ -50,6 +50,12 @@ return [
             'url' => env('APP_URL') . '/expert_files/img_profile',
             'visibility' => 'public',
         ],
+        'blog_image' => [
+            'driver' => 'local',
+            'root' => public_path('expert_files/blogs'),
+            'url' => env('APP_URL') . '/expert_files/blogs',
+            'visibility' => 'public',
+        ],
         'ad' => [
             'driver' => 'local',
             'root' => public_path('expert_files/ads'),

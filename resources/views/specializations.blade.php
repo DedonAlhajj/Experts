@@ -22,8 +22,8 @@
         <div class="container">
             <div class="row justify-content-center mb-4">
                 <div class="col-md-7 text-center heading-section ftco-animate">
-                    <span class="subheading">@setting('home.page_2.subsection_1.text_1')</span>
-                    <h2 class="mb-4">@setting('home.page_2.subsection_1.text_2')</h2>
+{{--                    <span class="subheading">@setting('home.page_2.subsection_1.text_1')</span>--}}
+                    <h2 class="mb-4">@setting('home.page_2.subsection_1.text_1')</h2>
                 </div>
             </div>
             <div class="row">
@@ -73,7 +73,7 @@
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-md-7 heading-section text-center ftco-animate">
-                    <span class="subheading">Expert's Specializations</span>
+{{--                    <span class="subheading">Expert's Specializations</span>--}}
                     <h2 class="mb-0">Top Specializations</h2>
                 </div>
             </div>

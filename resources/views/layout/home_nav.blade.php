@@ -3,6 +3,15 @@
         width: 100% !important;
     }
 
+    .required-star {
+        position: absolute;
+        right: 12px;
+        top: 59%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+        pointer-events: none; /* ما تأثر على الضغط داخل الحقل */
+    }
+
     .select2-container--default .select2-selection--single {
         height: calc(3.2rem); /* نفس ارتفاع input */
         padding: 0.375rem 0.75rem;
@@ -156,17 +165,20 @@
 
                                                 <div class="col-md">
                                                     <div class="form-group">
-                                                        <div class="form-field">
+                                                        <div class="form-field position-relative"> <!-- مهم لإسناد الموضع للنجمة -->
 
-                                                            <div class="icon"><span
-                                                                    class="icon-pencil"></span></div>
+{{--                                                            <div class="icon"><span class="icon-pencil"></span></div>--}}
+
                                                             <input type="text" name="title" id="title1"
-                                                                   class="form-control" placeholder="eg. Garphic. Web Developer ....">
+                                                                   class="form-control pl-4" placeholder="eg. Graphic. Web Developer ...." required>
 
+                                                            <!-- ⭐ النجمة الحمراء داخل الحقل -->
+                                                            <span class="text-danger position-absolute required-star">*</span>
 
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md">
                                                     <div class="form-group">
                                                         <div class="form-field">

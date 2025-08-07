@@ -28,23 +28,31 @@
 
     <section class="ftco-section bg-light">
         <div class="container">
-            <div class="row">
 
+            <!-- التنبيه الاحترافي -->
+            <div class="alert alert-warning d-flex align-items-center mb-4" role="alert" style="font-weight: 500;">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span>
+                    @setting('profile_warning_message')
+                </span>
+            </div>
+
+            <div class="row">
                 <div class="col-md-12 col-lg-8 mb-5">
                     @include('profile.partials.update-profile-information-form')
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-4" style="    margin-top: 16px;">
                     @include('profile.partials.update-password-form')
 
                     <div class="p-4 mb-3 bg-white">
                         @include('profile.partials.delete-user-form')
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
+
 
 @endsection
 <script>
@@ -101,3 +109,6 @@
     }
 
 </script>
+
+
+

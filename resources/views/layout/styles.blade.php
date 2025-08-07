@@ -27,4 +27,18 @@
 <style>.awesomplete {
         width: 100%;
     }
+
+    .toggle-eye {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        font-size: 1.2rem;
+    }
+
 </style>
+

@@ -63,9 +63,11 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse{
         try {
-            $this->profileService->update($request->user(), $request->validated());
 
-            return Redirect::route('profile.edit')->with('success', 'تم تحديث الملف الشخصي بنجاح ✅ جاري الآن تحميل صورة الملف الشخصي والسيرة الذاتية في الخلفية... يمكنك الاستمرار بالتصفح، وسيتم ربط الملفات تلقائيًا بمجرد الانتهاء من المعالجة.');
+            $this->profileService->update($request->user(), $request->validated());
+            return Redirect::route('profile.show', ['user' => auth()->user()->slug])
+                ->with('success', 'Profile updated successfully ✅.');
+
         } catch (MediaUploadException $e) {
             // 🔴 خطأ في رفع الصورة أو الملف
             return back()->with('error' , $e->getMessage());

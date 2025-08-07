@@ -3,7 +3,7 @@
         <a class="navbar-brand" href="{{ route('home') }}">
             <img src="{{ asset('storage/' . Setting::get('logo')) }}"
                  onerror="this.onerror=null; this.src='{{ asset('images/default.png') }}';"
-                 alt="Almounkez Logo" height="50">
+                 alt="Watantech" height="50">
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -17,7 +17,7 @@
                 <li class="nav-item"><a href="{{route('specializations')}}" class="nav-link">@setting('home.nav.item_2')</a></li>
                 <li class="nav-item"><a href="{{route('getJobSeeker.index')}}" class="nav-link">@setting('home.nav.item_3')</a></li>
                 <li class="nav-item"><a href="{{route('experts.index')}}" class="nav-link">@setting('home.nav.item_4')</a></li>
-                <li class="nav-item"><a href="{{route('blog')}}" class="nav-link">@setting('home.nav.item_5')</a></li>
+                <li class="nav-item"><a href="{{route('blogs.index')}}" class="nav-link">@setting('home.nav.item_5')</a></li>
 {{--                <li class="nav-item"><a href="{{route('contact')}}" class="nav-link">Contact</a></li>--}}
 
                 @guest
@@ -35,27 +35,23 @@
 
                 @auth
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="navbarDropdown">
-
-                            <a href="{{ route('profile.show', auth()->user()) }}" class="dropdown-item">
+                            <a class="dropdown-item" href="{{ route('profile.show', auth()->user()) }}">
                                 Profile
                             </a>
 
-{{--                            <a class="dropdown-item" href="{{route('profile.edit')}}">Profile</a>--}}
-
                             @if (Auth::user()->is_admin)
-                                <a class="dropdown-item" href="{{route('admin.inactive-users') }}">Inactive Users</a>
-
-                                <a class="dropdown-item" href="{{route('cache.forget') }}">Cache Forget</a>
-                                <a class="dropdown-item" href="{{route('ads.index') }}">Ads</a>
-                                <a class="dropdown-item" href="{{route('settings.index') }}">Settings</a>
+                                <a class="dropdown-item" href="{{route('admin.inactive-users')}}">Inactive Users</a>
+                                <a class="dropdown-item" href="{{route('blogs.index')}}">Blogs</a>
+                                <a class="dropdown-item" href="{{route('cache.forget')}}">Cache Forget</a>
+                                <a class="dropdown-item" href="{{route('ads.index')}}">Ads</a>
+                                <a class="dropdown-item" href="{{route('settings.index')}}">Settings</a>
                                 <a class="dropdown-item" href="{{route('newsletter.index')}}">Subscribers</a>
                                 <a class="dropdown-item" href="{{route('newsletters.index')}}">Newsletters</a>
-
                             @endif
 
                             <form method="POST" action="{{ route('logout') }}">
@@ -65,6 +61,7 @@
                         </div>
                     </li>
                 @endauth
+
 
 
             </ul>

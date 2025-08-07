@@ -63,18 +63,18 @@ class ProfileService
 
             DB::commit();
             // رفع الملفات
-            if ($profileImage) {
-                $tempProfilePath = $profileImage->store('temp_uploads');
-                UploadMediaFileJob::dispatch($user, $tempProfilePath, 'profile_image');
-            }
+//            if ($profileImage) {
+//                $tempProfilePath = $profileImage->store('temp_uploads');
+//                UploadMediaFileJob::dispatch($user, $tempProfilePath, 'profile_image');
+//            }
+//
+//            if ($cvFile) {
+//                $tempCvPath = $cvFile->store('temp_uploads');
+//                UploadMediaFileJob::dispatch($user, $tempCvPath, 'cv_file');
+//            }
 
-            if ($cvFile) {
-                $tempCvPath = $cvFile->store('temp_uploads');
-                UploadMediaFileJob::dispatch($user, $tempCvPath, 'cv_file');
-            }
-
-//            (new UploadProfileImageAction())->execute($user, $profileImage);
-//            (new UploadCvFileAction())->execute($user, $cvFile);
+            (new UploadProfileImageAction())->execute($user, $profileImage);
+            (new UploadCvFileAction())->execute($user, $cvFile);
 
 
         } catch (\Throwable $e) {

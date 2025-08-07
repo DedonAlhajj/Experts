@@ -45,12 +45,10 @@ class User extends Authenticatable implements HasMedia , MustVerifyEmail
 
         'gender',
         'date_of_birth',
-        'profile_image',
         'bio',
 
         'is_expert',
         'is_job_seeker',
-        'cv_file',
         'social_links',
         'available_for_remote',
         'is_active',
@@ -148,9 +146,10 @@ class User extends Authenticatable implements HasMedia , MustVerifyEmail
         return SlugOptions::create()
             ->generateSlugsFrom('name')      // توليد slug من الاسم
             ->saveSlugsTo('slug')            // حفظه في عمود slug
-            ->slugsShouldBeNoLongerThan(50)  // (اختياري) تحديد الطول الأقصى للـ slug
+            ->slugsShouldBeNoLongerThan(70)  // (اختياري) تحديد الطول الأقصى للـ slug
             ->usingSeparator('-')            // فاصل بين الكلمات
-            ->allowDuplicateSlugs(false);     // تجنب التكرار تلقائيًا
+            ->useSuffixOnFirstOccurrence();     // تجنب التكرار تلقائيًا
+
     }
 
     public function scopeExperts($query)

@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -36,13 +37,24 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+        }catch (\Throwable $e) {
 
-        event(new Registered($user));
+            Log::error('Failed tojjjjjjjjjjjjjjj event: '.$e->getMessage());
+        }
+
+
+
+//        try {
+//            event(new Registered($user));
+//        } catch (\Throwable $e) {
+//            Log::error('Failed to fire Registered event: '.$e->getMessage());
+//        }
 
         Auth::login($user);
 

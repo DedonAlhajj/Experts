@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ExpertController;
 use App\Http\Controllers\FrontDashboardController;
 use App\Http\Controllers\NewsletterController;
@@ -38,6 +39,11 @@ Route::get('/blog', [FrontDashboardController::class, 'blog'])->name('blog');
 
 Route::get('/contact', [FrontDashboardController::class, 'contact'])->name('contact');
 
+Route::prefix('blogs')->name('blogs.')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('index');
+    Route::get('/{blog}', [BlogController::class, 'show'])->name('show');
+
+});
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
@@ -56,6 +62,18 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::put('/expert-info/{expertInfo}', [ExpertController::class, 'update'])->name('expert-info.update');
 
     Route::middleware(['is_admin'])->group(function () {
+
+        Route::prefix('blogs')->name('blogs.')->group(function () {
+//            Route::get('/', [BlogController::class, 'index'])->name('index');
+            Route::get('/create', [BlogController::class, 'create'])->name('create');
+            Route::post('/', [BlogController::class, 'store'])->name('store');
+
+//            Route::get('/{blog}', [BlogController::class, 'show'])->name('show');
+            Route::get('/{blog}/edit', [BlogController::class, 'edit'])->name('edit');
+            Route::put('/{blog}', [BlogController::class, 'update'])->name('update');
+            Route::delete('/{blog}', [BlogController::class, 'destroy'])->name('destroy');
+        });
+
 
         Route::prefix('ads')->group(function () {
             Route::get('/', [AdController::class, 'index'])->name('ads.index');

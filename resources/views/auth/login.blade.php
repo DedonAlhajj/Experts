@@ -49,19 +49,28 @@
                         {{-- 🔐 كلمة المرور --}}
                         <div class="form-group mb-4">
                             <p class="label-fill">Password</p>
-                            <div class="form-field">
+                            <div class="form-field position-relative">
                                 <div class="icon"><span class="icon-lock"></span></div>
+
                                 <input type="password"
                                        name="password"
-                                       class="form-control"
+                                       id="loginPassword"
+                                       class="form-control pr-5"
                                        placeholder="Enter your password"
                                        required
                                        autocomplete="current-password">
+
+                                <!-- زر العين -->
+                                <button type="button" class="toggle-eye" data-target="loginPassword">
+                                    <i class="icon-eye"></i>
+                                </button>
                             </div>
+
                             @error('password')
                             <p class="text-danger mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+
 
                         {{-- ✅ تذكرني --}}
                         <div class="form-group mb-4 d-flex align-items-center">
@@ -89,3 +98,22 @@
         </div>
     </section>
 @endsection
+<script>
+    document.querySelectorAll('.toggle-eye').forEach(btn => {
+        const targetId = btn.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+
+        btn.addEventListener('mousedown', () => {
+            input.type = 'text';
+        });
+
+        btn.addEventListener('mouseup', () => {
+            input.type = 'password';
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            input.type = 'password';
+        });
+    });
+
+</script>

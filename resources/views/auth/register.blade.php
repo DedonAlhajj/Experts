@@ -63,39 +63,52 @@
                             @enderror
                         </div>
 
-                        {{-- 🔐 كلمة المرور --}}
+                        <!-- كلمة المرور -->
                         <div class="form-group mb-4">
                             <p class="label-fill">Password</p>
-                            <div class="form-field">
+                            <div class="form-field position-relative">
                                 <div class="icon"><span class="icon-lock"></span></div>
+
                                 <input type="password"
                                        name="password"
-                                       class="form-control"
+                                       id="newPassword"
+                                       class="form-control pr-5"
                                        placeholder="Enter password"
                                        required
                                        autocomplete="new-password">
+
+                                <button type="button" class="toggle-eye" data-target="newPassword">
+                                    <i class="icon-eye"></i>
+                                </button>
                             </div>
                             @error('password')
                             <p class="text-danger mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        {{-- 🔁 تأكيد كلمة المرور --}}
+                        <!-- تأكيد كلمة المرور -->
                         <div class="form-group mb-4">
                             <p class="label-fill">Confirm Password</p>
-                            <div class="form-field">
+                            <div class="form-field position-relative">
                                 <div class="icon"><span class="icon-check"></span></div>
+
                                 <input type="password"
                                        name="password_confirmation"
-                                       class="form-control"
+                                       id="confirmPassword"
+                                       class="form-control pr-5"
                                        placeholder="Confirm password"
                                        required
                                        autocomplete="new-password">
+
+                                <button type="button" class="toggle-eye" data-target="confirmPassword">
+                                    <i class="icon-eye"></i>
+                                </button>
                             </div>
                             @error('password_confirmation')
                             <p class="text-danger mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+
 
                         {{-- 🧭 زر الدخول والرابط --}}
                         <div class="d-flex justify-content-between align-items-center mt-3">
