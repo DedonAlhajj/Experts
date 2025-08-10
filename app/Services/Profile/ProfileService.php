@@ -44,21 +44,48 @@ class ProfileService
      * @throws RuntimeException If any part of the update process fails.
      *
      */
+
+    private function collectAndMergeExperiences(array $data): array
+    {
+        // فك تشفير حقول JSON الجديدة
+        $skills = json_decode($data['skills_json'] ?? '[]', true);
+        $certificates = json_decode($data['certificates_json'] ?? '[]', true);
+        $experiences_new = json_decode($data['experiences_json'] ?? '[]', true);
+
+        // استخراج بيانات الـ Portfolio القديمة
+        // ملاحظة: الحقل القديم اسمه 'experiences'، لذا سنحتاج لفلترة البيانات منه
+        $portfolios = collect($data['experiences'] ?? [])
+            ->filter(fn($item) => ($item['category'] ?? '') === 'portfolio')
+            ->values()
+            ->all();
+
+        // دمج كل المصفوفات في مصفوفة واحدة
+        return array_merge($skills, $certificates, $experiences_new, $portfolios);
+    }
     public function update(User $user, array $data): void
     {
         DB::beginTransaction();
         try {
-            // فصل الملفات
+            // 1. جمع جميع الخبرات من البيانات المرسلة
+            $allExperiences = $this->collectAndMergeExperiences($data);
+
+            // 2. فصل الملفات وحذف حقولها من $data
             $profileImage = $data['profile_image'] ?? null;
             $cvFile = $data['cv_file'] ?? null;
             unset($data['profile_image'], $data['cv_file']);
 
-            // تحديث المعلومات الأساسية
+            // 💡 3. حذف جميع الحقول المتعلقة بالخبرات من $data
+            unset($data['skills_json'], $data['certificates_json'], $data['experiences_json']);
+
+            // ⛔️ لاحظ أن حقل الـ Portfolio القديم اسمه 'experiences' لذا يجب حذفه أيضاً
+            unset($data['experiences']);
+
+            // 4. تحديث المعلومات الأساسية للمستخدم باستخدام $data النظيف
             (new UpdateUserInfoAction())->execute($user, $data);
 
-            // مزامنة الخبرات
-            if (!empty($data['experiences'])) {
-                (new SyncExpertInfosAction())->execute($user, $data['experiences']);
+            // 5. مزامنة الخبرات المجمعة
+            if (!empty($allExperiences)) {
+                (new SyncExpertInfosAction())->execute($user, $allExperiences);
             }
 
             DB::commit();

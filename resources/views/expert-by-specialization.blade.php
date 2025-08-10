@@ -11,7 +11,7 @@
                 <div class="col-md-12 ftco-animate text-center mb-5">
                     <p class="breadcrumbs mb-0"><span class="mr-3"><a href="{{route('home')}}">@setting('home.breadcrumb_1')
                                 <i class="ion-ios-arrow-forward"></i></a></span> <span>@setting('home.page_4.breadcrumb')</span></p>
-                    <h1 class="mb-3 bread">{{$title}} - @setting('home.page_4.breadcrumb')</h1>
+                    <h1 class="mb-3 bread">@setting('home.page_4.breadcrumb')</h1>
                 </div>
             </div>
         </div>

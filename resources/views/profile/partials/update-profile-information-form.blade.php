@@ -4,7 +4,7 @@
 </form>
 
 
-<form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data"
+<form id="formTest" method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data"
       class="search-job p-5 bg-white">
     @csrf
     @method('patch')
@@ -346,6 +346,10 @@
 
     <h3 class="h5 text-black mb-3" style="color: #fdab44;">Professional Info</h3>
 
+
+
+
+
     @php
         // تقسيم البيانات حسب الفئة
         $skills = $expert_infos['skill'] ?? collect();
@@ -354,60 +358,82 @@
         $experiences = $expert_infos['experience'] ?? collect();
 
         // فهرسة أول إدخال ديناميكي تبدأ بعد عدد كل العناصر القديمة
-        $initialIndex = $skills->count() + $certificates->count() + $portfolios->count() + $experiences->count();
+        $initialIndex = $portfolios->count();
     @endphp
+
+
+{{--    <div class="form-group mb-4">--}}
+{{--        <label class="field-label text-primary">Skills</label>--}}
+{{--        <div id="skills-tags-container">--}}
+{{--            @foreach($skills as $item)--}}
+{{--                <span class="skill-tag">--}}
+{{--                {{ $item->title }}--}}
+{{--                <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>--}}
+{{--            </span>--}}
+{{--            @endforeach--}}
+{{--        </div>--}}
+{{--        <input type="text" id="skill-input" class="form-control" placeholder="Enter skill and press Enter">--}}
+{{--        <input type="hidden" name="skills_json" id="hidden-skills-input">--}}
+{{--    </div>--}}
 
     {{-- 🧠 Hidden counter --}}
     <script>let experienceIndex = {{ $initialIndex }};</script>
 
-    {{-- 👇 كل مجموعة تستخدم JavaScript فقط لإضافة الحقول الجديدة --}}
+
     <div class="form-group mb-4">
-        <label class="field-label text-primary">Skill Title</label>
-        <div id="skills-wrapper">
-            @foreach($skills as $i => $item)
-                <div class="form-field d-flex gap-3 mb-2">
-                    <div class="icon"><span class="icon-bulb"></span></div>
-                    <input type="hidden" name="experiences[{{ $i }}][category]" value="skill">
-                    <input type="text" required
-                           name="experiences[{{ $i }}][title]"
-                           class="form-control awesomplete"
-                           data-category="skill"
-                           value="{{ $item->title }}"
-                           placeholder="Enter skill">
-                    <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
-                </div>
+        <label class="field-label text-primary">Skills</label>
+        <div id="skills-tags-container" class="d-flex flex-wrap gap-2 mb-2">
+            @foreach($skills as $item)
+                {{-- 💡 لاحظ إضافة كلاس bg-primary أو أي لون تريده --}}
+                <span class="skill-tag badge bg-primary text-white d-flex align-items-center">
+                {{ $item->title }}
+                <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close"></button>
+            </span>
             @endforeach
         </div>
-        <button type="button" onclick="addField('skills-wrapper', 'skill', 'icon-bulb', 'Enter skill')" class="btn btn-sm btn-outline-primary">+ Add Skill</button>
+        <input type="text" id="skill-input" class="form-control" placeholder="Enter skill and press Enter">
+        <input type="hidden" name="skills_json" id="hidden-skills-input">
     </div>
 
-    <div class="form-group mb-4">
-        <label class="field-label text-warning">Certificate Title</label>
-        <div id="certificates-wrapper">
-            @foreach($certificates as $i => $item)
-                @php $index = $skills->count() + $i; @endphp
-                <div class="form-field d-flex gap-3 mb-2">
-                    <div class="icon"><span class="icon-award"></span></div>
-                    <input type="hidden" name="experiences[{{ $index }}][category]" value="certificate">
-                    <input type="text" required
-                           name="experiences[{{ $index }}][title]"
-                           class="form-control awesomplete"
-                           data-category="certificate"
-                           value="{{ $item->title }}"
-                           placeholder="Enter certificate">
 
-                    <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
-                </div>
+
+    <div class="form-group mb-4">
+        <label class="field-label text-warning">Certificates</label>
+        <div id="certificates-tags-container" class="d-flex flex-wrap gap-2 mb-2">
+            @foreach($certificates as $item)
+                {{-- 💡 استخدام bg-warning ليكون اللون أصفر --}}
+                <span class="skill-tag badge bg-warning text-white d-flex align-items-center">
+                {{ $item->title }}
+                <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close"></button>
+            </span>
             @endforeach
         </div>
-        <button type="button" onclick="addField('certificates-wrapper', 'certificate', 'icon-award', 'Enter certificate')" class="btn btn-sm btn-outline-warning">+ Add Certificate</button>
+        <input type="text" id="certificate-input" class="form-control" placeholder="Enter certificate title and press Enter">
+        <input type="hidden" name="certificates_json" id="hidden-certificates-input">
     </div>
 
+
     <div class="form-group mb-4">
-        <label class="field-label text-info">Portfolio Title</label>
+        <label class="field-label text-success">Experiences</label>
+        <div style="" id="experiences-tags-container" class="d-flex flex-wrap gap-2 mb-2">
+            @foreach($experiences as $item)
+                {{-- 💡 استخدام bg-success ليكون اللون أخضر --}}
+                <span class="skill-tag badge bg-success text-white d-flex align-items-center">
+                {{ $item->title }}
+                <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close"></button>
+            </span>
+            @endforeach
+        </div>
+        <input type="text" id="experience-input" class="form-control" placeholder="Enter experience title and press Enter">
+        <input type="hidden" name="experiences_json" id="hidden-experiences-input">
+    </div>
+
+
+    <div class="form-group mb-4">
+        <label class="field-label text-info">Your Portfolio (Add a project title and a brief description to showcase your expertise)</label>
         <div id="portfolios-wrapper">
             @foreach($portfolios as $i => $item)
-                @php $index = $skills->count() + $certificates->count() + $i; @endphp
+                @php $index =  $i; @endphp
                 <div class="form-field d-flex gap-3 mb-2">
                     <div class="icon"><span class="icon-briefcase"></span></div>
                     <input type="hidden" name="experiences[{{ $index }}][category]" value="portfolio">
@@ -424,26 +450,7 @@
         <button type="button" onclick="addField('portfolios-wrapper', 'portfolio', 'icon-briefcase', 'Enter portfolio')" class="btn btn-sm btn-outline-info">+ Add Portfolio</button>
     </div>
 
-    <div class="form-group mb-4">
-        <label class="field-label text-success">Experience Title</label>
-        <div id="experiences-wrapper">
-            @foreach($experiences as $i => $item)
-                @php $index = $skills->count() + $certificates->count() + $portfolios->count() + $i; @endphp
-                <div class="form-field d-flex gap-3 mb-2">
-                    <div class="icon"><span class="icon-rocket"></span></div>
-                    <input type="hidden" name="experiences[{{ $index }}][category]" value="experience">
-                    <input type="text" required
-                           name="experiences[{{ $index }}][title]"
-                           class="form-control awesomplete"
-                           data-category="experience"
-                           value="{{ $item->title }}"
-                           placeholder="Enter experience">
-                    <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
-                </div>
-            @endforeach
-        </div>
-        <button type="button" onclick="addField('experiences-wrapper', 'experience', 'icon-rocket', 'Enter experience')" class="btn btn-sm btn-outline-success">+ Add Experience</button>
-    </div>
+
 
 
 
@@ -550,3 +557,5 @@
         });
     });
 </script>
+
+

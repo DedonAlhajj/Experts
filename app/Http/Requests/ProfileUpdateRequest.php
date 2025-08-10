@@ -41,10 +41,14 @@ class ProfileUpdateRequest extends FormRequest
             'social_links' => ['nullable', 'array'],
             'social_links.*' => ['nullable', 'url'],
 
+            // 💡 إضافة حقول JSON الجديدة هنا
+            'skills_json' => ['nullable', 'string'],
+            'certificates_json' => ['nullable', 'string'],
+            'experiences_json' => ['nullable', 'string'],
+
             'experiences' => ['nullable', 'array'],
             'experiences.*.category' => ['required', 'in:skill,certificate,portfolio,experience'],
             'experiences.*.title' => ['required', 'string', 'max:255'],
-
         ];
     }
 
