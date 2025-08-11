@@ -4,11 +4,10 @@
 </form>
 
 
-<form id="formTest" method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data"
-      class="search-job p-5 bg-white">
-    @csrf
-    @method('patch')
 
+    <form id="formTest" method="POST" action="{{ route('profile.update', ['user' => $user->id]) }}" enctype="multipart/form-data" class="search-job p-5 bg-white">
+        @csrf
+        @method('PATCH')
     <h3 class="h5 text-black mb-3" style="color: #fdab44;">Personal Info</h3>
     <div class="row no-gutters mb-4">
         <div class="col-md mr-md-2">
@@ -82,6 +81,33 @@
     <div class="row no-gutters mb-4">
         <div class="col-md-6">
             <div class="form-group">
+                <label style="color: #999999;" class="mb-2">Select your status:</label>
+
+                {{-- Hidden fields to ensure both values are always sent --}}
+                <input type="hidden" name="is_job_seeker" value="0">
+                <input type="hidden" name="is_expert" value="0">
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="status_selector" id="job_seeker" value="job_seeker"
+                        {{ $user->is_job_seeker ? 'checked' : '' }}>
+                    <label style="color: #4c4c4c;" class="form-check-label" for="job_seeker">
+                        I'm looking for a job
+                    </label>
+                </div>
+
+                <div class="form-check mt-2">
+                    <input class="form-check-input" type="radio" name="status_selector" id="expert" value="expert"
+                        {{ $user->is_expert ? 'checked' : '' }}>
+                    <label style="color: #4c4c4c;" class="form-check-label" for="expert">
+                        I'm an expert (5+ years experience)
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row no-gutters mb-4">
+        <div class="col-md-6">
+            <div class="form-group">
                 <div class="form-field d-flex align-items-center">
                     <input type="hidden" name="available_for_remote" value="0">
                     <p class="checkbox-label mb-0 ms-2">
@@ -92,35 +118,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <div class="form-field d-flex align-items-center">
-                    <input type="hidden" name="is_job_seeker" value="0">
-                    <p class="checkbox-label mb-0 ms-2">
-                        <input type="checkbox" name="is_job_seeker" value="1"
-                            {{ $user->is_job_seeker ? 'checked' : '' }}>
-                        <span>Are you looking for a job?</span>
-                    </p>
-                </div>
-            </div>
-        </div>
 
     </div>
-    <div class="row no-gutters mb-4">
-        <div class="col-md-4">
-            <div class="form-group">
-                <div class="form-field d-flex align-items-center">
-                    <input type="hidden" name="is_expert" value="0">
-                    <p class="checkbox-label mb-0 ms-2">
-                        <input type="checkbox" name="is_expert" value="1"
-                            {{ $user->is_expert ? 'checked' : '' }}>
-                        <span>Are you an expert?</span>
-                    </p>
-                </div>
-            </div>
-        </div>
 
-    </div>
 
     <div class="divider-with-icon">
         <span class="divider-icon">●●●●</span>
@@ -559,3 +559,26 @@
 </script>
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const jobSeekerRadio = document.getElementById('job_seeker');
+        const expertRadio = document.getElementById('expert');
+
+        jobSeekerRadio.addEventListener('change', function () {
+            document.querySelector('input[name="is_job_seeker"]').value = 1;
+            document.querySelector('input[name="is_expert"]').value = 0;
+        });
+
+        expertRadio.addEventListener('change', function () {
+            document.querySelector('input[name="is_job_seeker"]').value = 0;
+            document.querySelector('input[name="is_expert"]').value = 1;
+        });
+
+        // Trigger initial state
+        if (jobSeekerRadio.checked) {
+            jobSeekerRadio.dispatchEvent(new Event('change'));
+        } else if (expertRadio.checked) {
+            expertRadio.dispatchEvent(new Event('change'));
+        }
+    });
+</script>

@@ -127,7 +127,7 @@
 
                                 <label class="custom-upload">
                                     {{-- معاينة أولية --}}
-                                    <img id="preview-image" alt="Ad Image"/>
+                                    <img src="{{asset('images/default.jpg')}}" id="preview-image" alt="Ad Image"/>
                                     <input type="file" name="image" accept="image/*"
                                            onchange="previewProfile(event)">
                                 </label>

@@ -21,6 +21,16 @@ class BlogController extends Controller
         }
     }
 
+    public function adminIndex()
+    {
+        try {
+            $blogs = $this->service->adminIndex();
+
+            return view('blogs.admin_index', compact('blogs'));
+        }catch (\Throwable $e) {
+            return back()->with('error', 'Unable to load blogs.');
+        }
+    }
     public function create()
     {
         return view('blogs.create');
@@ -30,7 +40,7 @@ class BlogController extends Controller
     {
         try {
             $this->service->store($request->validated());
-            return redirect()->route('blogs.index')->with('success', 'Blog created successfully.');
+            return redirect()->route('blogs.manage')->with('success', 'Blog created successfully.');
         }catch (\Throwable $e) {
             return back()->withInput()->with('error', 'Blog creation failed.');
         }
@@ -57,7 +67,7 @@ class BlogController extends Controller
     {
         try {
             $this->service->update($request->validated(), $blog);
-            return redirect()->route('blogs.index')->with('success', 'Blog updated successfully.');
+            return redirect()->route('blogs.manage')->with('success', 'Blog updated successfully.');
         }catch (\Throwable $e) {
             return back()->with('error', 'Blog update failed.');
         }
@@ -67,7 +77,7 @@ class BlogController extends Controller
     {
         try {
             $this->service->destroy($blog);
-            return redirect()->route('blogs.index')->with('success', 'Blog deleted.');
+            return redirect()->route('blogs.manage')->with('success', 'Blog deleted.');
         }catch (\Throwable $e) {
             return back()->with('error', 'Failed to delete blog.');
         }

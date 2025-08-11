@@ -65,9 +65,13 @@
                             <path
                                 d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a13 13 0 0 1 1.313-.805h.632z"/>
                         </svg>
-                        <span style="margin-left: 10px;
-    top: 2px;
-    position: relative;">{{ \Carbon\Carbon::parse($user->date_of_birth)->format('F d, Y \a\t h:ia') }}</span>
+                        @php
+                            $dob = \Carbon\Carbon::parse($user->date_of_birth);
+                            $age = $dob->diffInYears(now());
+                        @endphp
+
+                        <span style="margin-left: 10px; top: 2px; position: relative;">{{ $dob->format('F d, Y') }} — Age: {{ $age }} years</span>
+
 
                     </div>
 
@@ -167,18 +171,21 @@
                             <p class="mb-4"><a href="#">{{$user->phone}}</a></p>
 
                             <p class="mb-0 font-weight-bold">Their social profile</p>
-                            <p class="mb-4"><a href="#">
-                                    @php
-                                        $website = $user->social_links['website'] ?? null;
-                                        $domain = $website ? parse_url($website, PHP_URL_HOST) : null;
-                                    @endphp
+                            <p class="mb-4">
+                                @php
+                                    $website = $user->social_links['website'] ?? null;
+                                    $domain = $website ? parse_url($website, PHP_URL_HOST) : null;
+                                @endphp
 
-                                    @if($domain)
+                                @if($domain)
+                                    <a href="{{ $website }}" target="_blank" rel="noopener noreferrer">
                                         {{ $domain }}
-                                    @else
-                                        <span class="seen">NO Link related</span>
-                                    @endif
-                                </a></p>
+                                    </a>
+                                @else
+                                    <span class="seen">NO Link related</span>
+                                @endif
+                            </p>
+
                             <p class="mb-0 font-weight-bold">Email Address</p>
                             <p class="mb-0"><a href="#"><span class="__cf_email__"
                                                               data-cfemail="671e081215020a060e0b2703080a060e094904080a">{{$user->email}}</span></a>
@@ -190,27 +197,25 @@
 
                     </div>
 
-                    @auth
-                        @if (auth()->check() && auth()->user()->is($user))
+                        @if (auth()->check() && (auth()->user()->is($user) ||  auth()->user()->is_admin))
                             <div class="sidebar-box bg- p-4 ftco-animate bg-light rounded">
-                                <a href="{{ route('profile.edit') }}"
+                                <a href="{{ route('profile.edit', ['user' => $user->id]) }}"
                                    style="background-color: #fdab44;
-          width: 100%;
-          height: 48px;
-          color: aliceblue;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 600;
-          text-decoration: none;
-          border-radius: 8px;"
+                  width: 100%;
+                  height: 48px;
+                  color: aliceblue;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: 600;
+                  text-decoration: none;
+                  border-radius: 8px;"
                                    class="btn">
                                     Edit Profile
                                 </a>
-
                             </div>
                         @endif
-                    @endauth
+
 
 
                         @php
@@ -219,11 +224,67 @@
                                 : null;
                         @endphp
 
+
                         @if($fileUrl)
-                            <iframe src="{{ $fileUrl }}" width="100%" height="500px" style="border: none;"></iframe>
+                            <!-- Canvas لعرض PDF -->
+                            <canvas id="pdf-canvas" style="width: 100%; border: 1px solid #ccc;"></canvas>
+
+                            <!-- سكربت PDF.js -->
+                            <script src="{{ asset('js/pdfjs/pdf.min.js') }}"></script>
+                            <script>
+                                pdfjsLib.GlobalWorkerOptions.workerSrc = "{{ asset('js/pdfjs/pdf.worker.min.js') }}";
+
+                                const url = "{{ $fileUrl }}";
+                                const canvas = document.getElementById('pdf-canvas');
+                                const ctx = canvas.getContext('2d');
+
+                                let pdfDoc = null;
+                                let currentPage = 1;
+                                let scale = 1.5;
+
+                                function renderPage(pageNum) {
+                                    pdfDoc.getPage(pageNum).then(function(page) {
+                                        const viewport = page.getViewport({ scale: scale });
+                                        canvas.height = viewport.height;
+                                        canvas.width = viewport.width;
+
+                                        const renderContext = {
+                                            canvasContext: ctx,
+                                            viewport: viewport
+                                        };
+                                        page.render(renderContext);
+                                    });
+                                }
+
+                                pdfjsLib.getDocument(url).promise.then(function(pdf) {
+                                    pdfDoc = pdf;
+                                    renderPage(currentPage);
+                                });
+
+                                document.getElementById('zoom-in').addEventListener('click', function () {
+                                    scale += 0.25;
+                                    renderPage(currentPage);
+                                });
+
+                                document.getElementById('zoom-out').addEventListener('click', function () {
+                                    if (scale > 0.5) {
+                                        scale -= 0.25;
+                                        renderPage(currentPage);
+                                    }
+                                });
+                            </script>
+                                <a href="{{ route('cv.fullview', ['user' => $user->id]) }}" class="btn btn-sm btn-outline-dark"
+                                    target="_blank">
+                                    <i class="fas fa-file-pdf me-1"></i>View CV
+                                </a>
+
+
+
                         @else
                             <p>No CV file available</p>
                         @endif
+
+
 
 
                 </div>
@@ -243,3 +304,4 @@
 
 
 @endsection
+

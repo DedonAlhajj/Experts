@@ -61,7 +61,7 @@
                     @php
                         $bgUrl = $blog->hasMedia('blog_image')
                             ? $blog->getFirstMediaUrl('blog_image')
-                            : asset('images/image_1.jpg');
+                            : asset('images/default.jpg');
                     @endphp
                         <!-- Cover Image -->
                         <div class="form-group mb-4">

@@ -22,13 +22,25 @@ class BlogService
     public function index()
     {
         try {
-            return Blog::latest()->paginate(8);
-
+            return Blog::where('is_published', true)
+                ->latest()
+                ->paginate(8);
         } catch (\Throwable $e) {
             Log::error('Blog index error: ' . $e->getMessage());
             throw $e;
         }
     }
+
+    public function adminIndex()
+    {
+        try {
+            return Blog::latest()->paginate(8); // بدون فلترة
+        } catch (\Throwable $e) {
+            Log::error('Blog admin index error: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
 
     public function show(Blog $blog)
     {
@@ -57,9 +69,10 @@ class BlogService
                 'published_at' => now(),
             ]);
 
-            if ($data['image']) {
+            if (!empty($data['image'])) {
                 $this->mediaUploader->execute($blog, $data['image'], 'blog_image');
             }
+
 
             DB::commit();
             return true;
@@ -81,7 +94,7 @@ class BlogService
                 'is_published' => $data['is_published'],
             ]);
 
-            if ($data['image']) {
+            if (!empty($data['image'])) {
                 $this->mediaUploader->execute($blog, $data['image'], 'blog_image');
             }
 

@@ -39,6 +39,20 @@ Route::get('/blog', [FrontDashboardController::class, 'blog'])->name('blog');
 
 Route::get('/contact', [FrontDashboardController::class, 'contact'])->name('contact');
 
+Route::get('/cv/view/{user}', [ProfileController::class, 'viewCV'])->name('cv.fullview');
+
+Route::middleware(['auth', 'verified','is_admin'])->group(function () {
+
+    Route::prefix('blogs')->name('blogs.')->group(function () {
+        Route::get('/manage', [BlogController::class, 'adminIndex'])->name('manage');
+        Route::get('/create', [BlogController::class, 'create'])->name('create');
+        Route::post('/', [BlogController::class, 'store'])->name('store');
+
+        Route::get('/{blog}/edit', [BlogController::class, 'edit'])->name('edit');
+        Route::put('/{blog}', [BlogController::class, 'update'])->name('update');
+        Route::delete('/{blog}', [BlogController::class, 'destroy'])->name('destroy');
+    });
+});
 Route::prefix('blogs')->name('blogs.')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('index');
     Route::get('/{blog}', [BlogController::class, 'show'])->name('show');
@@ -52,8 +66,8 @@ Route::get('/autocomplete-expert-countries',
     ->name('autocomplete.expert.countries');
 
 Route::middleware(['auth','verified'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
@@ -61,18 +75,10 @@ Route::middleware(['auth','verified'])->group(function () {
 
     Route::put('/expert-info/{expertInfo}', [ExpertController::class, 'update'])->name('expert-info.update');
 
+
     Route::middleware(['is_admin'])->group(function () {
 
-        Route::prefix('blogs')->name('blogs.')->group(function () {
-//            Route::get('/', [BlogController::class, 'index'])->name('index');
-            Route::get('/create', [BlogController::class, 'create'])->name('create');
-            Route::post('/', [BlogController::class, 'store'])->name('store');
 
-//            Route::get('/{blog}', [BlogController::class, 'show'])->name('show');
-            Route::get('/{blog}/edit', [BlogController::class, 'edit'])->name('edit');
-            Route::put('/{blog}', [BlogController::class, 'update'])->name('update');
-            Route::delete('/{blog}', [BlogController::class, 'destroy'])->name('destroy');
-        });
 
 
         Route::prefix('ads')->group(function () {

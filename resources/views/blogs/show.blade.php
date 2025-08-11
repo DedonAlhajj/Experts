@@ -3,6 +3,25 @@
 @section('title', 'blogs')
 
 @section('content')
+    <style>
+        .localized-content {
+            direction: rtl;
+            text-align: justify;
+            line-height: 1.8;
+            word-break: break-word;
+        }
+
+        [dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+        }
+
+        [dir="ltr"] {
+            direction: ltr;
+            text-align: left;
+        }
+
+    </style>
     <div class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
@@ -21,45 +40,50 @@
         </div>
     </div>
 
-    <section class="ftco-section ftco-degree-bg">
+    <section class="ftco-section ftco-degree-bg bg-light">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 ftco-animate">
-                    <h2 class="mb-3">{{$blog->title}}</h2>
-                    <p>{{$blog->summary}}</p>
+                @php
+                    $isArabic = \App\Helpers\TextHelper::isArabic(strip_tags($blog->title));
+                    $direction = $isArabic ? 'rtl' : 'ltr';
+                    $textAlign = $isArabic ? 'text-end' : 'text-start';
+                @endphp
+
+                <div class="col-md-8 ftco-animate localized-content" dir="{{ $direction }}">
+                    <h2 class="mb-3 fw-bold {{ $textAlign }}">{{ $blog->title }}</h2>
+                    <p class="text-muted {{ $textAlign }}">{{ $blog->summary }}</p>
+
                     @php
                         $bgUrl = $blog->hasMedia('blog_image')
                             ? $blog->getFirstMediaUrl('blog_image')
-                            : asset('images/image_1.jpg');
+                            : asset('images/default.jpg');
                     @endphp
+
                     <p>
-                        <img src="{{$bgUrl}}" alt="" class="img-fluid">
+                        <img src="{{ $bgUrl }}" alt="" class="img-fluid rounded mb-3">
                     </p>
 
-                    <p>{{$blog->content}}</p>
-
-{{--                    <div class="about-author d-flex p-4 bg-light">--}}
-{{--                        <div class="bio mr-5">--}}
-{{--                            <img src="images/person_1.jpg" alt="Image placeholder" class="img-fluid mb-4">--}}
-{{--                        </div>--}}
-{{--                        <div class="desc">--}}
-{{--                            <h3>George Washington</h3>--}}
-{{--                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                    <p class="{{ $textAlign }}">{{ $blog->content }}</p>
+                </div>
 
 
 
-                </div> <!-- .col-md-8 -->
+
+
+
                 <div class="col-md-4 pl-md-5 sidebar ftco-animate">
 
                     <div class="sidebar-box ftco-animate">
-                        <h3 class="heading-3">Recent Blog</h3>
+                        <h3 class="heading-3" style="background-color: #f2f2f3;
+    padding: 3px;
+    text-align: center;
+    border-radius: 4px;">Recent Blog</h3>
+                        @if($latestBlogs->count())
                         @foreach($latestBlogs as $item)
                             @php
                                 $bgUrlitem = $item->hasMedia('blog_image')
                                     ? $item->getFirstMediaUrl('blog_image')
-                                    : asset('images/image_1.jpg');
+                                    : asset('images/default.jpg');
                             @endphp
                             <p>
                             <div class="block-21 mb-4 d-flex">
@@ -87,14 +111,25 @@
                                 </div>
                             </div>
                         @endforeach
+                        @else
+                            <div class="sidebar-box ftco-animate text-center py-5">
+                                {{-- <img src="{{ asset('images/no-posts.svg') }}" alt="No posts" class="img-fluid mb-4" style="max-width: 180px;"> --}}
+                                <i class="icon-folder-open display-4 text-warning mb-3"></i>
+                                <h5 class="text-muted mb-2">No blog posts available at the moment</h5>
+                                <p class="text-secondary">Stay tuned for fresh and exciting content coming soon.</p>
+                                <a href="{{ route('home') }}" class="btn btn-sm btn-outline-primary mt-3">
+                                    <i class="icon-arrow-left"></i> Back to Home
+                                </a>
+                            </div>
 
+                        @endif
                     </div>
 
                 </div>
 
             </div>
         </div>
-    </section> <!-- .section -->
+    </section>
 
 
 @endsection

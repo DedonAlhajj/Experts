@@ -435,28 +435,40 @@ class ProfileService
     public function getSpecializationsAndTheirNumber(?int $limit = null, ?string $title = null): Collection
     {
         return DB::table('expert_infos')
-            ->select('title_normalized as title', DB::raw('COUNT(*) as total'))
-            ->where('category', 'experience')
-            ->when($title, fn($query) => $query->where('title_normalized', 'LIKE', '%' . strtolower($title) . '%')
+            ->join('users', 'expert_infos.user_id', '=', 'users.id')
+            ->select('expert_infos.title_normalized as title', DB::raw('COUNT(*) as total'))
+            ->where('expert_infos.category', 'experience')
+            ->where('users.is_active', true)
+            ->when($title, fn($query) =>
+            $query->where('expert_infos.title_normalized', 'LIKE', '%' . strtolower($title) . '%')
             )
-            ->groupBy('title_normalized')
+            ->groupBy('expert_infos.title_normalized')
             ->orderByDesc('total')
             ->when($limit, fn($query) => $query->limit($limit))
             ->get();
     }
 
+
     public function getTopCertificates(?int $limit = 6, ?string $title = null): Collection
     {
         return DB::table('expert_infos')
-            ->select('title_normalized', DB::raw('MAX(title) as display_title'), DB::raw('COUNT(*) as total'))
-            ->where('category', 'certificate')
-            ->when($title, fn($query) => $query->where('title_normalized', 'LIKE', '%' . strtolower($title) . '%')
+            ->join('users', 'expert_infos.user_id', '=', 'users.id')
+            ->select(
+                'expert_infos.title_normalized',
+                DB::raw('MAX(expert_infos.title) as display_title'),
+                DB::raw('COUNT(*) as total')
             )
-            ->groupBy('title_normalized')
+            ->where('expert_infos.category', 'certificate')
+            ->where('users.is_active', true)
+            ->when($title, fn($query) =>
+            $query->where('expert_infos.title_normalized', 'LIKE', '%' . strtolower($title) . '%')
+            )
+            ->groupBy('expert_infos.title_normalized')
             ->orderByDesc('total')
             ->when($limit, fn($query) => $query->limit($limit))
             ->get();
     }
+
 
     /**
      * Builds a filtered query for users based on location, name, title, and category.

@@ -46,7 +46,7 @@
 
                             @if (Auth::user()->is_admin)
                                 <a class="dropdown-item" href="{{route('admin.inactive-users')}}">Inactive Users</a>
-                                <a class="dropdown-item" href="{{route('blogs.index')}}">Blogs</a>
+                                <a class="dropdown-item" href="{{route('blogs.manage')}}">Blogs</a>
                                 <a class="dropdown-item" href="{{route('cache.forget')}}">Cache Forget</a>
                                 <a class="dropdown-item" href="{{route('ads.index')}}">Ads</a>
                                 <a class="dropdown-item" href="{{route('settings.index')}}">Settings</a>

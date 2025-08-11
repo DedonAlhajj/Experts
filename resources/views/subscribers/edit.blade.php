@@ -88,7 +88,7 @@
                                 <label class="custom-upload">
                                     {{-- معاينة الصورة الحالية --}}
 
-                                        <img id="preview-image" alt="Choose an img">
+                                        <img id="preview-image" src="{{asset('images/default.jpg')}}" alt="Choose an img">
 
                                     <input type="file" name="image" accept="image/*"
                                            onchange="previewProfile(event)">

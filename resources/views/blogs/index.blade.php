@@ -84,32 +84,22 @@
                     <p class="breadcrumbs mb-0"><span class="mr-3"><a href="{{route('home')}}">Home <i
                                     class="ion-ios-arrow-forward"></i></a></span> <span>Blog</span></p>
                     <h1 class="mb-3 bread">Our Blog
-                        @if (auth()->check() && Auth::user()->is_admin)
-                        <a href="{{ route('blogs.create') }}"
-                                                      class="btn btn-sm btn-outline-warning" title="Edit">
-                            <i class="icon-add"></i>
-                        </a>
-                        @endif
                     </h1>
                 </div>
             </div>
         </div>
     </div>
 
-    <section class="ftco-section">
+    <section class="ftco-section bg-light">
         <div class="container">
             <div class="row d-flex">
-                @if($blogs->count())
+                @if($blogs->where('is_published', true)->count())
                     @foreach($blogs as $blog)
-                        @php
-                            $isAdmin = auth()->check() && auth()->user()->is_admin;
-                        @endphp
-
-                        @if($isAdmin || $blog->is_published)
+                        @if($blog->is_published)
                             @php
                                 $bgUrl = $blog->hasMedia('blog_image')
                                     ? $blog->getFirstMediaUrl('blog_image')
-                                    : asset('images/image_1.jpg');
+                                    : asset('images/default.jpg');
                             @endphp
 
                             <div class="col-md-3 blog-column">
@@ -119,60 +109,29 @@
                                     </a>
                                     <div class="text mt-3">
                                         <div class="meta mb-2 d-flex align-items-center">
-                                            @if($isAdmin)
-                                                <div class="d-flex gap-3 align-items-center icons-wrapper">
-                                                    <!-- Edit -->
-                                                    <a href="{{ route('blogs.edit', $blog) }}" class="text-primary" title="Edit">
-                                                        <i class="icon-edit"></i>
-                                                    </a>
-                                                    <!-- Delete -->
-                                                    <form action="{{ route('blogs.destroy', $blog) }}" method="POST"
-                                                          onsubmit="return confirm('Are you sure?')" class="m-0 p-0">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn-delete" title="Delete">
-                                                            <i class="icon-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            @else
-                                                <div class="d-flex gap-3 align-items-center icons-wrapper">
-                                                    <a style="padding-left: 10px;" href="{{ route('blogs.show', $blog->id) }}"
-                                                       class="text-warning" title="View">
-                                                        <i class="icon-eye"></i>
-                                                    </a>
-                                                </div>
-                                            @endif
-
+                                            <div class="d-flex gap-3 align-items-center icons-wrapper">
+                                                <a style="padding-left: 10px;" href="{{ route('blogs.show', $blog->id) }}"
+                                                   class="text-warning" title="View">
+                                                    <i class="icon-eye"></i>
+                                                </a>
+                                            </div>
                                             <div class="date-wrapper">
                                                 <small class="text-muted">{{ $blog->published_at->format('F j, Y') }}</small>
                                             </div>
                                         </div>
-
-                                        <h3 class="heading">
+                                        @php
+                                            $isArabic = \App\Helpers\TextHelper::isArabic(strip_tags($blog->title));
+                                            $direction = $isArabic ? 'rtl' : 'ltr';
+                                            $textAlign = $isArabic ? 'text-end' : 'text-start';
+                                        @endphp
+                                        <h3 class="heading" style="text-align: {{ $textAlign === 'text-end' ? 'right' : 'left' }};" dir="{{ $direction }}">
                                             <a href="{{ route('blogs.show', $blog->id) }}">{{ $blog->title }}</a>
                                         </h3>
-                                        @if($isAdmin)
-                                            <div class="meta mb-2 d-flex align-items-center">
-
-                                                <div class="d-flex gap-3 align-items-center icons-wrapper">
-                                                    <!-- Edit -->
-                                                    <a class="text-primary" title="{{ $blog->is_published ? 'published' : 'UnPublished' }}">
-                                                            {{ $blog->is_published ? '✓' : '×' }}
-                                                    </a>
-
-                                                    <!-- Delete -->
-                                                </div>
-
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
                         @endif
                     @endforeach
-
-
                 @else
                     <div class="col-md-12 text-center py-5">
                         <h5 class="text-muted">No blog posts available yet.</h5>

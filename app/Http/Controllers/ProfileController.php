@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ProfileController extends Controller
 {
@@ -38,16 +39,25 @@ class ProfileController extends Controller
      *
      * @return View|RedirectResponse
      */
-    public function edit(Request $request): View|RedirectResponse
+
+    public function edit(User $user): View|RedirectResponse
     {
         try {
-            $data = $this->expertInfoService->getProfileWithExpertInfo($request->user());
+            if (!auth()->user()->is($user) && !auth()->user()->is_admin) {
+                abort(403, 'Unauthorized');
+            }
+
+            $data = $this->expertInfoService->getProfileWithExpertInfo($user);
             return view('profile.edit', $data);
 
+        } catch (HttpException $e) {
+            throw $e; // دع Laravel يعرض صفحة الخطأ
         } catch (Exception $e) {
-            return Redirect::back()->with('error' , $e->getMessage());
+            return Redirect::back()->with('error', $e->getMessage());
         }
     }
+
+
 
 
     /**
@@ -61,20 +71,27 @@ class ProfileController extends Controller
      *
      * @return RedirectResponse
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse{
+    public function update(User $user, ProfileUpdateRequest $request): RedirectResponse
+    {
+        //dd($request->validated());
         try {
+            // تحقق من الصلاحية
+            if (!auth()->user()->is($user) && !auth()->user()->is_admin) {
+                abort(403, 'Unauthorized');
+            }
 
-            $this->profileService->update($request->user(), $request->validated());
-            return Redirect::route('profile.show', ['user' => auth()->user()->slug])
+            $this->profileService->update($user, $request->validated());
+
+            return Redirect::route('profile.show', ['user' => $user->slug])
                 ->with('success', 'Profile updated successfully ✅.');
 
         } catch (MediaUploadException $e) {
-            // 🔴 خطأ في رفع الصورة أو الملف
-            return back()->with('error' , $e->getMessage());
+            return back()->with('error', $e->getMessage());
         } catch (\Throwable $e) {
-            return back()->with('error' , $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
     }
+
 
 
     /**
@@ -104,4 +121,14 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function viewCV(User $user)
+    {
+        $fileUrl = $user->hasMedia('cv_file')
+            ? $user->getFirstMediaUrl('cv_file')
+            : null;
+
+        return view('profile.cv', compact('fileUrl'));
+    }
+
 }
