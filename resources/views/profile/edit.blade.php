@@ -33,6 +33,11 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;            /* تباعد بين نص الوسم وزر الإغلاق */
+
+            white-space: normal;
+            word-break: break-word;
+            max-width: 100%;
+
         }
 
         /* تنسيق زر الإغلاق داخل الوسم */
@@ -45,6 +50,39 @@
         .skill-tag .btn-close:hover {
             opacity: 1;             /* زيادة الشفافية */
         }
+
+        .input-warning {
+            display: none;
+            margin-top: 6px;
+            padding: 8px 12px;
+            background-color: #ffe5e5;
+            border-left: 4px solid #dc3545;
+            color: #a94442;
+            font-size: 0.875rem;
+            border-radius: 4px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .input-warning.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .portfolio-warning {
+            display: none;
+            font-size: 0.85rem;
+            color: #dc3545;
+            margin-top: 4px;
+        }
+
+        .portfolio-warning:not(.d-none) {
+            display: block;
+        }
+
     </style>
     <div class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');"
          data-stellar-background-ratio="0.5">
@@ -90,24 +128,59 @@
 
 @endsection
 <script>
+    function attachValidationToExistingInputs() {
+        const inputs = document.querySelectorAll('.portfolio-input');
+
+        inputs.forEach(input => {
+            const warning = input.parentElement.parentElement.querySelector('.portfolio-warning');
+
+            if (!warning) return; // حماية إضافية
+
+            input.addEventListener("input", function () {
+                if (this.value.length > 255) {
+                    this.value = this.value.slice(0, 255);
+                    warning.classList.remove('d-none');
+                } else {
+                    warning.classList.add('d-none');
+                }
+            });
+
+            input.addEventListener("keydown", function (e) {
+                const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+                if (this.value.length >= 255 && !allowedKeys.includes(e.key) && !e.ctrlKey) {
+                    e.preventDefault();
+                    warning.classList.remove('d-none');
+                }
+            });
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        attachValidationToExistingInputs();
+    });
+
     function addField(wrapperId, category, iconClass, placeholder) {
         const wrapper = document.getElementById(wrapperId);
         const html = `
-        <div class="form-field d-flex gap-3 mb-2">
-            <div class="icon"><span class="${iconClass}"></span></div>
-            <input type="hidden" name="experiences[${experienceIndex}][category]" value="${category}">
-            <input type="text" required
-                   name="experiences[${experienceIndex}][title]"
-                   class="form-control awesomplete"
-                   data-category="${category}"
-                   placeholder="${placeholder}">
-            <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
+        <div class="form-field d-flex flex-column gap-2 mb-3">
+            <div class="d-flex gap-3">
+                <div class="icon"><span class="${iconClass}"></span></div>
+                <input type="hidden" name="experiences[${experienceIndex}][category]" value="${category}">
+                <input type="text" required maxlength="255"
+                       name="experiences[${experienceIndex}][title]"
+                       class="form-control awesomplete portfolio-input"
+                       data-category="${category}"
+                       placeholder="${placeholder}">
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
+            </div>
+            <div class="portfolio-warning text-danger small d-none">⚠️Maximum 255 characters allowed.</div>
         </div>
-    `;
+        `;
         wrapper.insertAdjacentHTML('beforeend', html);
 
-        const input = wrapper.querySelectorAll('.awesomplete[data-category="' + category + '"]');
-        const lastInput = input[input.length - 1];
+        const inputs = wrapper.querySelectorAll('.portfolio-input');
+        const lastInput = inputs[inputs.length - 1];
+        const warning = lastInput.parentElement.parentElement.querySelector('.portfolio-warning');
 
         const awesomplete = new Awesomplete(lastInput, {
             list: [],
@@ -121,11 +194,17 @@
         lastInput.awesomplete = awesomplete;
 
         lastInput.addEventListener("input", function () {
-            const search = lastInput.value;
+            if (this.value.length > 255) {
+                this.value = this.value.slice(0, 255);
+                warning.classList.remove('d-none');
+            } else {
+                warning.classList.add('d-none');
+            }
 
+            const search = this.value;
             if (search.length < 1) return;
-            fetch("{{ url('/api/autocomplete-titles') }}?category=" + category + "&q=" + encodeURIComponent(search))
 
+            fetch("{{ url('/api/autocomplete-titles') }}?category=" + category + "&q=" + encodeURIComponent(search))
                 .then(response => response.json())
                 .then(data => {
                     lastInput.awesomplete.list = data;
@@ -134,35 +213,44 @@
                 .catch(error => console.error("Autocomplete fetch error:", error));
         });
 
+        lastInput.addEventListener("keydown", function (e) {
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+            if (this.value.length >= 255 && !allowedKeys.includes(e.key) && !e.ctrlKey) {
+                e.preventDefault();
+                warning.classList.remove('d-none');
+            }
+        });
+
         experienceIndex++;
     }
 
-
     function removeField(button) {
-        button.parentElement.remove();
+        button.closest('.form-field').remove();
     }
-
 </script>
+
+
+
 
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        // دالة موحدة لإعداد حقول الوسوم (Skills, Certificates, Experiences)
-        function setupTagInput(containerId, inputId, hiddenInputId, category, colorClass) {
+        function setupTagInput(containerId, inputId, hiddenInputId, category, colorClass, warningId) {
             const input = document.getElementById(inputId);
             const container = document.getElementById(containerId);
             const hiddenInput = document.getElementById(hiddenInputId);
+            const warning = document.getElementById(warningId);
             let itemsArray = [];
 
-            // تهيئة المصفوفة بالبيانات الموجودة مسبقًا
+            // تهيئة البيانات الموجودة مسبقًا
             container.querySelectorAll('.skill-tag').forEach(tag => {
                 const title = tag.textContent.trim().replace(/[\n\r\t×]/g, '');
                 itemsArray.push({ category: category, title: title });
             });
             updateHiddenInput();
 
-            // إعداد Autocomplete
+            // إعداد Awesomplete
             const awesomplete = new Awesomplete(input, {
                 list: [],
                 minChars: 1,
@@ -172,9 +260,27 @@
                 sort: false
             });
 
+            // منع الإدخال بعد 255 حرفًا
+            input.addEventListener("keydown", function (e) {
+                const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+                if (this.value.length >= 255 && !allowedKeys.includes(e.key) && !e.ctrlKey) {
+                    e.preventDefault();
+                    warning.classList.add('show');
+                }
+            });
+
+            // مراقبة الإدخال وعرض التنبيه
             input.addEventListener("input", function () {
+                if (this.value.length > 255) {
+                    this.value = this.value.slice(0, 255); // قص الزائد
+                    warning.classList.add('show');
+                } else {
+                    warning.classList.remove('show');
+                }
+
                 const search = this.value;
                 if (search.length < 1) return;
+
                 fetch("{{ url('/api/autocomplete-titles') }}?category=" + category + "&q=" + encodeURIComponent(search))
                     .then(response => response.json())
                     .then(data => {
@@ -183,11 +289,17 @@
                     });
             });
 
-            // الاستماع لحدث إضافة وسم (عند الضغط على Enter)
+            // إضافة الوسم عند الضغط على Enter
             input.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     const itemValue = this.value.trim();
+
+                    if (itemValue.length > 255) {
+                        warning.classList.add('show');
+                        return;
+                    }
+
                     if (itemValue) {
                         const newTag = document.createElement('span');
                         newTag.classList.add('skill-tag', 'badge', colorClass, 'text-white', 'd-flex', 'align-items-center');
@@ -203,12 +315,13 @@
                         itemsArray.push({ category: category, title: itemValue });
                         updateHiddenInput();
                         this.value = '';
+                        warning.classList.remove('show');
                         awesomplete.close();
                     }
                 }
             });
 
-            // الاستماع لحدث حذف وسم (عند الضغط على x)
+            // حذف الوسم
             container.addEventListener('click', function (e) {
                 if (e.target.classList.contains('btn-close')) {
                     const tag = e.target.parentElement;
@@ -219,15 +332,16 @@
                 }
             });
 
-            // دالة لتحديث الحقل المخفي
+            // تحديث الحقل المخفي
             function updateHiddenInput() {
                 hiddenInput.value = JSON.stringify(itemsArray);
             }
         }
 
-        // استدعاء الدالة لكل فئة تريد استخدام الوسوم معها
-        setupTagInput('skills-tags-container', 'skill-input', 'hidden-skills-input', 'skill', 'bg-primary');
-        setupTagInput('certificates-tags-container', 'certificate-input', 'hidden-certificates-input', 'certificate', 'bg-warning');
-        setupTagInput('experiences-tags-container', 'experience-input', 'hidden-experiences-input', 'experience', 'bg-success');
+        // استدعاء الدالة لكل فئة
+        setupTagInput('skills-tags-container', 'skill-input', 'hidden-skills-input', 'skill', 'bg-primary', 'skill-warning');
+        setupTagInput('certificates-tags-container', 'certificate-input', 'hidden-certificates-input', 'certificate', 'bg-warning', 'certificate-warning');
+        setupTagInput('experiences-tags-container', 'experience-input', 'hidden-experiences-input', 'experience', 'bg-success', 'experience-warning');
     });
 </script>
+

@@ -380,24 +380,26 @@
     <script>let experienceIndex = {{ $initialIndex }};</script>
 
 
-    <div class="form-group mb-4">
-        <label class="field-label text-primary">Skills</label>
-        <div id="skills-tags-container" class="d-flex flex-wrap gap-2 mb-2">
-            @foreach($skills as $item)
-                {{-- 💡 لاحظ إضافة كلاس bg-primary أو أي لون تريده --}}
-                <span class="skill-tag badge bg-primary text-white d-flex align-items-center">
+        <div class="form-group mb-4">
+            <label class="field-label text-primary">Skills</label>
+            <div id="skills-tags-container" class="d-flex flex-wrap gap-2 mb-2">
+                @foreach($skills as $item)
+                    <span class="skill-tag badge bg-primary text-white d-flex align-items-center">
                 {{ $item->title }}
                 <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close"></button>
             </span>
-            @endforeach
+                @endforeach
+            </div>
+            <input type="text" id="skill-input" class="form-control" placeholder="Enter skill and press Enter">
+            <div id="skill-warning" class="input-warning">⚠️Maximum 255 characters allowed.</div>
+            <input type="hidden" name="skills_json" id="hidden-skills-input">
+
         </div>
-        <input type="text" id="skill-input" class="form-control" placeholder="Enter skill and press Enter">
-        <input type="hidden" name="skills_json" id="hidden-skills-input">
-    </div>
 
 
 
-    <div class="form-group mb-4">
+
+        <div class="form-group mb-4">
         <label class="field-label text-warning">Certificates</label>
         <div id="certificates-tags-container" class="d-flex flex-wrap gap-2 mb-2">
             @foreach($certificates as $item)
@@ -408,9 +410,11 @@
             </span>
             @endforeach
         </div>
-        <input type="text" id="certificate-input" class="form-control" placeholder="Enter certificate title and press Enter">
-        <input type="hidden" name="certificates_json" id="hidden-certificates-input">
-    </div>
+            <input type="text" id="certificate-input" class="form-control" placeholder="Enter certificate title and press Enter">
+            <div id="certificate-warning" class="input-warning">⚠️Maximum 255 characters allowed.</div>
+            <input type="hidden" name="certificates_json" id="hidden-certificates-input">
+
+        </div>
 
 
     <div class="form-group mb-4">
@@ -425,37 +429,47 @@
             @endforeach
         </div>
         <input type="text" id="experience-input" class="form-control" placeholder="Enter experience title and press Enter">
+        <div id="experience-warning" class="input-warning">⚠️Maximum 255 characters allowed.</div>
         <input type="hidden" name="experiences_json" id="hidden-experiences-input">
+
     </div>
 
 
-    <div class="form-group mb-4">
-        <label class="field-label text-info">Your Portfolio (Add a project title and a brief description to showcase your expertise)</label>
-        <div id="portfolios-wrapper">
-            @foreach($portfolios as $i => $item)
-                @php $index =  $i; @endphp
-                <div class="form-field d-flex gap-3 mb-2">
-                    <div class="icon"><span class="icon-briefcase"></span></div>
-                    <input type="hidden" name="experiences[{{ $index }}][category]" value="portfolio">
-                    <input type="text" required
-                           name="experiences[{{ $index }}][title]"
-                           class="form-control awesomplete"
-                           data-category="portfolio"
-                           value="{{ $item->title }}"
-                           placeholder="Enter portfolio">
-                    <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
-                </div>
-            @endforeach
+        <div class="form-group mb-4">
+            <label class="field-label text-info">
+                Your Portfolio (Add a project title and a brief description to showcase your expertise)
+            </label>
+            <div id="portfolios-wrapper">
+                @foreach($portfolios as $i => $item)
+                    @php $index = $i; @endphp
+                    <div class="form-field d-flex flex-column gap-2 mb-3">
+                        <div class="d-flex gap-3">
+                            <div class="icon"><span class="icon-briefcase"></span></div>
+                            <input type="hidden" name="experiences[{{ $index }}][category]" value="portfolio">
+                            <input type="text" required maxlength="255"
+                                   name="experiences[{{ $index }}][title]"
+                                   class="form-control awesomplete portfolio-input"
+                                   data-category="portfolio"
+                                   value="{{ $item->title }}"
+                                   placeholder="Enter portfolio">
+                            <button type="button" class="btn btn-sm btn-danger" onclick="removeField(this)">✖</button>
+                        </div>
+                        <div class="portfolio-warning text-danger small d-none">⚠️Maximum 255 characters allowed.</div>
+                    </div>
+                @endforeach
+            </div>
+            <button type="button"
+                    onclick="addField('portfolios-wrapper', 'portfolio', 'icon-briefcase', 'Enter portfolio')"
+                    class="btn btn-sm btn-outline-info">+ Add Portfolio</button>
         </div>
-        <button type="button" onclick="addField('portfolios-wrapper', 'portfolio', 'icon-briefcase', 'Enter portfolio')" class="btn btn-sm btn-outline-info">+ Add Portfolio</button>
-    </div>
 
 
 
 
 
 
-    <div class="row form-group">
+
+        <div class="row form-group">
         <div class="col-md-12 text-center">
             <input type="submit" value="Post" class="btn custom-btn-wide">
         </div>

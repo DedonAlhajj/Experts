@@ -340,12 +340,13 @@ class ProfileService
             $specializations = $this->getHomepageSpecializations();
             $certificates = $this->getHomepageCertificates();
             $users = $this->getActiveUsers();
+            $recentlyUser =  $this->getActiveRecentlyUsers();
             $experts = $this->getRandomExperts();
             $jobSeekers = $this->getRandomJobSeekers();
             $ads = $this->adService->getVisibleAdsGroupedByPosition();
 
 
-            return compact('stats', 'specializations', 'certificates', 'users', 'experts', 'jobSeekers', 'ads');
+            return compact('stats', 'recentlyUser','specializations', 'certificates', 'users', 'experts', 'jobSeekers', 'ads');
 
         } catch (\Throwable $e) {
             Log::error('Error loading homepage user stats: ' . $e->getMessage());
@@ -374,6 +375,15 @@ class ProfileService
             ->latest()->take(5)->get();
     }
 
+
+    protected function getActiveRecentlyUsers()
+    {
+        return User::active()
+            ->where('is_expert', true)
+            ->select('id', 'name', 'slug', 'country', 'social_links',
+                'is_expert', 'available_for_remote', 'is_job_seeker', 'city', 'bio')
+            ->latest()->take(5)->get();
+    }
     protected function getRandomExperts(): Collection
     {
         return User::active()

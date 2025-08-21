@@ -63,27 +63,29 @@
    $.Scrollax();
 
 	var carousel = function() {
-		$('.carousel-testimony').owlCarousel({
-			center: true,
-			loop: true,
-			items:1,
-			margin: 30,
-			stagePadding: 0,
-			nav: false,
-			navText: ['<span class="ion-ios-arrow-back">', '<span class="ion-ios-arrow-forward">'],
-			responsive:{
-				0:{
-					items: 1
-				},
-				600:{
-					items: 2
-				},
-				1000:{
-					items: 3
-				}
-			}
-		});
-		$('.carousel-candidates').owlCarousel({
+        $('.carousel-testimony').owlCarousel({
+            loop: false,
+            center: false,
+            items: 3, // مهم جدًا أن يكون هنا 3 وليس 1
+            margin: 30,
+            stagePadding: 0,
+            nav: false,
+            dots: true,
+            navText: ['<span class="ion-ios-arrow-back">', '<span class="ion-ios-arrow-forward">'],
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 3
+                }
+            }
+        });
+
+        $('.carousel-candidates').owlCarousel({
 			autoplay: true,
 			autoHeight: true,
 			items:1,

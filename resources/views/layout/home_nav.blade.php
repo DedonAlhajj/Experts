@@ -252,9 +252,11 @@
                                 <div class="top-category text-center no-border-left {{ $isActive }}">
                                     <h3 style="display: -webkit-box; -webkit-line-clamp: 2;
                                      -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; height: 59px;">
-                                        <a href="{{ route('experts.bySpecialization', ['title' => $cert->display_title]) }}">
+                                        <a href="{{ route('experts.bySpecialization', ['title' => Str::limit($cert->display_title, 20, '')]) }}"
+                                           title="{{ $cert->display_title }}">
                                             {{ $cert->display_title }}
                                         </a>
+
                                     </h3>
                                     <span class="icon {{ $icon }}"></span>
                                     <p>

@@ -138,8 +138,9 @@
                             <div class="col-12 col-sm-6 col-md-3 mb-3">
                                 <ul class="category text-center">
                                     <li>
-                                        <a href="{{ route('experts.bySpecialization', ['title' => $item->title]) }}">
-                                            {{ Str::title($item->title) }} <br>
+                                        <a href="{{ route('experts.bySpecialization', ['title' => Str::limit($item->title, 20, '')]) }}">
+
+                                        {{ Str::title(Str::limit($item->title, 40)) }}<br>
                                             <span class="number">{{ $item->total }}</span>
                                             <span>Open position</span>
                                             <i class="ion-ios-arrow-forward"></i>
@@ -428,19 +429,19 @@
                 <div class="col-md-12 ftco-animate">
                     <div class="carousel-candidates owl-carousel">
 
-                        @foreach ($users as $user)
+                        @foreach ($recentlyUser as $users)
                             <div class="item">
-                                <a href="{{ route('profile.show', $user) }}" class="team text-center">
+                                <a href="{{ route('profile.show', $users) }}" class="team text-center">
                                     @php
-                                        $bgUrl = $user->hasMedia('profile_image')
-                                            ? $user->getFirstMediaUrl('profile_image')
+                                        $bgUrl = $users->hasMedia('profile_image')
+                                            ? $users->getFirstMediaUrl('profile_image')
                                             : asset('images/default.jpg');
                                     @endphp
 
                                     <div class="img" style="background-image: url('{{ $bgUrl }}');"></div>
-                                    <h2>{{ $user->name }}</h2>
+                                    <h2>{{ $users->name }}</h2>
                                     <span
-                                        class="position">{{ $user->country ? $user->country .','. $user->country : 'undefined' }}</span>
+                                        class="position">{{ $users->country ? $users->country .','. $users->country : 'undefined' }}</span>
                                 </a>
                             </div>
 
